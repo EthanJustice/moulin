@@ -1,15 +1,17 @@
-const createElement = (type, text, attributes) => {
-	let elem = document.createElement(type);
-	elem.innerText = text || null;
+// General utilities
+
+const buildElement = (type, attributes) => {
+	let element = document.createElement(type);
+	element.innerText = text || '';
 	if (attributes) {
 		Object.keys(attributes).forEach(item => {
-			if (item.includes('data_')) { elem.dataset[item.slice(4)] = attributes[item] }
-			else if (item == 'class') {
-				attributes[item].split(' ').forEach(val => elem.classList.add(val));
-			}
-			else { elem[item] = attributes[item] }
+			if (item.includes('data_')) { element.setAttribute(item.replace(new RegExp('_', 'g'), '-'), attributes[item]) }
+			else { element.setAttribute('item', attributes[item]) }
 		});
 	}
+	return element;
+}
 
-	return elem;
+const error = (msg, err) => {
+	console.error(err);
 }

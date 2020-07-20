@@ -1,2 +1,3 @@
 # moulin
- Lightweight presentation generator from MarkDown
+
+lightweight presentation generator from markdown

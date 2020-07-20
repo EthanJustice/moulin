@@ -3,23 +3,33 @@ let modStatus = {
 	percentage: 0
 };
 
-const modLoader = () => { // Loads modules to avoid having HTML shell have them all pre-set
+const start = () => {
 	const modList = [
 		'config',
+		'controls',
+		'fetch',
+		'template',
 		'timing',
 		'translate',
 		'utils'
 	];
 
+	const modContainer = document.createElement('div');
+	modContainer.id = 'scripts';
+
 	modList.forEach((item, index) => {
 		let script = document.createElement('script');
 		script.src = `core/scripts/modules/${item}.js`;
-		script.async = true;
 		script.defer = true;
-		document.body.appendChild(script);
+		modContainer.appendChild(script);
 
-		modStatus.percentage = ((index + 1) / modList.length) * 100;
+		script.addEventListener('load', () => {
+			modStatus.percentage = parseInt(((index + 1) / modList.length) * 100);
+			modStatus.loaded == true && script.src.replace(window.location.href, '').replace('core/scripts/modules/', '').replace('.js', '') == modList[modList.length - 1] ? buildTemplates() : null;
+		});
 	});
+
+	document.body.appendChild(modContainer);
 
 	modStatus = {
 		loaded: true,
@@ -27,4 +37,10 @@ const modLoader = () => { // Loads modules to avoid having HTML shell have them 
 	};
 };
 
-modLoader();
+const buildTemplates = () => {
+	let load = startTimer();
+	loadTemplate('toolbar', document.body);
+	stopTimer(load);
+}
+
+start();

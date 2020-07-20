@@ -1,0 +1,1 @@
+// Inteprets config.json

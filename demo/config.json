@@ -1,0 +1,9 @@
+{
+	"themes": {
+		"dark": "default",
+		"light": "light",
+		"custom": {
+			"solarized": "solarized"
+		}
+	}
+}
