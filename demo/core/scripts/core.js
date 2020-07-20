@@ -10,19 +10,21 @@ const start = () => {
 		'controls',
 		'fetch',
 		'parse',
+		'responsive',
 		'template',
 		'timing',
-		'translate',
-		'utils'
+		'translate'
 	];
 
-	const modContainer = document.createElement('div');
-	modContainer.id = 'scripts';
+	const modContainer = buildElement('div', {
+		id: 'scripts',
+	});
 
 	modList.forEach((item, index) => {
-		let script = document.createElement('script');
-		script.src = `core/scripts/modules/${item}.js`;
-		script.defer = true;
+		let script = buildElement('script', {
+			src: `core/scripts/modules/${item}.js`
+		});
+
 		modContainer.appendChild(script);
 
 		script.addEventListener('load', () => {
@@ -39,10 +41,18 @@ const start = () => {
 	};
 };
 
+document.addEventListener('visibilitychange', () => {
+	if (document.visibilityState == 'visible') {
+		document.body.classList.remove('hidden')
+		document.body.classList.add('fadeIn');
+		document.body.addEventListener('animationend', () => document.body.classList.remove('fadeIn'), { once: true });
+	} else {
+		document.body.classList.add('hidden');
+	}
+});
+
 const buildTemplates = () => {
-	let load = startTimer();
 	loadTemplate('toolbar', document.body);
-	stopTimer(load);
 }
 
 start();

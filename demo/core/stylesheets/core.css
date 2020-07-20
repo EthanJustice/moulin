@@ -1,8 +1,12 @@
 :root {
 	--primary-transition: linear;
+
+	--window-width: 600px;
+	--window-height: 600px;
 }
 
 body {
+	margin: 0;
 	background: var(--primary);
 	color: var(--secondary);
 }
@@ -10,4 +14,10 @@ body {
 * {
 	animation: 300ms fadeIn var(--primary-transition);
 	transition: 300ms var(--primary-transition);
+}
+
+.hidden { display: none }
+
+.fadeIn {
+	animation: 300ms fadeIn var(--primary-transition);
 }

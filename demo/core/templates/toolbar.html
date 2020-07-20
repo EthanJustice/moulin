@@ -1,3 +1,35 @@
-<div>
-	<p>&#x2699;</p>
+<div class="hidden toolbar">
+	<style>
+		nav {
+			width: calc(var(--window-width) / 28);
+			border-right: 2px solid var(--tertiary);
+			height: var(--window-height);
+			padding: 0px 5px;
+			position: sticky;
+			top: 0;
+
+			display: flex;
+			flex-flow: row wrap;
+			flex: 1;
+			justify-content: center;
+			align-content: space-between;
+			transition: none;
+		}
+
+		nav * {
+			font-size: calc(var(--window-width) / 30);
+			margin: 0 !important;
+			padding: 0;
+			cursor: pointer;
+			transition-property: color;
+		}
+
+		nav *:hover {
+			color: var(--highlight);
+		}
+	</style>
+	<nav>
+		<p>&#x2699;</p>
+	</nav>
+	<script src="core/templates/toolbar.js"></script>
 </div>
