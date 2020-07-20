@@ -5,6 +5,7 @@ let modStatus = {
 
 const start = () => {
 	const modList = [
+		'cache',
 		'config',
 		'controls',
 		'fetch',
