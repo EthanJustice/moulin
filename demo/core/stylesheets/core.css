@@ -1,18 +1,13 @@
 :root {
-	--primary-transition: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+	--primary-transition: linear;
 }
 
-Body {
+body {
 	background: var(--primary);
 	color: var(--secondary);
 }
 
 * {
-	animation: 0.15s fadeIn var(--primary-transition);
-	transition: 0.15s var(--primary-transition);
-}
-
-@keyframes fadeIn {
-	0% { opacity: 0 }
-	100% { opacity: 1 }
+	animation: 300ms fadeIn var(--primary-transition);
+	transition: 300ms var(--primary-transition);
 }

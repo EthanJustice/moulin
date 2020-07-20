@@ -8,6 +8,7 @@ const start = () => {
 		'config',
 		'controls',
 		'fetch',
+		'parse',
 		'template',
 		'timing',
 		'translate',
