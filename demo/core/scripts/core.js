@@ -3,6 +3,15 @@ let modStatus = {
 	percentage: 0
 };
 
+async function getConfig() {
+	return await fetch('./config.json').then(resp => { return resp.json() });
+}
+
+let config;
+getConfig().then(data => {
+	config = data;
+});
+
 const start = () => {
 	const modList = [
 		'cache',

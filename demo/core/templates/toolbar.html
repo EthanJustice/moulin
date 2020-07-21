@@ -1,7 +1,8 @@
 <div class="hidden toolbar">
 	<style>
 		nav {
-			width: calc(var(--window-width) / 28);
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			width: calc(var(--window-width) / 30);
 			border-right: 2px solid var(--tertiary);
 			height: var(--window-height);
 			padding: 0px 5px;
@@ -17,7 +18,7 @@
 		}
 
 		nav * {
-			font-size: calc(var(--window-width) / 30);
+			font-size: calc(var(--window-width) / 32);
 			margin: 0 !important;
 			padding: 0;
 			cursor: pointer;
@@ -29,7 +30,9 @@
 		}
 	</style>
 	<nav>
-		<p>&#x2699;</p>
+		<p id="toolbar-settings">&#x2699;</p>
+		<p id="toolbar-theme">&#9681;</p>
+		<p id="toolbar-shortcuts">⌨</p>
 	</nav>
 	<script src="core/templates/toolbar.js"></script>
 </div>

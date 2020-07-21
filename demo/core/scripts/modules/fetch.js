@@ -1,1 +1,1 @@
-// Fetches slides
+// Prefetches assets

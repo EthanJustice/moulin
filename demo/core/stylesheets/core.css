@@ -13,7 +13,7 @@ body {
 
 * {
 	animation: 300ms fadeIn var(--primary-transition);
-	transition: 300ms var(--primary-transition);
+	transition: 150ms var(--primary-transition);
 }
 
 .hidden { display: none }
