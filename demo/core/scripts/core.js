@@ -85,7 +85,7 @@ const buildTemplates = () => {
 	let loaded = [];
 	Object.entries(skeleton).forEach((item, index) => {
 		loaded.push(item[0])
-		loadTemplate(item[0]).then(element => {
+		load(`core/templates/${item[0]}`).then(element => {
 			item[1].appendChild(element);
 			element.addEventListener('script-loaded', () => {
 				dispatch('template-loaded', {
@@ -100,22 +100,16 @@ const buildTemplates = () => {
 
 const loadSlides = (data) => {
 	const fetchSlide = (slide) => {
-		fetch(`${slide}`).then(resp => {
-			if (resp.ok == false) { error(`Failed to fetch slides.`) }
-			else { return resp.text() }
-		}).then(html => {
-			let parser = new DOMParser();
-			let content = parser.parseFromString(html, 'text/html').querySelector('div[data-next]');
+		slides.push(slide);
+		load(slide.replace('.html', '')).then(element => {
+			slideContent.push(element);
 
-			slides.push(slide);
-			slideContent.push(content);
-
-			content.querySelectorAll('div[data-next-slide]').forEach(item => {
+			element.querySelectorAll('div[data-next-slide]').forEach(item => {
 				if (slides.indexOf(item.dataset.nextSlide == false)) {
 					fetchSlide(item.dataset.nextSlide);
 				}
 			});
-		})
+		});
 	};
 
 	fetchSlide(data.slide);

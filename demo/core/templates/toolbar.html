@@ -2,11 +2,14 @@
 	<style>
 		.toolbar {
 			opacity: 0.1;
-			width: var(--window-width);
+
+			width: calc(var(--window-width) / 1.05);
 			height: calc(var(--window-height) / 25);
+
 			bottom: calc(var(--window-height) / 30);
 			left: calc(var(--window-width) / 90);
 			position: fixed;
+
 			animation: none !important;
 		}
 
@@ -15,12 +18,17 @@
 			transition: 150ms var(--primary-transition);
 		}
 
+		.nav {
+			margin: auto;
+		}
+
 		nav * {
 			font-size: calc(var(--window-width) / 40);
 			margin: 0 !important;
 			padding: 0;
 			cursor: pointer;
 			transition: none;
+			max-width: calc(var(--window-width) / 30);
 		}
 
 		nav *:hover {
@@ -32,11 +40,22 @@
 		nav *:not(:hover) {
 			transition: 150ms var(--primary-transition)
 		}
+
+		.toolbar-right * {
+			font-size: 13pt;
+			margin: 0 10px !important;
+		}
 	</style>
-	<nav>
-		<a id="toolbar-settings">&#x2699;</a>
-		<a id="toolbar-theme">&#9681;</a>
-		<a id="toolbar-shortcuts">⌨</a>
-	</nav>
+	<div class="nav flex flex-row flex-space-between">
+		<nav class="toolbar-left">
+			<a id="toolbar-settings">&#x2699;</a>
+			<a id="toolbar-theme">&#9681;</a>
+			<a id="toolbar-shortcuts">⌨</a>
+		</nav>
+		<nav class="toolbar-right">
+			<a id="toolbar-previous">Previous</a>
+			<a id="toolbar-next">Next</a>
+		</nav>
+	</div>
 	<script src="core/templates/toolbar.js"></script>
 </div>

@@ -13,7 +13,7 @@
         setTheme();
     });
 
-    let shortcutsContainer = loadTemplate('shortcuts');
+    let shortcutsContainer = load('core/templates/shortcuts');
     shortcuts.addEventListener('click', () => {
         if (document.querySelector('.main').querySelector('.shortcuts')) {
             document.querySelector('.main').querySelector('.shortcuts').remove();
