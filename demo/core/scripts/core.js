@@ -1,9 +1,24 @@
+// main
+// utils
+const buildElement = (type, attributes, text) => {
+	let element = document.createElement(type);
+	element.innerText = text || '';
+	if (attributes) {
+		Object.keys(attributes).forEach(item => {
+			if (item.includes('data_')) { element.setAttribute(item.replace(new RegExp('_', 'g'), '-'), attributes[item]) }
+			else { element.setAttribute(item, attributes[item]) }
+		});
+	}
+	return element;
+}
+
+const error = (msg, err) => {
+	console.error(msg);
+}
+
+// core
 let status = {
 	modules: {
-		loaded: false,
-		percentage: 0
-	},
-	templates: {
 		loaded: false,
 		percentage: 0
 	},
@@ -23,20 +38,25 @@ async function getConfig() {
 let config;
 getConfig().then(data => {
 	config = data;
+	if (config.global) {
+		document.head.appendChild(buildElement('link', {
+			rel: 'stylesheet',
+			type: 'text/css',
+			href: config.global
+		}));
+	}
+
 	loadSlides(data);
 });
 
 const start = () => {
 	const modList = [
-		'hooks',
+		'timing',
 		'template',
-		'cache',
-		'config',
-		'controls',
-		'fetch',
+		'hooks',
 		'parse',
-		'responsive',
-		'timing'
+		'binds',
+		'cache',
 	];
 
 	const modContainer = buildElement('div', {
@@ -52,7 +72,6 @@ const start = () => {
 
 		script.addEventListener('load', () => {
 			status.modules.percentage = parseInt(((index + 1) / modList.length) * 100);
-			status.modules.loaded == true && script.src.replace(window.location.href, '').replace('core/scripts/modules/', '').replace('.js', '') == modList[modList.length - 1] ? buildTemplates() : null;
 		}, { once: true });
 	});
 
@@ -81,46 +100,28 @@ let skeleton = {
 	'toolbar': document.querySelector('.visible')
 };
 
-const buildTemplates = () => {
-	let loaded = [];
-	Object.entries(skeleton).forEach((item, index) => {
-		loaded.push(item[0])
-		load(`core/templates/${item[0]}`).then(element => {
-			item[1].appendChild(element);
-			element.addEventListener('script-loaded', () => {
-				dispatch('template-loaded', {
-					detail: ''
-				}, element);
-			}, { once: true });
-			status.templates.percentage = parseInt(((index + 1) / Object.keys(skeleton).length) * 100);
-			status.templates.loaded == true ? loadSlides() : null;
-		});
-	});
-}
-
 const loadSlides = (data) => {
 	const fetchSlide = (slide) => {
-		slides.push(slide);
-		load(slide.replace('.html', '')).then(element => {
+		if (!slide.includes('/')) slide = `${config.slideDir}${slide}`;
+
+		let name = slide.split('/')[slide.split('/').length - 1].replace('.html', '');
+
+		slides.push(name);
+		return load(slide.replace('.html', '')).then(element => {
+			element.dataset.slideName = name;
 			slideContent.push(element);
 
-			element.querySelectorAll('div[data-next-slide]').forEach(item => {
-				if (slides.indexOf(item.dataset.nextSlide == false)) {
-					fetchSlide(item.dataset.nextSlide);
+			if (element.dataset.next) {
+				if (slides.indexOf(element.dataset.next) == -1) {
+					fetchSlide(element.dataset.next);
 				}
-			});
+			}
 		});
 	};
 
-	fetchSlide(data.slide);
-
-	if (document.querySelector('.main')) {
-		document.querySelector('.main').appendChild(slideContent[0]);
-	} else {
-		window.addEventListener('template-loaded', (event) => {
-			if (event.detail.location == 'main') {
-				document.querySelector('.main').appendChild(slideContent[0]);
-			}
-		});
-	}
+	fetchSlide(data.slide).then(() => {
+		if (document.querySelector('.main')) {
+			document.querySelector('.main').appendChild(slideContent[0]);
+		}
+	});
 }

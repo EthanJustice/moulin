@@ -1,0 +1,4 @@
+div[data-slide-name] {
+    max-width: 800px;
+    margin: 1% auto;
+}
