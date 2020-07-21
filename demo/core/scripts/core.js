@@ -14,13 +14,14 @@ getConfig().then(data => {
 
 const start = () => {
 	const modList = [
+		'hooks',
+		'template',
 		'cache',
 		'config',
 		'controls',
 		'fetch',
 		'parse',
 		'responsive',
-		'template',
 		'timing'
 	];
 
@@ -38,7 +39,7 @@ const start = () => {
 		script.addEventListener('load', () => {
 			modStatus.percentage = parseInt(((index + 1) / modList.length) * 100);
 			modStatus.loaded == true && script.src.replace(window.location.href, '').replace('core/scripts/modules/', '').replace('.js', '') == modList[modList.length - 1] ? buildTemplates() : null;
-		});
+		}, { once: true });
 	});
 
 	document.body.appendChild(modContainer);
@@ -60,14 +61,22 @@ document.addEventListener('visibilitychange', () => {
 });
 
 let skeleton = {
-	'toolbar': document.querySelector('.flex'),
-	'main': document.querySelector('.flex')
+	'main': document.querySelector('.visible'),
+	'toolbar': document.querySelector('.visible')
 };
 
 const buildTemplates = () => {
 	let loaded = [];
 	Object.entries(skeleton).forEach(item => {
-		loadTemplate(item[0]).then(element => item[1].appendChild(element));
+		loaded.push(item[0])
+		loadTemplate(item[0]).then(element => {
+			item[1].appendChild(element);
+			element.addEventListener('script-loaded', () => {
+				dispatch('template-loaded', {
+					detail: ''
+				}, element);
+			}, { once: true });
+		});
 	});
 }
 

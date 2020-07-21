@@ -1,6 +1,5 @@
 // scopes css
 const scopeCSS = (element) => {
-    console.log(element.className)
     if (!element.querySelector('style')) { return element }
     let sheet = element.querySelector('style');
     Object.values(sheet.sheet.rules).forEach(item => {
@@ -20,8 +19,7 @@ const scopeCSS = (element) => {
     return element;
 }
 
-const renderJS = (element) => {
-    console.log(element.className);
+/*
     if (!element.querySelector('script')) return element
     let link = element.querySelector('script').src;
 
@@ -31,6 +29,24 @@ const renderJS = (element) => {
 
     element.remove(element.querySelector('script'));
     element.appendChild(newScript);
+*/
+
+const renderJS = (element) => {
+    if (!element.querySelector('script')) return element
+    let link = element.querySelector('script').src;
+
+    let script = buildElement('script', {
+        src: link
+    });
+
+    script.addEventListener('load', () => {
+        dispatch('script-loaded', {}, element);
+    }, { once: true });
+
+    element.remove(element.querySelector('script'));
+    element.appendChild(script);
+
+    dispatch('script-parsed', {}, element);
 
     return element;
 }

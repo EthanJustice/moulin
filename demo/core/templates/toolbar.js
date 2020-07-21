@@ -1,11 +1,13 @@
 (function () {
     let scope = document.querySelector('.toolbar')
 
-    scope.classList.remove('hidden');
+    scope.addEventListener('template-loaded', () => {
+        scope.classList.remove('hidden');
+    }, { once: true });
 
-    let settings = scope.querySelector('p[id="toolbar-settings"]');
-    let theme = scope.querySelector('p[id="toolbar-theme"]');
-    let shortcuts = scope.querySelector('p[id="toolbar-shortcuts"]');
+    let settings = scope.querySelector('a[id="toolbar-settings"]');
+    let theme = scope.querySelector('a[id="toolbar-theme"]');
+    let shortcuts = scope.querySelector('a[id="toolbar-shortcuts"]');
 
     theme.addEventListener('click', () => {
         setTheme();

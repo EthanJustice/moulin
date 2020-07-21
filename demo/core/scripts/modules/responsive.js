@@ -3,11 +3,29 @@
 const updateSizes = () => {
     document.documentElement.style.setProperty('--window-height', `${window.innerHeight}px`)
     document.documentElement.style.setProperty('--window-width', `${window.innerWidth}px`)
+
+    document.documentElement.style.setProperty('--document-height', `${document.documentElement.clientHeight}px`)
+    document.documentElement.style.setProperty('--document-width', `${document.documentElement.clientWidth}px`)
 };
 
 updateSizes();
 
-window.addEventListener('resize', () => updateSizes());
+const tooSmall = () => {
+    if (window.matchMedia('(max-width:768px)').matches == false) {
+        document.querySelector('.visible').classList.remove('hidden');
+        document.querySelector('.too-small').classList.add('hidden');
+    } else {
+        document.querySelector('.visible').classList.add('hidden');
+        document.querySelector('.too-small').classList.remove('hidden');
+    }
+};
+
+tooSmall();
+
+window.addEventListener('resize', () => {
+    tooSmall();
+    updateSizes()
+});
 
 const setTheme = (media = false) => {
     const update = () => {
