@@ -1,4 +1,4 @@
-<div class="hidden toolbar">
+<div class="hidden toolbar" data-template="toolbar">
 	<style>
 		.toolbar {
 			opacity: 0.1;
@@ -7,12 +7,12 @@
 			bottom: calc(var(--window-height) / 30);
 			left: calc(var(--window-width) / 90);
 			position: fixed;
-			transition: none !important;
 			animation: none !important;
 		}
 
 		.toolbar:hover {
 			opacity: 1;
+			transition: 150ms var(--primary-transition);
 		}
 
 		nav * {
@@ -25,6 +25,12 @@
 
 		nav *:hover {
 			color: var(--highlight);
+			transition: 150ms var(--primary-transition);
+		}
+
+		.toolbar:not(:hover),
+		nav *:not(:hover) {
+			transition: 150ms var(--primary-transition)
 		}
 	</style>
 	<nav>

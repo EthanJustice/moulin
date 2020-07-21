@@ -19,18 +19,6 @@ const scopeCSS = (element) => {
     return element;
 }
 
-/*
-    if (!element.querySelector('script')) return element
-    let link = element.querySelector('script').src;
-
-    let newScript = buildElement('script', {
-        src: link
-    });
-
-    element.remove(element.querySelector('script'));
-    element.appendChild(newScript);
-*/
-
 const renderJS = (element) => {
     if (!element.querySelector('script')) return element
     let link = element.querySelector('script').src;

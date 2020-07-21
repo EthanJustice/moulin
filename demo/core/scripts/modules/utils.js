@@ -13,5 +13,5 @@ const buildElement = (type, attributes, text) => {
 }
 
 const error = (msg, err) => {
-	console.error(err);
+	console.error(msg);
 }

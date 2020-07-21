@@ -1,7 +1,20 @@
-let modStatus = {
-	loaded: false,
-	percentage: 0
+let status = {
+	modules: {
+		loaded: false,
+		percentage: 0
+	},
+	templates: {
+		loaded: false,
+		percentage: 0
+	},
+	slides: {
+		loaded: false,
+		percentage: 0
+	}
 };
+
+let slides = [];
+let slideContent = [];
 
 async function getConfig() {
 	return await fetch('./config.json').then(resp => { return resp.json() });
@@ -10,6 +23,7 @@ async function getConfig() {
 let config;
 getConfig().then(data => {
 	config = data;
+	loadSlides(data);
 });
 
 const start = () => {
@@ -37,18 +51,20 @@ const start = () => {
 		modContainer.appendChild(script);
 
 		script.addEventListener('load', () => {
-			modStatus.percentage = parseInt(((index + 1) / modList.length) * 100);
-			modStatus.loaded == true && script.src.replace(window.location.href, '').replace('core/scripts/modules/', '').replace('.js', '') == modList[modList.length - 1] ? buildTemplates() : null;
+			status.modules.percentage = parseInt(((index + 1) / modList.length) * 100);
+			status.modules.loaded == true && script.src.replace(window.location.href, '').replace('core/scripts/modules/', '').replace('.js', '') == modList[modList.length - 1] ? buildTemplates() : null;
 		}, { once: true });
 	});
 
 	document.body.appendChild(modContainer);
 
-	modStatus = {
+	status.modules = {
 		loaded: true,
 		percentage: 100
 	};
 };
+
+start();
 
 document.addEventListener('visibilitychange', () => {
 	if (document.visibilityState == 'visible') {
@@ -67,7 +83,7 @@ let skeleton = {
 
 const buildTemplates = () => {
 	let loaded = [];
-	Object.entries(skeleton).forEach(item => {
+	Object.entries(skeleton).forEach((item, index) => {
 		loaded.push(item[0])
 		loadTemplate(item[0]).then(element => {
 			item[1].appendChild(element);
@@ -76,8 +92,41 @@ const buildTemplates = () => {
 					detail: ''
 				}, element);
 			}, { once: true });
+			status.templates.percentage = parseInt(((index + 1) / Object.keys(skeleton).length) * 100);
+			status.templates.loaded == true ? loadSlides() : null;
 		});
 	});
 }
 
-start();
+const loadSlides = (data) => {
+	const fetchSlide = (slide) => {
+		fetch(`${slide}`).then(resp => {
+			if (resp.ok == false) { error(`Failed to fetch slides.`) }
+			else { return resp.text() }
+		}).then(html => {
+			let parser = new DOMParser();
+			let content = parser.parseFromString(html, 'text/html').querySelector('div[data-next]');
+
+			slides.push(slide);
+			slideContent.push(content);
+
+			content.querySelectorAll('div[data-next-slide]').forEach(item => {
+				if (slides.indexOf(item.dataset.nextSlide == false)) {
+					fetchSlide(item.dataset.nextSlide);
+				}
+			});
+		})
+	};
+
+	fetchSlide(data.slide);
+
+	if (document.querySelector('.main')) {
+		document.querySelector('.main').appendChild(slideContent[0]);
+	} else {
+		window.addEventListener('template-loaded', (event) => {
+			if (event.detail.location == 'main') {
+				document.querySelector('.main').appendChild(slideContent[0]);
+			}
+		});
+	}
+}

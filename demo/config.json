@@ -3,5 +3,6 @@
 		"light",
 		"dark",
 		"solarized"
-	]
+	],
+	"slide": "slides/index.html"
 }
