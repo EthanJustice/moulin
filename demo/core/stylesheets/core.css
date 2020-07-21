@@ -1,8 +1,9 @@
-body {
-	--primary-transition: linear;
+body.light {
+    --highlight: #16c581;
 
-	--window-width: 600px;
-	--window-height: 600px;
+	--primary: #e1e1e1;
+    --secondary: #212121;
+    --tertiary: #b9bec5;
 }
 
 body.dark {
@@ -32,6 +33,11 @@ body.solarized {
 }
 
 body {
+	--primary-transition: linear;
+
+	--window-width: 600px;
+	--window-height: 600px;
+
 	margin: 0;
 	padding: 10px;
 	background: var(--primary);

@@ -27,6 +27,7 @@
         let k = event.which;
         if (k == 39 || k == 32) nextSlide() // right arrow key/space bar
         if (k == 37) previousSlide()
+        if (k == 84) cycleTheme()
     });
 
     const nextSlide = () => {
@@ -55,4 +56,31 @@
             dispatch('previous-slide', { detail: current - 1 }, window);
         }
     }
+
+    const cycleTheme = (ref) => {
+        if (ref) {
+            if (window.matchMedia('(prefers-color-scheme:dark)').matches == true) {
+                document.body.classList.add('dark');
+                return;
+            }
+        }
+
+        let i = 0;
+
+        config.themes.forEach(item => {
+            if (document.body.classList.contains(item)) {
+                i = config.themes.indexOf(item);
+            }
+        });
+
+        document.body.classList.remove(config.themes[i]);
+
+        i += 1;
+
+        if (i >= config.themes.length) i = 0;
+
+        document.body.classList.add(config.themes[i]);
+    }
+
+    cycleTheme('init')
 }());

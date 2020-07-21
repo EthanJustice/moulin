@@ -2,3 +2,10 @@ div[data-slide-name] {
     max-width: 800px;
     margin: 1% auto;
 }
+
+img {
+    min-width: 300px;
+    min-height: 300px;
+    background-color: var(--tertiary);
+    animation: 300ms var(--primary-transition) fadeIn;
+}
