@@ -21,8 +21,7 @@ const start = () => {
 		'parse',
 		'responsive',
 		'template',
-		'timing',
-		'translate'
+		'timing'
 	];
 
 	const modContainer = buildElement('div', {
@@ -60,8 +59,16 @@ document.addEventListener('visibilitychange', () => {
 	}
 });
 
+let skeleton = {
+	'toolbar': document.querySelector('.flex'),
+	'main': document.querySelector('.flex')
+};
+
 const buildTemplates = () => {
-	loadTemplate('toolbar', document.body);
+	let loaded = [];
+	Object.entries(skeleton).forEach(item => {
+		loadTemplate(item[0]).then(element => item[1].appendChild(element));
+	});
 }
 
 start();

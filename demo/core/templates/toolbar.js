@@ -10,4 +10,13 @@
     theme.addEventListener('click', () => {
         setTheme();
     });
+
+    let shortcutsContainer = loadTemplate('shortcuts');
+    shortcuts.addEventListener('click', () => {
+        if (document.querySelector('.main').querySelector('.shortcuts')) {
+            document.querySelector('.main').querySelector('.shortcuts').remove();
+        } else if (!document.querySelector('.main').querySelector('.shortcuts')) {
+            shortcutsContainer.then((element) => document.querySelector('.main').appendChild(element));
+        }
+    });
 }());
