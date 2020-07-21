@@ -1,4 +1,9 @@
 {
+	"themes": [
+		"light",
+		"dark",
+		"solarized"
+	],
 	"slide": "slides/index.html",
 	"slideDir": "slides/",
 	"reanimate": true,

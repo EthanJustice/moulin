@@ -49,16 +49,14 @@ body {
 	animation: 300ms fadeIn var(--primary-transition);
 }
 
-.flex {
-	display: flex;
-	flex: 1;
-	align-content: center;
+#slide-indicator {
+	position: fixed;
+	bottom: 2%;
+	left: 2%;
+	opacity: 0.5;
 }
 
-.flex-row {
-	flex-flow: row wrap;
-}
-
-.flex-space-between {
-	justify-content: space-between;
+#slide-indicator:hover {
+	opacity: 1;
+	cursor: pointer;
 }

@@ -38,6 +38,9 @@ async function getConfig() {
 let config;
 getConfig().then(data => {
 	config = data;
+
+	start(config);
+
 	if (config.global) {
 		document.head.appendChild(buildElement('link', {
 			rel: 'stylesheet',
@@ -45,15 +48,18 @@ getConfig().then(data => {
 			href: config.global
 		}));
 	}
-
-	loadSlides(data);
 });
 
-const start = () => {
+const dispatch = (event, data, location) => {
+	console.error(`dispatching ${event}`) // debug
+	let customEvent = new CustomEvent(event, data);
+	location.dispatchEvent(customEvent);
+}
+
+const start = (config) => {
 	const modList = [
 		'timing',
 		'template',
-		'hooks',
 		'parse',
 		'binds',
 		'cache',
@@ -72,6 +78,14 @@ const start = () => {
 
 		script.addEventListener('load', () => {
 			status.modules.percentage = parseInt(((index + 1) / modList.length) * 100);
+			status.modules.loaded == true && script.src.replace(window.location.href, '').replace('core/scripts/modules/', '').replace('.js', '') == modList[modList.length - 1] ? loadSlides(config) : null;
+
+			dispatch('script-loaded', {
+				detail: {
+					name: item,
+					slides: slides.length
+				}
+			}, window);
 		}, { once: true });
 	});
 
@@ -81,9 +95,37 @@ const start = () => {
 		loaded: true,
 		percentage: 100
 	};
-};
 
-start();
+	const loadSlides = (data) => {
+		const fetchSlide = (slide) => {
+			if (!slide.includes('/')) slide = `${config.slideDir}${slide}`;
+
+			let name = slide.split('/')[slide.split('/').length - 1].replace('.html', '');
+
+			slides.push(name);
+			return load(slide.replace('.html', '')).then(element => {
+				element.dataset.slideName = name;
+				slideContent.push(element);
+
+				if (element.dataset.next) {
+					if (slides.indexOf(element.dataset.next) == -1) {
+						fetchSlide(element.dataset.next);
+					}
+				} else {
+					dispatch('slide-loading-finished', {}, window);
+				}
+			});
+		};
+
+		fetchSlide(data.slide).then(() => {
+			if (document.querySelector('.main')) {
+				document.querySelector('.main').appendChild(slideContent[0]);
+			}
+		});
+	}
+
+	dispatch('core-finished', {}, window);
+};
 
 document.addEventListener('visibilitychange', () => {
 	if (document.visibilityState == 'visible') {
@@ -99,29 +141,3 @@ let skeleton = {
 	'main': document.querySelector('.visible'),
 	'toolbar': document.querySelector('.visible')
 };
-
-const loadSlides = (data) => {
-	const fetchSlide = (slide) => {
-		if (!slide.includes('/')) slide = `${config.slideDir}${slide}`;
-
-		let name = slide.split('/')[slide.split('/').length - 1].replace('.html', '');
-
-		slides.push(name);
-		return load(slide.replace('.html', '')).then(element => {
-			element.dataset.slideName = name;
-			slideContent.push(element);
-
-			if (element.dataset.next) {
-				if (slides.indexOf(element.dataset.next) == -1) {
-					fetchSlide(element.dataset.next);
-				}
-			}
-		});
-	};
-
-	fetchSlide(data.slide).then(() => {
-		if (document.querySelector('.main')) {
-			document.querySelector('.main').appendChild(slideContent[0]);
-		}
-	});
-}
