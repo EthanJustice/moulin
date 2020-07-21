@@ -38,6 +38,7 @@
             document.querySelector('.main').appendChild(slideContent[current + 1]);
 
             updateIndicator();
+            dispatch('next-slide', { detail: current + 1 }, window);
         }
     }
 
@@ -51,6 +52,7 @@
             document.querySelector('.main').appendChild(slideContent[current - 1]);
 
             updateIndicator();
+            dispatch('previous-slide', { detail: current - 1 }, window);
         }
     }
 }());
