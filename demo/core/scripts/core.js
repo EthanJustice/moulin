@@ -16,6 +16,32 @@ const error = (msg, err) => {
 	console.error(msg);
 }
 
+// timing
+
+class Timer {
+	constructor(name) {
+		this.name = name;
+
+		this.duration = 0;
+		this.timer;
+	}
+
+	start() {
+		this.timer = setInterval(() => {
+			this.duration += 1;
+			if (this.duration < 10) console.log(this.duration)
+		}, 100)
+	}
+
+	get elapsedMilliseconds() {
+		return this.duration * 100;
+	}
+
+	get elapsedSeconds() {
+		return this.duration / 10;
+	}
+}
+
 // core
 let status = {
 	modules: {
@@ -58,7 +84,6 @@ const dispatch = (event, data, location) => {
 
 const start = (config) => {
 	const modList = [
-		'timing',
 		'template',
 		'parse',
 		'binds',
