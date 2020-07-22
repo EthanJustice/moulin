@@ -49,18 +49,43 @@ body {
 	transition: 150ms var(--primary-transition);
 }
 
-.hidden { display: none }
-
 .fadeIn {
 	animation: 300ms fadeIn var(--primary-transition);
 }
 
-* > .loading-indicator {
-	max-width: 400px;
+.dashboard, .slide-preview-container {
+	display: flex;
+	flex-flow: column wrap;
+	flex: 1;
+	justify-content: space-between;
+	align-content: center;
+
+	width: 100%;
+}
+
+.slide-preview-container {
+	flex-flow: row wrap;
+	justify-content: space-evenly;
+}
+
+.slide-preview {
+	padding: 10px 15px;
+	margin: 1%;
+	font-size: 16pt;
+	color: #fafafa;
+}
+
+.loading {
+	background: gray;
+}
+
+.loaded {
+	background: #16c581;
 }
 
 .loading-indicator {
-	padding: 10px;
+	min-width: 50%;
+	padding: 10px 20px;
 	border: 2px solid var(--tertiary);
 	overflow-y: scroll;
 }
@@ -80,3 +105,5 @@ body {
 	opacity: 1;
 	cursor: pointer;
 }
+
+.hidden { display: none }

@@ -69,7 +69,7 @@ const loadingTimeElement = buildElement('div', {
 	className: 'fadeIn loading-indicator'
 });
 
-document.querySelector('.dashboard').appendChild(loadingTimeElement);
+document.querySelector('.dashboard').insertBefore(loadingTimeElement, document.querySelector('.dashboard').firstChild);
 
 let slides = [];
 let slideContent = [];
@@ -184,6 +184,28 @@ const start = (config) => {
 					slideContent.push(element);
 
 					loadTimes[name].timer.stop();
+
+					let newPreview = buildElement(`span`, {
+						className: 'slide-preview loading',
+						data_name: name
+					}, slideContent.length);
+
+					window.addEventListener('slide-loaded', (event) => {
+						if (event.detail != name) return
+						newPreview.classList.remove('loading');
+						newPreview.classList.add('loaded');
+					});
+
+					newPreview.addEventListener('click', () => {
+						goToSlide(newPreview.dataset.name);
+					});
+
+					document.querySelector('.slide-preview-container').appendChild(newPreview);
+
+					dispatch(`slide-loaded`, {
+						detail: name
+					}, window);
+
 					if (element.dataset.next) {
 						if (slides.indexOf(element.dataset.next) == -1) {
 							fetchSlide(element.dataset.next);
@@ -194,8 +216,6 @@ const start = (config) => {
 							percentage: 100,
 							duration: Object.values(loadTimes).reduce((p, n, index) => Object.values(loadTimes)[index].timer.elapsedMilliseconds + n.timer.elapsedMilliseconds)
 						};
-
-						console.warn(slides.length)
 
 						dispatch('slide-loading-finished', {
 							detail: {
@@ -218,7 +238,7 @@ const start = (config) => {
 
 		fetchSlide(data.slide).then(() => {
 			if (document.querySelector('.main')) {
-				document.querySelector('.main').appendChild(slideContent[0]);
+				document.querySelector('.main').insertBefore(slideContent[0], document.querySelector('.main').firstChild);
 			}
 		});
 	}
@@ -235,6 +255,5 @@ window.addEventListener('script-loading-finished', (event) => {
 }, { once: true });
 
 window.addEventListener('slide-loading-finished', (event) => {
-	console.warn(event.detail)
 	addLoadIndicator(`${event.detail.slides} slides`, event.detail.data.duration);
 }, { once: true });
