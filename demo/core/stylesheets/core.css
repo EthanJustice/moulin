@@ -73,6 +73,7 @@ body {
 	margin: 1%;
 	font-size: 16pt;
 	color: #fafafa;
+	cursor: pointer;
 }
 
 .loading {
@@ -106,7 +107,7 @@ body {
 	position: fixed;
 	bottom: 2%;
 	left: 2%;
-	opacity: 0.5;
+	opacity: 0.3;
 }
 
 #slide-indicator:hover {

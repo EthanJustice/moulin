@@ -16,3 +16,10 @@ iframe {
     height: 400px;
     width: 100%;
 }
+
+kbd {
+    border: 2px solid var(--secondary);
+    padding: 1px 5px;
+    font-family: "Consolas", monospace;
+    font-weight: bold;
+}

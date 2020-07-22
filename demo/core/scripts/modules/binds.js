@@ -5,8 +5,10 @@ const showMain = () => {
 }
 
 const openDashboard = () => {
-    document.querySelector('.main').classList.add('hidden');
-    document.querySelector('.dashboard').classList.remove('hidden');
+    document.body.querySelector('.main').classList.add('hidden');
+    document.body.querySelector('.dashboard').classList.remove('hidden');
+    document.body.querySelector('.main').firstChild.remove();
+    document.body.querySelector('.main').insertBefore(slideContent[0], document.body.querySelector('.main').firstChild);
 }
 
 const updateIndicator = () => {
@@ -59,6 +61,7 @@ const previousSlide = () => {
 }
 
 const goToSlide = (slide) => {
+    console.log(slide)
     showMain();
 
     let currentSlide = document.querySelector('.main').firstChild;
@@ -76,20 +79,18 @@ const goToSlide = (slide) => {
 (function () {
     window.addEventListener('slide-loading-finished', () => {
         updateIndicator();
+        document.body.addEventListener('keydown', event => {
+            if (!document.querySelector('.main').firstChild) return
+
+            let k = event.which;
+            if (!event.ctrlKey && k == 39 || k == 32) nextSlide() // right arrow key/space bar
+            if (event.ctrlKey && k == 39) goToSlide(slides.length - 1) // ctrl + right arrow
+            if (!event.ctrlKey && k == 37) previousSlide() // left arrow key
+            if (event.ctrlKey && k == 37) openDashboard() // ctrl + left arrow key
+            if (k == 84) cycleTheme() // t key
+            if (k == 68) openDashboard() // d key
+        });
     }, { once: true });
-
-    document.body.addEventListener('keydown', event => {
-        if (!document.querySelector('.main').firstChild) return
-
-        let k = event.which;
-        if (!event.ctrlKey && k == 39 || k == 32) nextSlide() // right arrow key/space bar
-        if (event.ctrlKey && k == 39) goToSlide(slides.length - 1) // ctrl + right arrow
-        if (!event.ctrlKey && k == 37) previousSlide() // left arrow key
-        if (event.ctrlKey && k == 37) openDashboard() // ctrl + left arrow key
-        if (k == 84) cycleTheme() // t key
-        if (k == 68) openDashboard() // d key
-    });
-
 
     const cycleTheme = (ref) => {
         if (ref) {
