@@ -204,7 +204,7 @@ const start = (config) => {
 						});
 
 						newPreview.addEventListener('click', () => {
-							goToSlide(newPreview.dataset.name);
+							goToSlide(newPreview.dataset.slideIndex);
 						});
 
 						document.querySelector('.slide-preview-container').appendChild(newPreview);

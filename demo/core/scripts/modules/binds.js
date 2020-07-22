@@ -26,7 +26,6 @@ const updateIndicator = () => {
 }
 
 const nextSlide = () => {
-
     let currentSlide = document.querySelector('.main').firstChild;
     let current = slides.indexOf(currentSlide.dataset.slideName);
 
@@ -62,19 +61,15 @@ const previousSlide = () => {
 const goToSlide = (slide) => {
     showMain();
 
-    if (typeof slide == 'number') {
+    let currentSlide = document.querySelector('.main').firstChild;
+    let current = typeof slide == 'string' ? slides.indexOf(currentSlide.dataset.slideName) : slide;
 
-    } else if (typeof slide == 'string') {
-        let currentSlide = document.querySelector('.main').firstChild;
-        let current = slides.indexOf(currentSlide.dataset.slideName);
+    if (slideContent.length != 0 && current != 0 && current != slides.length) {
+        currentSlide.remove();
+        document.querySelector('.main').insertBefore(slideContent[current], document.querySelector('.main').firstChild);
 
-        if (slideContent.length != 0 && current != 0 && current != slides.length - 1) {
-            currentSlide.remove();
-            document.querySelector('.main').insertBefore(slideContent[current - 1], document.querySelector('.main').firstChild);
-
-            updateIndicator();
-            dispatch('slide-change', { detail: current - 1 }, window);
-        }
+        updateIndicator();
+        dispatch('slide-change', { detail: current }, window);
     }
 }
 
@@ -87,8 +82,10 @@ const goToSlide = (slide) => {
         if (!document.querySelector('.main').firstChild) return
 
         let k = event.which;
-        if (k == 39 || k == 32) nextSlide() // right arrow key/space bar
-        if (k == 37) previousSlide() // left arrow key
+        if (!event.ctrlKey && k == 39 || k == 32) nextSlide() // right arrow key/space bar
+        if (event.ctrlKey && k == 39) goToSlide(slides.length - 1) // ctrl + right arrow
+        if (!event.ctrlKey && k == 37) previousSlide() // left arrow key
+        if (event.ctrlKey && k == 37) openDashboard() // ctrl + left arrow key
         if (k == 84) cycleTheme() // t key
         if (k == 68) openDashboard() // d key
     });
