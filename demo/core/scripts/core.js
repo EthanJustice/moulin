@@ -53,6 +53,36 @@ class Timer {
 	}
 }
 
+// slide loading
+const load = async (name) => {
+	let parse = (element) => {
+		const parser = new DOMParser();
+		let content = parser.parseFromString(element, 'text/html');
+
+		return renderJS(scopeCSS(content.querySelector('div')));
+	}
+
+	if (config.prod == true) {
+		return await caches.open(`moulin-${config.version}`).then((cache) => {
+			return cache.keys(`${name}.html`).then((data) => {
+				if (data.length == 0) {
+					return cache.add(`${name}.html`).then(() => {
+						return fetch(`${name}.html`).then(resp => resp.text()).then(element => parse(element));
+					});
+				} else {
+					return data.map(item => {
+						return cache.match(item.url).then((resp) => {
+							return resp.clone().text().then((element) => { return parse(element) })
+						});
+					});
+				}
+			});
+		});
+	} else {
+		return await fetch(`${name}.html`).then(resp => { return resp.text() }).then(data => { return parse(data) })
+	}
+}
+
 // core
 let status = {
 	modules: {
@@ -97,6 +127,10 @@ getConfig().then(data => {
 			href: config.global
 		}));
 	}
+
+	if (config.openDashboard == true) {
+		document.querySelector('.dashboard').classList.remove('hidden');
+	}
 });
 
 const dispatch = (event, data, location) => {
@@ -107,7 +141,6 @@ const dispatch = (event, data, location) => {
 
 const start = (config) => {
 	const modList = [
-		'template',
 		'parse',
 		'binds',
 	];
@@ -271,6 +304,9 @@ const start = (config) => {
 		fetchSlide(data.slide).then(() => {
 			if (document.querySelector('.main')) {
 				document.querySelector('.main').insertBefore(slideContent[0], document.querySelector('.main').firstChild);
+				if (config.openDashboard == false) {
+					document.querySelector('.main').classList.remove('hidden');
+				}
 			}
 		});
 	}

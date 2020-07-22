@@ -53,7 +53,7 @@ body {
 	animation: 300ms fadeIn var(--primary-transition);
 }
 
-.dashboard, .slide-preview-container {
+.dashboard {
 	display: flex;
 	flex-flow: column wrap;
 	flex: 1;
@@ -64,13 +64,12 @@ body {
 }
 
 .slide-preview-container {
-	flex-flow: row wrap;
-	justify-content: space-evenly;
+	margin: 5% auto;
 }
 
 .slide-preview {
+	margin: 2% 10% 2% 0;
 	padding: 10px 15px;
-	margin: 1%;
 	font-size: 16pt;
 	color: #fafafa;
 	cursor: pointer;
@@ -91,7 +90,7 @@ body {
 .loading-indicator {
 	min-width: 50%;
 	padding: 10px 20px;
-	border: 2px solid var(--tertiary);
+	border: 1px solid var(--tertiary);
 	overflow-y: scroll;
 }
 

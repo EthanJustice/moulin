@@ -55,19 +55,16 @@ const previousSlide = () => {
 
         updateIndicator();
         dispatch('slide-change', { detail: current - 1 }, window);
-    } else {
-        openDashboard();
     }
 }
 
 const goToSlide = (slide) => {
-    console.log(slide)
     showMain();
 
     let currentSlide = document.querySelector('.main').firstChild;
     let current = typeof slide == 'string' ? slides.indexOf(currentSlide.dataset.slideName) : slide;
 
-    if (slideContent.length != 0 && current != 0 && current != slides.length) {
+    if (slideContent.length != 0 && current != slides.length) {
         currentSlide.remove();
         document.querySelector('.main').insertBefore(slideContent[current], document.querySelector('.main').firstChild);
 
@@ -86,9 +83,15 @@ const goToSlide = (slide) => {
             if (!event.ctrlKey && k == 39 || k == 32) nextSlide() // right arrow key/space bar
             if (event.ctrlKey && k == 39) goToSlide(slides.length - 1) // ctrl + right arrow
             if (!event.ctrlKey && k == 37) previousSlide() // left arrow key
-            if (event.ctrlKey && k == 37) openDashboard() // ctrl + left arrow key
+            if (event.ctrlKey && k == 37) goToSlide(0) // ctrl + left arrow key
             if (k == 84) cycleTheme() // t key
-            if (k == 68) openDashboard() // d key
+            if (k == 68) { // d key
+                if (document.querySelector('.dashboard').classList.contains('hidden') == true) {
+                    openDashboard()
+                } else {
+                    showMain();
+                }
+            }
         });
     }, { once: true });
 
