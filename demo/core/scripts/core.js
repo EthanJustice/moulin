@@ -62,7 +62,6 @@ const start = (config) => {
 		'template',
 		'parse',
 		'binds',
-		'cache',
 	];
 
 	const modContainer = buildElement('div', {
@@ -103,16 +102,27 @@ const start = (config) => {
 			let name = slide.split('/')[slide.split('/').length - 1].replace('.html', '');
 
 			slides.push(name);
-			return load(slide.replace('.html', '')).then(element => {
-				element.dataset.slideName = name;
-				slideContent.push(element);
 
-				if (element.dataset.next) {
-					if (slides.indexOf(element.dataset.next) == -1) {
-						fetchSlide(element.dataset.next);
+			return load(slide.replace('.html', '')).then(item => {
+				const register = (element) => {
+					element.dataset.slideName = name;
+					slideContent.push(element);
+
+					if (element.dataset.next) {
+						if (slides.indexOf(element.dataset.next) == -1) {
+							fetchSlide(element.dataset.next);
+						}
+					} else {
+						dispatch('slide-loading-finished', {}, window);
 					}
+				}
+
+				if (Array.isArray(item)) {
+					return item[0].then(element => {
+						register(element);
+					});
 				} else {
-					dispatch('slide-loading-finished', {}, window);
+					register(item);
 				}
 			});
 		};
