@@ -55,6 +55,20 @@ body {
 	animation: 300ms fadeIn var(--primary-transition);
 }
 
+* > .loading-indicator {
+	max-width: 400px;
+}
+
+.loading-indicator {
+	padding: 10px;
+	border: 2px solid var(--tertiary);
+	overflow-y: scroll;
+}
+
+.loading-indicator > * {
+	margin: 0 auto;
+}
+
 #slide-indicator {
 	position: fixed;
 	bottom: 2%;
