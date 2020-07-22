@@ -12,14 +12,14 @@ const openDashboard = () => {
 }
 
 const updateIndicator = () => {
-    let slideName = document.querySelector('.main').firstChild;
+    let slideName = document.querySelector('div[data-slide-name]');
     let current = 0;
 
-    if (slideName) {
+    if (slideName && slideName.dataset.slideName) {
         current = slides.indexOf(slideName.dataset.slideName);
     } else if (window.location.search) {
         current = window.location.search.replace('?', '');
-    }
+    } else { current = 0 }
 
     if ((current + 1) < 1) { current = 1 }
 
@@ -74,8 +74,10 @@ const goToSlide = (slide) => {
 }
 
 (function () {
-    window.addEventListener('slide-loading-finished', () => {
-        updateIndicator();
+    window.addEventListener('slide-loading-finished', () => init(), { once: true });
+    window.addEventListener('slide-loading-failed', () => init(), { once: true })
+
+    const init = () => {
         document.body.addEventListener('keydown', event => {
             if (!document.querySelector('.main').firstChild) return
 
@@ -93,7 +95,8 @@ const goToSlide = (slide) => {
                 }
             }
         });
-    }, { once: true });
+        updateIndicator();
+    }
 
     const cycleTheme = (ref) => {
         if (ref) {

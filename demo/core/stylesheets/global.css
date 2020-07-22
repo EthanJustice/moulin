@@ -17,6 +17,10 @@ iframe {
     width: 100%;
 }
 
+p {
+    line-height: 1.4;
+}
+
 kbd {
     border: 2px solid var(--secondary);
     padding: 1px 5px;
