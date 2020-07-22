@@ -331,5 +331,15 @@ window.addEventListener('script-loading-finished', (event) => {
 }, { once: true });
 
 window.addEventListener('slide-loading-finished', (event) => {
-	addLoadIndicator(`${event.detail.slides} slides`, event.detail.data.duration);
+	if (config.prod) {
+		caches.open(`moulin-${config.version}`).then((cache) => {
+			cache.keys().then((data) => {
+				if (data.length != 0) {
+					addLoadIndicator(`${event.detail.slides} slides (cached)`, event.detail.data.duration);
+				} else {
+					addLoadIndicator(`${event.detail.slides} slides`, event.detail.data.duration);
+				}
+			});
+		});
+	}
 }, { once: true });
