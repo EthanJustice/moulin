@@ -1,5 +1,7 @@
 // scopes css
 const scopeCSS = (element) => {
+    if (!element) return false
+
     if (!element.querySelector('style')) { return element }
     let sheet = element.querySelector('style');
     Object.values(sheet.sheet.rules).forEach(item => {
@@ -20,6 +22,8 @@ const scopeCSS = (element) => {
 }
 
 const renderJS = (element) => {
+    if (!element) return false
+
     if (!element.querySelector('script')) return element
     let link = element.querySelector('script').src;
 

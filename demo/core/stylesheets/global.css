@@ -6,6 +6,13 @@ div[data-slide-name] {
 img {
     min-width: 300px;
     min-height: 300px;
+    max-width: 400px;
+    max-height: 400px;
     background-color: var(--tertiary);
     animation: 300ms var(--primary-transition) fadeIn;
+}
+
+iframe {
+    height: 400px;
+    width: 100%;
 }

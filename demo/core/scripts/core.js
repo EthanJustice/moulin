@@ -180,49 +180,75 @@ const start = (config) => {
 			loadTimes[name].timer.start();
 			return load(slide.replace('.html', '')).then(item => {
 				const register = (element) => {
-					element.dataset.slideName = name;
-					slideContent.push(element);
+					if (element != null && element != false) {
+						element.dataset.slideName = name;
+						slideContent.push(element);
 
-					loadTimes[name].timer.stop();
+						loadTimes[name].timer.stop();
 
-					let newPreview = buildElement(`span`, {
-						className: 'slide-preview loading',
-						data_name: name
-					}, slideContent.length);
+						let newPreview = buildElement(`span`, {
+							className: 'slide-preview loading',
+							data_slide_index: name
+						}, slideContent.length);
 
-					window.addEventListener('slide-loaded', (event) => {
-						if (event.detail != name) return
-						newPreview.classList.remove('loading');
-						newPreview.classList.add('loaded');
-					});
+						window.addEventListener('slide-loaded', (event) => {
+							if (event.detail != name) return
+							newPreview.classList.remove('loading');
+							newPreview.classList.add('loaded');
+						});
 
-					newPreview.addEventListener('click', () => {
-						goToSlide(newPreview.dataset.name);
-					});
+						window.addEventListener('slide-loading-failed', (event) => {
+							if (event.detail != slides.indexOf(name)) return
+							newPreview.classList.remove('loading');
+							newPreview.classList.add('loading-failed');
+						});
 
-					document.querySelector('.slide-preview-container').appendChild(newPreview);
+						newPreview.addEventListener('click', () => {
+							goToSlide(newPreview.dataset.name);
+						});
 
-					dispatch(`slide-loaded`, {
-						detail: name
-					}, window);
+						document.querySelector('.slide-preview-container').appendChild(newPreview);
 
-					if (element.dataset.next) {
-						if (slides.indexOf(element.dataset.next) == -1) {
-							fetchSlide(element.dataset.next);
+						dispatch(`slide-loaded`, {
+							detail: name
+						}, window);
+
+						if (element.dataset.next) {
+							if (slides.indexOf(element.dataset.next) == -1) {
+								fetchSlide(element.dataset.next);
+							}
+						} else {
+							status.slides = {
+								loaded: true,
+								percentage: 100,
+								duration: Object.values(loadTimes).reduce((p, n, index) => Object.values(loadTimes)[index].timer.elapsedMilliseconds + n.timer.elapsedMilliseconds)
+							};
+
+							dispatch('slide-loading-finished', {
+								detail: {
+									data: status.slides,
+									slides: slides.length
+								}
+							}, window);
 						}
 					} else {
-						status.slides = {
-							loaded: true,
-							percentage: 100,
-							duration: Object.values(loadTimes).reduce((p, n, index) => Object.values(loadTimes)[index].timer.elapsedMilliseconds + n.timer.elapsedMilliseconds)
-						};
+						addLoadIndicator(`slides`);
 
-						dispatch('slide-loading-finished', {
-							detail: {
-								data: status.slides,
-								slides: slides.length
-							}
-						}, window);
+						if (document.querySelector(`span[data-slide-index="${slides.indexOf(name)}"]`)) {
+							document.querySelector(`span[data-slide-index="${slides.indexOf(name)}"]`).classList.remove('loading');
+							document.querySelector(`span[data-slide-index="${slides.indexOf(name)}"]`).classList.add('loading-failed')
+						} else {
+							let newPreview = buildElement(`span`, {
+								className: 'slide-preview loading-failed',
+								data_slide_index: name
+							}, slideContent.length + 1);
+
+							newPreview.addEventListener('click', () => {
+								goToSlide(newPreview.dataset.name);
+							});
+
+							document.querySelector('.slide-preview-container').appendChild(newPreview);
+						}
 					}
 				}
 
@@ -233,6 +259,12 @@ const start = (config) => {
 				} else {
 					register(item);
 				}
+
+			}).catch(err => {
+				dispatch(`slide-loading-failed`, {
+					detail: slides.indexOf(name)
+				}, window);
+				error(err);
 			});
 		};
 
@@ -247,7 +279,15 @@ const start = (config) => {
 };
 
 const addLoadIndicator = (type, duration) => {
-	loadingTimeElement.appendChild(buildElement(`p`, {}, `${type} loaded in ${duration}ms (${Timer.toSeconds(duration)}s)`))
+	if (duration) {
+		loadingTimeElement.appendChild(buildElement(`p`, {}, `${type} loaded in ${duration}ms (${Timer.toSeconds(duration)}s)`))
+	} else {
+		if (Object.values(document.querySelectorAll('.slide-preview-container > p')).filter(item => item.innerText.toLowerCase().includes(type.toLowerCase())).length == 0) {
+			loadingTimeElement.appendChild(buildElement(`p`, {
+				className: "loading-indicator-failure"
+			}, `Failed to load ${type}.`))
+		}
+	}
 }
 
 window.addEventListener('script-loading-finished', (event) => {
