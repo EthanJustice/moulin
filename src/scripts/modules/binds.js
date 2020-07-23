@@ -1,13 +1,13 @@
 // controls
 const showMain = () => {
-    dispatch(`main-opened`, {}, window);
+    dispatch(`slides-opened`, {}, window);
     document.body.querySelector('.main').classList.remove('hidden');
     document.body.querySelector('.dashboard').classList.add('hidden');
     document.body.querySelector('.slide-preview-container').classList.add('hidden');
 }
 
 const showDashboard = () => {
-    dispatch(`dash-opened`, {}, window);
+    dispatch(`dashboard-opened`, {}, window);
     document.body.querySelector('.main').classList.add('hidden');
     document.body.querySelector('.dashboard').classList.remove('hidden');
     document.body.querySelector('.slide-preview-container').classList.add('hidden');

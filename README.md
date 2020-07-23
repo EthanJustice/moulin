@@ -62,6 +62,8 @@ The config file is a JSON file located in the directory of the presentation's in
 Moulin also has a built-in hooks system, for when you want flashy, over-the-top animations.
 Moulin currently supports 7 hooks:
 
+To-Do: event values
+
 + `script-loaded` (`window`), for when a module or slide script has finished loading
 + `script-loading-finished` (`window`), for when all modules have finished loading
 + `slide-loaded` (`window`), for when a slide has finished loading
@@ -69,5 +71,8 @@ Moulin currently supports 7 hooks:
 + `slide-change` (`window`), for when the active slide has changed
 + `slide-loading-failed` (`window`), for when any slide isn't loaded (note that only the
     affected slide will be removed - that is, the presentation can be used without it)
-+ `theme-change`, (`window`), for when the theme is toggled by pressing the `t`
++ `theme-change` (`window`), for when the theme is toggled by pressing the `t`
     key
++ `preview-opened` (`window`), for when the preview menu is opened
++ `dashboard-opened` (`window`), for when the dashboard is opened
++ `slides-opened` (`window`), for when the slides are opened
