@@ -1,5 +1,5 @@
 div[data-slide-name] {
-    max-width: 800px;
+    max-width: 900px;
     margin: 1% auto;
 }
 
@@ -37,4 +37,31 @@ code {
 li {
     margin: 2% auto;
     line-height: 1.4;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    border-top: 2px solid var(--tertiary);
+    border-bottom: 2px solid var(--tertiary);
+}
+
+th {
+    padding: 10px;
+}
+
+tr {
+    padding: 2px;
+}
+
+td {
+    padding: 5px;
+    line-height: 1.6;
+}
+
+tbody tr:nth-child(even) {
+    border-top: 2px solid var(--tertiary);
 }

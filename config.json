@@ -4,9 +4,8 @@
 		"dark",
 		"solarized"
 	],
-	"slide": "slides/index.html",
+	"slide": "slides/index",
 	"slideDir": "slides/",
-	"reanimate": true,
 	"global": "global.css",
 	"openDashboard": false,
 	"prod": false,

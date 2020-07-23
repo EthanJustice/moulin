@@ -6,3 +6,5 @@ lightweight presentation generator
 
 + Permalinks
 + Main functionality
++ Number keybinds
++ Theme change hook
