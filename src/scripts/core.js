@@ -1,4 +1,8 @@
 // main
+const main = document.body.querySelector('.main');
+const dash = document.body.querySelector('.dashboard');
+const preview = document.body.querySelector('.slide-preview-container');
+
 // utils
 const buildElement = (type, attributes, text) => {
 	let element = document.createElement(type);
@@ -360,6 +364,8 @@ window.addEventListener('slide-loading-finished', (event) => {
 	if (window.location.hash) {
 		goToSlide(window.location.hash.replace('#', '') - 1);
 	}
+
+	document.title = main.firstChild.dataset.title || document.title;
 
 	if (config.prod) {
 		caches.open(`moulin-${config.version}`).then((cache) => {

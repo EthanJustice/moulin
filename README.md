@@ -6,8 +6,8 @@ lightweight presentation generator
 
 + Number keybinds
 + High-level docs as Moulin demos/examples
-+ Custom title support
 
++ ~~Custom title support~~
 + ~~Implicit slide directory inference~~
 + ~~Open preview config key~~
 + ~~Permalinks~~
@@ -25,7 +25,7 @@ Slides are individual HTML files stored within the [slide directory](#config-key
 A slide looks something like this:
 
 ```html
-<div data-next="docs">
+<div data-next="docs" data-title="Slide Name">
     <h1>Slide Name</h1>
 </div>
 ```

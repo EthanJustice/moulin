@@ -1,8 +1,4 @@
 // controls
-const main = document.body.querySelector('.main');
-const dash = document.body.querySelector('.dashboard');
-const preview = document.body.querySelector('.slide-preview-container');
-
 const showMain = () => {
     if (!main.classList.contains('hidden')) return
     dispatch(`slides-opened`, {}, window);
@@ -52,7 +48,8 @@ const nextSlide = () => {
         main.insertBefore(slideContent[current], main.firstChild);
 
         updateIndicator();
-        history.pushState(``, document.title, `#${current + 1}`);
+        history.pushState(``, main.firstChild.dataset.title || document.title, `#${current + 1}`);
+        document.title = main.firstChild.dataset.title || document.title;
         dispatch('slide-change', { detail: current }, window);
     }
     showMain();
@@ -69,7 +66,8 @@ const previousSlide = () => {
         main.insertBefore(slideContent[current - 1], main.firstChild);
 
         updateIndicator();
-        history.pushState(``, document.title, `#${current}`);
+        history.pushState(``, main.firstChild.dataset.title || document.title, `#${current}`);
+        document.title = main.firstChild.dataset.title || document.title;
         dispatch('slide-change', { detail: current - 1 }, window);
     }
 }
@@ -87,7 +85,8 @@ const goToSlide = (slide) => {
         main.insertBefore(slideContent[current], main.firstChild);
 
         updateIndicator();
-        history.pushState(``, document.title, `#${current + 1}`);
+        history.pushState(``, main.firstChild.dataset.title || document.title, `#${current + 1}`);
+        document.title = main.firstChild.dataset.title || document.title;
         dispatch('slide-change', { detail: current }, window);
     }
 }
