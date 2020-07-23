@@ -115,6 +115,9 @@ configTimer.start();
 
 getConfig().then(data => {
 	config = data;
+
+	addLoadIndicator(`${config.name} ${config.prod ? 'Production' : 'Development'} ${config.version.includes('v') ? config.version : `v${config.version}`}`, 0)
+
 	configTimer.stop();
 	addLoadIndicator(`Config`, configTimer.elapsedMilliseconds);
 
@@ -328,6 +331,10 @@ const start = (config) => {
 const addLoadIndicator = (type, duration) => {
 	if (duration) {
 		loadingTimeElement.appendChild(buildElement(`p`, {}, `${type} loaded in ${duration}ms (${Timer.toSeconds(duration)}s)`))
+	} else if (duration == 0) {
+		loadingTimeElement.appendChild(buildElement(`p`, {
+			className: "loading-indicator-version"
+		}, `${type}`));
 	} else {
 		loadingTimeElement.appendChild(buildElement(`p`, {
 			className: "loading-indicator-failure"

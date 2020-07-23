@@ -55,7 +55,7 @@ The config file is a JSON file located in the directory of the presentation's in
 | global | string | Path to a custom stylesheet | "global.css" || "src/custom.css" |
 | openDashboard | boolean | If set to true, the dashboard will be opened by default. | true |
 | prod | boolean | If set to true, Moulin is run in production mode, and caches slides. | true |
-| version | string | Current version of the presentation (only needed for production to open a cache).  The cache name is prefixed with `moulin-`, so any attempt to open Moulin's cache must keep that in mind | "0.0.1" || "two" |
+| version | string | Current version of the presentation (used to open a cache in production version and for display in the dashboard).  The cache name is prefixed with `moulin-`, so any attempt to open Moulin's cache must keep that in mind | "0.0.1" || "two" |
 
 ### Hooks
 

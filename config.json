@@ -4,6 +4,7 @@
 		"dark",
 		"solarized"
 	],
+	"name": "Moulin",
 	"slide": "slides/index",
 	"slideDir": "slides/",
 	"global": "global.css",

@@ -68,6 +68,10 @@ body {
 	margin: 1% auto;
 }
 
+.loading-indicator-version {
+	color: #1a40ff;
+}
+
 .loading-indicator-failure {
 	color: crimson;
 }
