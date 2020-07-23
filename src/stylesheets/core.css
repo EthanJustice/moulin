@@ -32,8 +32,12 @@ body {
 	max-width: 600px;
 }
 
+.slide-preview {
+	margin: 1% auto;
+}
+
 .slide-preview-status {
-	margin: auto 10px;
+	margin: 0 10px;
 	display: inline-block;
 	color: #fafafa;
 	cursor: pointer;

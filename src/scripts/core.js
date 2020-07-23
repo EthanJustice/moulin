@@ -378,13 +378,17 @@ window.addEventListener('slide-loading-finished', (event) => {
 				} else {
 					addLoadIndicator(`${event.detail.slides} slides`, event.detail.data.duration);
 				}
+			}).then(() => {
+				let t = 0;
+				Object.values(status).forEach(item => t += item.duration);
+				addLoadIndicator(`Everything`, t);
 			});
 		});
 	} else {
 		addLoadIndicator(`${event.detail.slides} slides`, event.detail.data.duration);
-	}
 
-	let t = 0;
-	Object.values(status).forEach(item => t += item.duration);
-	addLoadIndicator(`Everything`, t);
+		let t = 0;
+		Object.values(status).forEach(item => t += item.duration);
+		addLoadIndicator(`Everything`, t);
+	}
 }, { once: true });
