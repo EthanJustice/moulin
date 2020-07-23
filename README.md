@@ -5,9 +5,11 @@ lightweight presentation generator
 ## Roadmap
 
 + Number keybinds
-+ Open preview config key
-+ Implicit slide directory inference
++ High-level docs as Moulin demos/examples
++ Custom title support
 
++ ~~Implicit slide directory inference~~
++ ~~Open preview config key~~
 + ~~Permalinks~~
 + ~~Theme change hook~~
 + ~~Main functionality~~
@@ -51,8 +53,8 @@ The config file is a JSON file located in the directory of the presentation's in
 | Key | Values | Description | Examples | Required |
 | --- | ------ | ----------- | -------- | -------- |
 | themes | [...classNames]|An array of class names, these are cycled through when the user changes the theme through the `T` keybind. | ["dark", "light"] | No |
-| slide | string |A path to the starting slide (note that URLs must be relative to the presentation location) | "slides/index"  "content/slides/main" | Yes |
-| slideDir | string | Path to the directory that contains the slides | "slides/"  "/content/slides" | Yes |
+| index | string |A path to the starting slide (note that URLs must be relative to the presentation location) | "slides/index"  "content/slides/main" | Yes |
+| slideDir | string | Path to the directory that contains the slides | "slides/"  "/content/slides" | Only if the directory of slides isn't the same as the index slide |
 | global | string | Path to a custom stylesheet | "global.css"  "src/custom.css" | No |
 | default | string ("slides", "dashboard", "preview") | The specified value will be opened automatically. | "dashboard" | No (defaults to, "slides.") |
 | prod | boolean | If set to true, Moulin is run in production mode, and caches slides. | true | Yes |

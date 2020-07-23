@@ -1,23 +1,30 @@
 // controls
+const main = document.body.querySelector('.main');
+const dash = document.body.querySelector('.dashboard');
+const preview = document.body.querySelector('.slide-preview-container');
+
 const showMain = () => {
+    if (!main.classList.contains('hidden')) return
     dispatch(`slides-opened`, {}, window);
-    document.body.querySelector('.main').classList.remove('hidden');
-    document.body.querySelector('.dashboard').classList.add('hidden');
-    document.body.querySelector('.slide-preview-container').classList.add('hidden');
+    main.classList.remove('hidden');
+    dash.classList.add('hidden');
+    preview.classList.add('hidden');
 }
 
 const showDashboard = () => {
+    if (!dash.classList.contains('hidden')) return
     dispatch(`dashboard-opened`, {}, window);
-    document.body.querySelector('.main').classList.add('hidden');
-    document.body.querySelector('.dashboard').classList.remove('hidden');
-    document.body.querySelector('.slide-preview-container').classList.add('hidden');
+    main.classList.add('hidden');
+    dash.classList.remove('hidden');
+    preview.classList.add('hidden');
 }
 
 const showPreview = () => {
+    if (!preview.classList.contains('hidden')) return
     dispatch(`preview-opened`, {}, window);
-    document.body.querySelector('.main').classList.add('hidden');
-    document.body.querySelector('.dashboard').classList.add('hidden');
-    document.body.querySelector('.slide-preview-container').classList.remove('hidden');
+    main.classList.add('hidden');
+    dash.classList.add('hidden');
+    preview.classList.remove('hidden');
 }
 
 const updateIndicator = () => {
@@ -35,14 +42,14 @@ const updateIndicator = () => {
 }
 
 const nextSlide = () => {
-    let currentSlide = document.querySelector('.main').firstChild;
+    let currentSlide = main.firstChild;
     let current = slides.indexOf(currentSlide.dataset.slideName);
 
     if (slideContent.length !== 0 && current != slides.length - 1) {
-        if (document.querySelector('.dashboard').classList.contains('hidden')) current += 1
+        if (dash.classList.contains('hidden')) current += 1
 
         currentSlide.remove();
-        document.querySelector('.main').insertBefore(slideContent[current], document.querySelector('.main').firstChild);
+        main.insertBefore(slideContent[current], main.firstChild);
 
         updateIndicator();
         history.pushState(``, document.title, `#${current + 1}`);
@@ -54,12 +61,12 @@ const nextSlide = () => {
 const previousSlide = () => {
     showMain();
 
-    let currentSlide = document.querySelector('.main').firstChild;
+    let currentSlide = main.firstChild;
     let current = slides.indexOf(currentSlide.dataset.slideName);
 
     if (current != 0) {
         currentSlide.remove();
-        document.querySelector('.main').insertBefore(slideContent[current - 1], document.querySelector('.main').firstChild);
+        main.insertBefore(slideContent[current - 1], main.firstChild);
 
         updateIndicator();
         history.pushState(``, document.title, `#${current}`);
@@ -68,7 +75,7 @@ const previousSlide = () => {
 }
 
 const goToSlide = (slide) => {
-    let currentSlide = document.querySelector('.main').firstChild;
+    let currentSlide = main.firstChild;
     let current = typeof slide == 'string' ? slides.indexOf(currentSlide.dataset.slideName) : slide;
 
     if (slides.indexOf(currentSlide.dataset.slideName) == 0 && current <= 0 || slides.indexOf(currentSlide.dataset.slideName) == slides.length - 1 && current >= slides.length - 1) return
@@ -77,7 +84,7 @@ const goToSlide = (slide) => {
 
     if (current != slides.length) {
         currentSlide.remove();
-        document.querySelector('.main').insertBefore(slideContent[current], document.querySelector('.main').firstChild);
+        main.insertBefore(slideContent[current], main.firstChild);
 
         updateIndicator();
         history.pushState(``, document.title, `#${current + 1}`);
@@ -91,7 +98,7 @@ const goToSlide = (slide) => {
 
     const init = () => {
         document.body.addEventListener('keydown', event => {
-            if (!document.querySelector('.main').firstChild) return
+            if (!main.firstChild) return
 
             let k = event.which;
             if (!event.ctrlKey && k == 39 || k == 32) nextSlide() // right arrow key/space bar
@@ -100,7 +107,7 @@ const goToSlide = (slide) => {
             if (event.ctrlKey && k == 37) goToSlide(0) // ctrl + left arrow key
             if (k == 84) cycleTheme() // t key
             if (k == 68) { // d key
-                if (document.querySelector('.dashboard').classList.contains('hidden') == true) {
+                if (dash.classList.contains('hidden') == true) {
                     showDashboard();
                 } else {
                     showMain();

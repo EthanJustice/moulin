@@ -205,9 +205,11 @@ const start = (config) => {
 	document.body.appendChild(modContainer);
 
 	const loadSlides = (data) => {
+		let inferredDir;
 		let loadTimes = {};
 		const fetchSlide = (slide) => {
-			if (!slide.includes('/')) slide = `${config.slideDir}${slide}`;
+			if (slide == config.index && !config.slideDir) inferredDir = `${slide.split('/')[0]}/`;
+			if (!slide.includes('/')) slide = `${config.slideDir || inferredDir}${slide}`;
 
 			let name = slide.split('/')[slide.split('/').length - 1].replace('.html', '');
 
@@ -322,7 +324,7 @@ const start = (config) => {
 			});
 		};
 
-		fetchSlide(data.slide).then(() => {
+		fetchSlide(data.index).then(() => {
 			if (document.querySelector('.main')) {
 				document.querySelector('.main').insertBefore(slideContent[0], document.querySelector('.main').firstChild);
 				if (!config.default || config.default == 'slides') {

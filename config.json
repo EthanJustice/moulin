@@ -5,8 +5,7 @@
 		"solarized"
 	],
 	"name": "Moulin",
-	"slide": "slides/index",
-	"slideDir": "slides/",
+	"index": "slides/index",
 	"global": "global.css",
 	"version": "0.0.1"
 }
