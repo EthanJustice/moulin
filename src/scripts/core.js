@@ -219,25 +219,31 @@ const start = (config) => {
 
 						loadTimes[name].timer.stop();
 
-						let newPreview = buildElement(`span`, {
-							className: 'slide-preview loading',
+						let newPreview = buildElement(`p`, {
+							className: 'slide-preview',
 							data_slide_index: name
-						}, slideContent.length);
+						}, `Loaded slide "${slides[slides.length - 1]}," in ${loadTimes[name].timer.elapsedMilliseconds}ms`);
+
+						let newPreviewStatus = buildElement(`span`, {
+							className: "slide-preview-status loading"
+						});
+
+						newPreview.prepend(newPreviewStatus);
 
 						window.addEventListener('slide-loaded', (event) => {
 							if (event.detail != name) return
-							newPreview.classList.remove('loading');
-							newPreview.classList.add('loaded');
+							newPreviewStatus.classList.remove('loading');
+							newPreviewStatus.classList.add('loaded');
 						});
 
 						window.addEventListener('slide-loading-failed', (event) => {
 							if (event.detail != slides.indexOf(name)) return
-							newPreview.classList.remove('loading');
-							newPreview.classList.add('loading-failed');
+							newPreviewStatus.classList.remove('loading');
+							newPreviewStatus.classList.add('loading-failed');
 						});
 
 						newPreview.addEventListener('click', () => {
-							goToSlide(newPreview.dataset.slideIndex);
+							goToSlide(slides.indexOf(newPreview.dataset.slideIndex));
 						});
 
 						document.querySelector('.slide-preview-container').appendChild(newPreview);
@@ -272,20 +278,22 @@ const start = (config) => {
 
 						addLoadIndicator(`slides`);
 
-						if (document.querySelector(`span[data-slide-index="${slides.indexOf(name)}"]`)) {
-							document.querySelector(`span[data-slide-index="${slides.indexOf(name)}"]`).classList.remove('loading');
-							document.querySelector(`span[data-slide-index="${slides.indexOf(name)}"]`).classList.add('loading-failed')
+						if (document.querySelector(`p[data-slide-index="${slides.indexOf(name)}"]`)) {
+							document.querySelector(`p[data-slide-index="${slides.indexOf(name)}"]`).classList.remove('loading');
+							document.querySelector(`p[data-slide-index="${slides.indexOf(name)}"]`).classList.add('loading-failed');
 						} else {
-							let newPreview = buildElement(`span`, {
-								className: 'slide-preview loading-failed',
+							let newPreviewMessage = buildElement(`p`, {
+								className: 'slide-preview',
 								data_slide_index: name
-							}, slideContent.length + 1);
+							}, `Failed to load slide ${slideContent.length + 1}`);
 
-							newPreview.addEventListener('click', () => {
-								goToSlide(newPreview.dataset.name);
+							let newPreviewStatus = buildElement(`span`, {
+								className: "slide-preview-status loading-failed"
 							});
 
-							document.querySelector('.slide-preview-container').appendChild(newPreview);
+							newPreviewMessage.prepend(newPreviewStatus);
+
+							document.querySelector('.slide-preview-container').appendChild(newPreviewMessage);
 						}
 					}
 				}
@@ -321,11 +329,9 @@ const addLoadIndicator = (type, duration) => {
 	if (duration) {
 		loadingTimeElement.appendChild(buildElement(`p`, {}, `${type} loaded in ${duration}ms (${Timer.toSeconds(duration)}s)`))
 	} else {
-		if (Object.values(document.querySelectorAll('.slide-preview-container > p')).filter(item => item.innerText.toLowerCase().includes(type.toLowerCase())).length == 0) {
-			loadingTimeElement.appendChild(buildElement(`p`, {
-				className: "loading-indicator-failure"
-			}, `Failed to load ${type}.`))
-		}
+		loadingTimeElement.appendChild(buildElement(`p`, {
+			className: "loading-indicator-failure"
+		}, `Failed to load ${type}.`))
 	}
 }
 

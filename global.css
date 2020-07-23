@@ -54,14 +54,14 @@ th {
 }
 
 tr {
-    padding: 2px;
+    padding: 5px;
+}
+
+tbody tr {
+    border-top: 2px solid var(--tertiary);
 }
 
 td {
     padding: 5px;
     line-height: 1.6;
-}
-
-tbody tr:nth-child(even) {
-    border-top: 2px solid var(--tertiary);
 }

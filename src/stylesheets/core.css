@@ -42,6 +42,7 @@ body {
 	padding: 10px;
 	background: var(--primary);
 	color: var(--secondary);
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 * {
@@ -53,26 +54,19 @@ body {
 	animation: 300ms fadeIn var(--primary-transition);
 }
 
-.dashboard {
-	display: flex;
-	flex-flow: column wrap;
-	flex: 1;
-	justify-content: space-between;
-	align-content: center;
-
-	width: 100%;
+.dashboard, .slide-preview-container {
+	margin: auto;
+	max-width: 600px;
 }
 
-.slide-preview-container {
-	margin: 5% auto;
-}
-
-.slide-preview {
-	margin: 2% 10% 2% 0;
-	padding: 10px 15px;
-	font-size: 16pt;
+.slide-preview-status {
+	margin: auto 5px;
+	display: inline-block;
 	color: #fafafa;
 	cursor: pointer;
+	height: 10px;
+	width: 10px;
+	border-radius: 50%;
 }
 
 .loading {
@@ -83,6 +77,10 @@ body {
 	background: #16c581;
 }
 
+* > .loading-failed {
+	cursor: auto;
+}
+
 .loading-failed {
 	background: crimson;
 }
@@ -90,12 +88,11 @@ body {
 .loading-indicator {
 	min-width: 50%;
 	padding: 10px 20px;
-	border: 1px solid var(--tertiary);
 	overflow-y: scroll;
 }
 
 .loading-indicator > * {
-	margin: 0 auto;
+	margin: 1% auto;
 }
 
 .loading-indicator-failure {

@@ -1,12 +1,20 @@
 // controls
 const showMain = () => {
-    document.querySelector('.main').classList.remove('hidden');
-    document.querySelector('.dashboard').classList.add('hidden');
+    document.body.querySelector('.main').classList.remove('hidden');
+    document.body.querySelector('.dashboard').classList.add('hidden');
+    document.body.querySelector('.slide-preview-container').classList.add('hidden');
 }
 
-const openDashboard = () => {
+const showDashboard = () => {
     document.body.querySelector('.main').classList.add('hidden');
     document.body.querySelector('.dashboard').classList.remove('hidden');
+    document.body.querySelector('.slide-preview-container').classList.add('hidden');
+}
+
+const showSlides = () => {
+    document.body.querySelector('.main').classList.add('hidden');
+    document.body.querySelector('.dashboard').classList.add('hidden');
+    document.body.querySelector('.slide-preview-container').classList.remove('hidden');
 }
 
 const updateIndicator = () => {
@@ -89,7 +97,14 @@ const goToSlide = (slide) => {
             if (k == 84) cycleTheme() // t key
             if (k == 68) { // d key
                 if (document.querySelector('.dashboard').classList.contains('hidden') == true) {
-                    openDashboard();
+                    showDashboard();
+                } else {
+                    showMain();
+                }
+            }
+            if (k == 83) {
+                if (document.querySelector('.slide-preview-container').classList.contains('hidden') == true) {
+                    showSlides();
                 } else {
                     showMain();
                 }
