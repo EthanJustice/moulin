@@ -5,12 +5,13 @@ lightweight presentation generator
 ## Roadmap
 
 + Number keybinds
-+ Dashboard/main/preview opened/closed hook
 + Open preview config key
++ Implicit slide directory inference
 
 + ~~Permalinks~~
 + ~~Theme change hook~~
 + ~~Main functionality~~
++ ~~Dashboard/main/preview opened/closed hook~~
 + ~~Dedicated show slides keybind~~
 
 ## Docs
@@ -47,15 +48,15 @@ The config file is a JSON file located in the directory of the presentation's in
 
 #### Keys
 
-| Key | Values | Description | Examples |
-| --- | ------ | ----------- | -------- |
-| themes | [...classNames]|An array of class names, these are cycled through when the user changes the theme through the `T` keybind. | ["dark", "light"] |
-| slide | string |A path to the starting slide (note that URLs must be relative to the presentation location) | "slides/index" || "content/slides/main" |
-| slideDir | string | Path to the directory that contains the slides | "slides/" || "/content/slides" |
-| global | string | Path to a custom stylesheet | "global.css" || "src/custom.css" |
-| openDashboard | boolean | If set to true, the dashboard will be opened by default. | true |
-| prod | boolean | If set to true, Moulin is run in production mode, and caches slides. | true |
-| version | string | Current version of the presentation (used to open a cache in production version and for display in the dashboard).  The cache name is prefixed with `moulin-`, so any attempt to open Moulin's cache must keep that in mind | "0.0.1" || "two" |
+| Key | Values | Description | Examples | Required |
+| --- | ------ | ----------- | -------- | -------- |
+| themes | [...classNames]|An array of class names, these are cycled through when the user changes the theme through the `T` keybind. | ["dark", "light"] | No |
+| slide | string |A path to the starting slide (note that URLs must be relative to the presentation location) | "slides/index"  "content/slides/main" | Yes |
+| slideDir | string | Path to the directory that contains the slides | "slides/"  "/content/slides" | Yes |
+| global | string | Path to a custom stylesheet | "global.css"  "src/custom.css" | No |
+| default | string ("slides", "dashboard", "preview") | The specified value will be opened automatically. | "dashboard" | No (defaults to, "slides.") |
+| prod | boolean | If set to true, Moulin is run in production mode, and caches slides. | true | Yes |
+| version | string | Current version of the presentation (used to open a cache in production version and for display in the dashboard).  The cache name is prefixed with `moulin-`, so any attempt to open Moulin's cache must keep that in mind | "0.0.1" "two" | Yes if in production mode |
 
 ### Hooks
 

@@ -8,7 +8,5 @@
 	"slide": "slides/index",
 	"slideDir": "slides/",
 	"global": "global.css",
-	"openDashboard": false,
-	"prod": false,
 	"version": "0.0.1"
 }
