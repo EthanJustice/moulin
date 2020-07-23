@@ -27,67 +27,8 @@ div[data-slide-name] {
     margin: 1% auto;
 }
 
-img {
-    min-width: 300px;
-    min-height: 300px;
-    max-width: 400px;
-    max-height: 400px;
-    background-color: var(--tertiary);
-    animation: 300ms var(--primary-transition) fadeIn;
-}
-
-iframe {
-    height: 400px;
-    width: 100%;
-}
-
 p {
     line-height: 1.4;
-}
-
-kbd {
-    border: 2px solid var(--secondary);
-    padding: 1px 5px;
-    font-family: "Consolas", monospace;
-    font-weight: bold;
-}
-
-code {
-    background: var(--tertiary);
-    color: var(--highlight);
-    padding: 2px 5px;
-}
-
-li {
-    margin: 2% auto;
-    line-height: 1.4;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-thead {
-    border-top: 2px solid var(--tertiary);
-    border-bottom: 2px solid var(--tertiary);
-}
-
-th {
-    padding: 10px;
-}
-
-tr {
-    padding: 5px;
-}
-
-tbody tr {
-    border-top: 2px solid var(--tertiary);
-}
-
-td {
-    padding: 5px;
-    line-height: 1.6;
 }
 
 a, a:visited {

@@ -23,11 +23,9 @@ const updateIndicator = () => {
 
     if (slideName && slideName.dataset.slideName) {
         current = slides.indexOf(slideName.dataset.slideName);
-    } else if (window.location.search) {
-        current = window.location.search.replace('?', '');
     } else { current = 0 }
 
-    if ((current + 1) < 1) { current = 1 }
+    if ((current + 1) < 1) { current = 0 }
 
     let slideIndicator = document.querySelector(`#slide-indicator`);
     slideIndicator.innerText = `${current + 1}/${slides.length}`;
@@ -44,6 +42,7 @@ const nextSlide = () => {
         document.querySelector('.main').insertBefore(slideContent[current], document.querySelector('.main').firstChild);
 
         updateIndicator();
+        history.pushState(``, document.title, `#${current + 1}`);
         dispatch('slide-change', { detail: current }, window);
     }
     showMain();
@@ -60,6 +59,7 @@ const previousSlide = () => {
         document.querySelector('.main').insertBefore(slideContent[current - 1], document.querySelector('.main').firstChild);
 
         updateIndicator();
+        history.pushState(``, document.title, `#${current}`);
         dispatch('slide-change', { detail: current - 1 }, window);
     }
 }
@@ -77,6 +77,7 @@ const goToSlide = (slide) => {
         document.querySelector('.main').insertBefore(slideContent[current], document.querySelector('.main').firstChild);
 
         updateIndicator();
+        history.pushState(``, document.title, `#${current + 1}`);
         dispatch('slide-change', { detail: current }, window);
     }
 }

@@ -175,7 +175,7 @@ const start = (config) => {
 
 			status.modules.percentage = parseInt(((index + 1) / modList.length) * 100);
 
-			if (script.src.replace(window.location.href, '').replace('src/scripts/modules/', '').replace('.js', '') == modList[modList.length - 1]) {
+			if (script.src.replace(window.location.href.replace(window.location.hash, ''), '').replace('src/scripts/modules/', '').replace('.js', '') == modList[modList.length - 1]) {
 				loadSlides(config);
 
 				status.modules = {
@@ -324,6 +324,7 @@ const start = (config) => {
 			if (document.querySelector('.main')) {
 				document.querySelector('.main').insertBefore(slideContent[0], document.querySelector('.main').firstChild);
 				if (config.openDashboard == false) {
+					if (!window.location.hash) history.pushState(``, document.title, `#${1}`);
 					document.querySelector('.main').classList.remove('hidden');
 				}
 			}
@@ -352,6 +353,10 @@ window.addEventListener('script-loading-finished', (event) => {
 }, { once: true });
 
 window.addEventListener('slide-loading-finished', (event) => {
+	if (window.location.hash) {
+		goToSlide(window.location.hash.replace('#', '') - 1);
+	}
+
 	if (config.prod) {
 		caches.open(`moulin-${config.version}`).then((cache) => {
 			cache.keys().then((data) => {
