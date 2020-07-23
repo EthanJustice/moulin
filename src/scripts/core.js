@@ -187,10 +187,12 @@ const start = (config) => {
 			if (script.src.replace(window.location.href.replace(window.location.hash, ''), '').replace('src/scripts/modules/', '').replace('.js', '') == modList[modList.length - 1]) {
 				loadSlides(config);
 
+				let t = 0;
+				Object.values(loadTimes).forEach(item => t += item.timer.elapsedMilliseconds);
 				status.modules = {
 					loaded: true,
 					percentage: 100,
-					duration: Object.values(loadTimes).reduce((p, n) => p.timer.elapsedMilliseconds + n.timer.elapsedMilliseconds)
+					duration: t
 				};
 
 				dispatch('script-loading-finished', {
@@ -274,10 +276,12 @@ const start = (config) => {
 								fetchSlide(element.dataset.next);
 							}
 						} else {
+							let t = 0;
+							Object.values(loadTimes).forEach(item => t += item.timer.elapsedMilliseconds);
 							status.slides = {
 								loaded: true,
 								percentage: 100,
-								duration: Object.values(loadTimes).reduce((p, n) => p.timer.elapsedMilliseconds + n.timer.elapsedMilliseconds)
+								duration: t
 							};
 
 							dispatch('slide-loading-finished', {
