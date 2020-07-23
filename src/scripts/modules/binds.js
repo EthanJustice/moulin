@@ -47,7 +47,7 @@ const previousSlide = () => {
     let currentSlide = document.querySelector('.main').firstChild;
     let current = slides.indexOf(currentSlide.dataset.slideName);
 
-    if (slideContent.length != 0 && current != 0) {
+    if (current != 0) {
         currentSlide.remove();
         document.querySelector('.main').insertBefore(slideContent[current - 1], document.querySelector('.main').firstChild);
 
@@ -57,12 +57,14 @@ const previousSlide = () => {
 }
 
 const goToSlide = (slide) => {
-    showMain();
-
     let currentSlide = document.querySelector('.main').firstChild;
     let current = typeof slide == 'string' ? slides.indexOf(currentSlide.dataset.slideName) : slide;
 
-    if (slideContent.length != 0 && current != slides.length) {
+    if (slides.indexOf(currentSlide.dataset.slideName) == 0 && current <= 0 || slides.indexOf(currentSlide.dataset.slideName) == slides.length - 1 && current >= slides.length - 1) return
+
+    showMain();
+
+    if (current != slides.length) {
         currentSlide.remove();
         document.querySelector('.main').insertBefore(slideContent[current], document.querySelector('.main').firstChild);
 
