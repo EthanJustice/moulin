@@ -1,4 +1,15 @@
 <div>
     <h1>Hooks</h1>
     <p>Moulin also has a built-in hooks system, for when you want flashy, over-the-top animations.</p>
+    <p>Moulin currently supports 7 hooks:</p>
+    <ul>
+        <li><code>script-loaded</code> (<code>window</code>), for when a module or slide script has finished loading
+        </li>
+        <li><code>script-loading-finished</code> (<code>window</code>), for when all modules have finished loading</li>
+        <li><code>slide-loaded</code> (<code>window</code>), for when a slide has finished loading</li>
+        <li><code>slide-loading-finished</code> (<code>window</code>), for when all slides have finished loading</li>
+        <li><code>slide-change</code> (<code>window</code>), for when the active slide has changed</li>
+        <li><code>slide-loading-failed</code> (<code>window</code>), for when any slide isn't loaded (note that only the
+            affected slide will be removed - that is, the presentation can be used without it)</li>
+    </ul>
 </div>

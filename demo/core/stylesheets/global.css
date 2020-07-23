@@ -27,3 +27,14 @@ kbd {
     font-family: "Consolas", monospace;
     font-weight: bold;
 }
+
+code {
+    background: var(--tertiary);
+    color: var(--highlight);
+    padding: 2px 5px;
+}
+
+li {
+    margin: 2% auto;
+    line-height: 1.4;
+}

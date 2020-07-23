@@ -32,13 +32,16 @@ const renderJS = (element) => {
     });
 
     script.addEventListener('load', () => {
-        dispatch('script-loaded', {}, element);
+        dispatch('script-loaded', {
+            detail: {
+                type: 'slide',
+                link: link
+            }
+        }, window);
     }, { once: true });
 
     element.remove(element.querySelector('script'));
     element.appendChild(script);
-
-    dispatch('script-parsed', {}, element);
 
     return element;
 }
