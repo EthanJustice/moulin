@@ -119,6 +119,9 @@ getConfig().then(data => {
 	addLoadIndicator(`${config.name} ${config.prod ? 'Production' : 'Development'} ${config.version.includes('v') ? config.version : `v${config.version}`}`, 0)
 
 	configTimer.stop();
+	status.config = {
+		duration: configTimer.elapsedMilliseconds
+	};
 	addLoadIndicator(`Config`, configTimer.elapsedMilliseconds);
 
 	start(config);
@@ -142,12 +145,12 @@ const dispatch = (event, data, location) => {
 	location.dispatchEvent(customEvent);
 }
 
-const start = (config) => {
-	const modList = [
-		'parse',
-		'binds',
-	];
+const modList = [
+	'parse',
+	'binds',
+];
 
+const start = (config) => {
 	const modContainer = buildElement('div', {
 		id: 'scripts',
 	});
@@ -178,7 +181,7 @@ const start = (config) => {
 				status.modules = {
 					loaded: true,
 					percentage: 100,
-					duration: Object.values(loadTimes).reduce((p, n, index) => Object.values(loadTimes)[index].timer.elapsedMilliseconds + n.timer.elapsedMilliseconds)
+					duration: Object.values(loadTimes).reduce((p, n) => p.timer.elapsedMilliseconds + n.timer.elapsedMilliseconds)
 				};
 
 				dispatch('script-loading-finished', {
@@ -263,7 +266,7 @@ const start = (config) => {
 							status.slides = {
 								loaded: true,
 								percentage: 100,
-								duration: Object.values(loadTimes).reduce((p, n, index) => Object.values(loadTimes)[index].timer.elapsedMilliseconds + n.timer.elapsedMilliseconds)
+								duration: Object.values(loadTimes).reduce((p, n) => p.timer.elapsedMilliseconds + n.timer.elapsedMilliseconds)
 							};
 
 							dispatch('slide-loading-finished', {
@@ -330,7 +333,9 @@ const start = (config) => {
 
 const addLoadIndicator = (type, duration) => {
 	if (duration) {
-		loadingTimeElement.appendChild(buildElement(`p`, {}, `${type} loaded in ${duration}ms (${Timer.toSeconds(duration)}s)`))
+		loadingTimeElement.appendChild(buildElement(`p`, {
+			className: `${type == 'Everything' ? "loading-indicator-success" : ""}`
+		}, `${type} loaded in ${duration}ms (${Timer.toSeconds(duration)}s)`))
 	} else if (duration == 0) {
 		loadingTimeElement.appendChild(buildElement(`p`, {
 			className: "loading-indicator-version"
@@ -343,7 +348,7 @@ const addLoadIndicator = (type, duration) => {
 }
 
 window.addEventListener('script-loading-finished', (event) => {
-	addLoadIndicator(`Modules`, event.detail.data.duration);
+	addLoadIndicator(`${modList.length} modules`, event.detail.data.duration);
 }, { once: true });
 
 window.addEventListener('slide-loading-finished', (event) => {
@@ -360,4 +365,8 @@ window.addEventListener('slide-loading-finished', (event) => {
 	} else {
 		addLoadIndicator(`${event.detail.slides} slides`, event.detail.data.duration);
 	}
+
+	let t = 0;
+	Object.values(status).forEach(item => t += item.duration);
+	addLoadIndicator(`Everything`, t);
 }, { once: true });

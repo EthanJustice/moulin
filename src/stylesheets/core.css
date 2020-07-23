@@ -70,6 +70,12 @@ body {
 
 .loading-indicator-version {
 	color: #1a40ff;
+	margin: 2% auto;
+	font-size: 14pt;
+}
+
+.loading-indicator-success {
+	color: #16c581;
 }
 
 .loading-indicator-failure {
