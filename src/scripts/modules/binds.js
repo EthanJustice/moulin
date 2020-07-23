@@ -102,13 +102,14 @@ const goToSlide = (slide) => {
                     showMain();
                 }
             }
-            if (k == 83) {
+            if (k == 83) { // s key
                 if (document.querySelector('.slide-preview-container').classList.contains('hidden') == true) {
                     showSlides();
                 } else {
                     showMain();
                 }
             }
+            if (k == 72) showMain() // h key
         });
         updateIndicator();
     }

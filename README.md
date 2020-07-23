@@ -5,8 +5,10 @@ lightweight presentation generator
 ## Roadmap
 
 + Permalinks
-+ Main functionality
 + Number keybinds
-+ Theme change hook
 + Dashboard/main/preview opened/closed hook
-+ Dedicated show slides keybind
++ Open preview config key
+
++ ~~Theme change hook~~
++ ~~Main functionality~~
++ ~~Dedicated show slides keybind~~
