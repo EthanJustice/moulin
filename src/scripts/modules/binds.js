@@ -136,6 +136,10 @@ const goToSlide = (slide) => {
         if (i >= config.themes.length) i = 0;
 
         document.body.classList.add(config.themes[i]);
+
+        dispatch(`theme-change`, {
+            detail: config.themes[i]
+        }, window)
     }
 
     cycleTheme('init')

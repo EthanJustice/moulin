@@ -1,3 +1,27 @@
+body.light {
+    --highlight: #16c581;
+
+	--primary: #fafafa;
+    --secondary: #212121;
+    --tertiary: #e1e1e1;
+}
+
+body.dark {
+	--highlight: #16c581;
+
+	--primary: #212121;
+    --secondary: #b9bec5;
+    --tertiary: #404040;
+}
+
+body.solarized {
+	--highlight: #cb4b16;
+
+	--primary: #002b36;
+	--secondary: #eee8d5;
+	--tertiary: #073642;
+}
+
 div[data-slide-name] {
     max-width: 900px;
     margin: 1% auto;

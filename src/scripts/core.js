@@ -222,7 +222,7 @@ const start = (config) => {
 						let newPreview = buildElement(`p`, {
 							className: 'slide-preview',
 							data_slide_index: name
-						}, `Loaded slide "${slides[slides.length - 1]}," in ${loadTimes[name].timer.elapsedMilliseconds}ms`);
+						}, `Loaded slide "${slides[slides.length - 1]}," in ${loadTimes[name].timer.elapsedMilliseconds}ms (${loadTimes[name].timer.elapsedSeconds}s)`);
 
 						let newPreviewStatus = buildElement(`span`, {
 							className: "slide-preview-status loading"
