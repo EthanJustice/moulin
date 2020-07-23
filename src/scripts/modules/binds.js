@@ -7,8 +7,6 @@ const showMain = () => {
 const openDashboard = () => {
     document.body.querySelector('.main').classList.add('hidden');
     document.body.querySelector('.dashboard').classList.remove('hidden');
-    document.body.querySelector('.main').firstChild.remove();
-    document.body.querySelector('.main').insertBefore(slideContent[0], document.body.querySelector('.main').firstChild);
 }
 
 const updateIndicator = () => {
@@ -89,7 +87,7 @@ const goToSlide = (slide) => {
             if (k == 84) cycleTheme() // t key
             if (k == 68) { // d key
                 if (document.querySelector('.dashboard').classList.contains('hidden') == true) {
-                    openDashboard()
+                    openDashboard();
                 } else {
                     showMain();
                 }
