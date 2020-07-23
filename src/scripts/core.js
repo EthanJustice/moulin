@@ -335,7 +335,7 @@ const start = (config) => {
 			if (document.querySelector('.main')) {
 				document.querySelector('.main').insertBefore(slideContent[0], document.querySelector('.main').firstChild);
 				if (!config.default || config.default == 'slides') {
-					if (!window.location.hash) history.pushState(``, document.title, `#${1}`);
+					if (!window.location.hash && config.permalinks == true) history.pushState(``, document.title, `#${1}`);
 					document.querySelector('.main').classList.remove('hidden');
 				}
 			}

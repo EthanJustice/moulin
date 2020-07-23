@@ -6,8 +6,9 @@ lightweight presentation generator
 
 + Number keybinds
 + High-level docs as Moulin demos/examples
-+ Permalink config key
++ Index or slide name permalink config key
 
++ ~~Permalink config key~~
 + ~~Custom title support~~
 + ~~Implicit slide directory inference~~
 + ~~Open preview config key~~
@@ -67,8 +68,9 @@ The config file is a JSON file located in the directory of the presentation's in
 | slideDir | string | Path to the directory that contains the slides | "slides/"  "/content/slides" | Only if the directory of slides isn't the same as the index slide |
 | global | string | Path to a custom stylesheet | "global.css"  "src/custom.css" | No |
 | default | string ("slides", "dashboard", "preview") | The specified value will be opened automatically. | "dashboard" | No (defaults to, "slides.") |
-| prod | boolean | If set to true, Moulin is run in production mode, and caches slides. | true | Yes |
+| prod | boolean | If set to `true`, Moulin is run in production mode, and caches slides. | true | Yes |
 | version | string | Current version of the presentation (used to open a cache in production version and for display in the dashboard).  The cache name is prefixed with `moulin-`, so any attempt to open Moulin's cache must keep that in mind | "0.0.1" "two" | Yes if in production mode |
+| permalinks | boolean | If set to `true`, enables permalinks for each individual slide (e.g. `site.tld/#{slide}`) would open to the specified slide | `true` | No |
 
 ### Hooks
 

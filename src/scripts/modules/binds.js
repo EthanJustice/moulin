@@ -48,7 +48,7 @@ const nextSlide = () => {
         main.insertBefore(slideContent[current], main.firstChild);
 
         updateIndicator();
-        history.pushState(``, main.firstChild.dataset.title || originalTitle || document.title, `#${current + 1}`);
+        if (config.permalinks) history.pushState(``, main.firstChild.dataset.title || originalTitle || document.title, `#${current + 1}`);
         document.title = main.firstChild.dataset.title || originalTitle || document.title;
         dispatch('slide-change', { detail: current }, window);
     }
@@ -66,7 +66,7 @@ const previousSlide = () => {
         main.insertBefore(slideContent[current - 1], main.firstChild);
 
         updateIndicator();
-        history.pushState(``, main.firstChild.dataset.title || originalTitle || document.title, `#${current}`);
+        if (config.permalinks) history.pushState(``, main.firstChild.dataset.title || originalTitle || document.title, `#${current}`);
         document.title = main.firstChild.dataset.title || originalTitle || document.title;
         dispatch('slide-change', { detail: current - 1 }, window);
     }
@@ -85,7 +85,7 @@ const goToSlide = (slide) => {
         main.insertBefore(slideContent[current], main.firstChild);
 
         updateIndicator();
-        history.pushState(``, main.firstChild.dataset.title || originalTitle || document.title, `#${current + 1}`);
+        if (config.permalinks) history.pushState(``, main.firstChild.dataset.title || originalTitle || document.title, `#${current + 1}`);
         document.title = main.firstChild.dataset.title || originalTitle || document.title;
         dispatch('slide-change', { detail: current }, window);
     }
