@@ -158,7 +158,7 @@ const start = (config) => {
 		};
 
 		let script = buildElement('script', {
-			src: `core/scripts/modules/${item}.js`
+			src: `src/scripts/modules/${item}.js`
 		});
 
 		modContainer.appendChild(script);
@@ -169,7 +169,7 @@ const start = (config) => {
 
 			status.modules.percentage = parseInt(((index + 1) / modList.length) * 100);
 
-			if (script.src.replace(window.location.href, '').replace('core/scripts/modules/', '').replace('.js', '') == modList[modList.length - 1]) {
+			if (script.src.replace(window.location.href, '').replace('src/scripts/modules/', '').replace('.js', '') == modList[modList.length - 1]) {
 				loadSlides(config);
 
 				status.modules = {

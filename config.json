@@ -7,7 +7,7 @@
 	"slide": "slides/index.html",
 	"slideDir": "slides/",
 	"reanimate": true,
-	"global": "core/stylesheets/global.css",
+	"global": "global.css",
 	"openDashboard": false,
 	"prod": false,
 	"version": "0.0.1"
