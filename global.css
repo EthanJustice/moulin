@@ -39,3 +39,9 @@ a, a:visited {
 a:hover {
     text-decoration: underline;
 }
+
+li {
+    margin: 2% auto;
+    line-height: 1.4;
+    font-size: 11pt;
+}
