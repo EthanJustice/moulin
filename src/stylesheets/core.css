@@ -103,6 +103,7 @@ body {
 }
 
 #slide-indicator {
+	animation: none;
 	position: fixed;
 	bottom: 2%;
 	left: 2%;
