@@ -1,17 +1,20 @@
 // controls
 const showMain = () => {
+    dispatch(`main-opened`, {}, window);
     document.body.querySelector('.main').classList.remove('hidden');
     document.body.querySelector('.dashboard').classList.add('hidden');
     document.body.querySelector('.slide-preview-container').classList.add('hidden');
 }
 
 const showDashboard = () => {
+    dispatch(`dash-opened`, {}, window);
     document.body.querySelector('.main').classList.add('hidden');
     document.body.querySelector('.dashboard').classList.remove('hidden');
     document.body.querySelector('.slide-preview-container').classList.add('hidden');
 }
 
-const showSlides = () => {
+const showPreview = () => {
+    dispatch(`preview-opened`, {}, window);
     document.body.querySelector('.main').classList.add('hidden');
     document.body.querySelector('.dashboard').classList.add('hidden');
     document.body.querySelector('.slide-preview-container').classList.remove('hidden');
@@ -105,7 +108,7 @@ const goToSlide = (slide) => {
             }
             if (k == 83) { // s key
                 if (document.querySelector('.slide-preview-container').classList.contains('hidden') == true) {
-                    showSlides();
+                    showPreview();
                 } else {
                     showMain();
                 }
