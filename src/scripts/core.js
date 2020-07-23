@@ -117,7 +117,10 @@ let config;
 let configTimer = new Timer('config');
 configTimer.start();
 
+let originalTitle;
 getConfig().then(data => {
+	originalTitle = document.title;
+
 	config = data;
 
 	addLoadIndicator(`${config.name} ${config.prod ? 'Production' : 'Development'} ${config.version.includes('v') ? config.version : `v${config.version}`}`, 0)

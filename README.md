@@ -6,6 +6,7 @@ lightweight presentation generator
 
 + Number keybinds
 + High-level docs as Moulin demos/examples
++ Permalink config key
 
 + ~~Custom title support~~
 + ~~Implicit slide directory inference~~
@@ -44,6 +45,15 @@ window.addEventListener('script-loaded', (event) => {
 });
 ```
 
+#### Supported Custom Attributes
+
+These are used by Moulin for custom behaviour.
+
+| Key | Values | Description | Examples | Required |
+| --- | ------ | ----------- | -------- | -------- |
+| `data-next` | string | A link to the next slide (by referencing its file name; e.g, if you're linking to slide `docs`, then the file would be `{path}/docs.html`) | `data-next="last"` | Yes (unless it's the last slide) |
+| `data-title` | string | Sets the tab's title when the slide is navigated to | `data-title="The view is lovely up here!"` | No (will revert to the document's original title) |
+
 ### Config File
 
 The config file is a JSON file located in the directory of the presentation's index file.
@@ -52,7 +62,7 @@ The config file is a JSON file located in the directory of the presentation's in
 
 | Key | Values | Description | Examples | Required |
 | --- | ------ | ----------- | -------- | -------- |
-| themes | [...classNames]|An array of class names, these are cycled through when the user changes the theme through the `T` keybind. | ["dark", "light"] | No |
+| themes | [...classNames] | An array of class names, these are cycled through when the user changes the theme through the `T` keybind. | ["dark", "light"] | No |
 | index | string |A path to the starting slide (note that URLs must be relative to the presentation location) | "slides/index"  "content/slides/main" | Yes |
 | slideDir | string | Path to the directory that contains the slides | "slides/"  "/content/slides" | Only if the directory of slides isn't the same as the index slide |
 | global | string | Path to a custom stylesheet | "global.css"  "src/custom.css" | No |
