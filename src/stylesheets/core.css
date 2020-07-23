@@ -18,15 +18,6 @@ body {
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-* {
-	animation: 300ms fadeIn var(--primary-transition);
-	transition: 150ms var(--primary-transition);
-}
-
-.fadeIn {
-	animation: 300ms fadeIn var(--primary-transition);
-}
-
 .dashboard, .slide-preview-container {
 	margin: auto;
 	max-width: 600px;

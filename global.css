@@ -22,6 +22,11 @@ body.solarized {
 	--tertiary: #073642;
 }
 
+* {
+	animation: 300ms fadeIn var(--primary-transition);
+	transition: 150ms var(--primary-transition);
+}
+
 div[data-slide-name] {
     max-width: 900px;
     margin: 1% auto;
@@ -44,4 +49,13 @@ li {
     margin: 2% auto;
     line-height: 1.4;
     font-size: 11pt;
+}
+
+.fadeIn {
+	animation: 300ms fadeIn var(--primary-transition);
+}
+
+@keyframes fadeIn {
+	0% { opacity: 0 }
+	100% { opacity: 1 }
 }
