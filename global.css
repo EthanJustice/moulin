@@ -22,6 +22,26 @@ body.solarized {
 	--tertiary: #073642;
 }
 
+@media (prefers-color-scheme: dark) {
+	body {
+		--highlight: #16c581;
+
+		--primary: #212121;
+		--secondary: #b9bec5;
+		--tertiary: #404040;
+	}
+}
+
+body {
+	--primary-transition: linear;
+
+	margin: 0;
+	padding: 10px;
+	background: var(--primary);
+	color: var(--secondary);
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
 * {
 	animation: 300ms fadeIn var(--primary-transition);
 	transition: 150ms var(--primary-transition);
