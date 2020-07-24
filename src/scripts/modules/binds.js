@@ -120,7 +120,7 @@ const goToSlide = (slide) => {
                 }
             }
             if (k == 72) showMain() // h key
-            if (k >= 49 && k < 57) goToSlide(Math.abs(k - 49))
+            if (!event.ctrlKey && k >= 49 && k < 57) goToSlide(Math.abs(k - 49))
         });
         updateIndicator();
     }
