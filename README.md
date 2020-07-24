@@ -20,6 +20,8 @@ lightweight presentation generator
 
 ## Docs
 
+As a general note, any user-facing indexes (permalinks, current slide number, etc.) will **not** be zero-based; that is, the first slide will have an internal index of `0`, but would be `1` on any permalink.
+
 ### Slides
 
 Slides are individual HTML files stored within the [slide directory](#config-keys), which can be customised in the config file.
@@ -70,7 +72,7 @@ The config file is a JSON file located in the directory of the presentation's in
 | default | string ("slides", "dashboard", "preview") | The specified value will be opened automatically. | "dashboard" | No (defaults to, "slides.") |
 | prod | boolean | If set to `true`, Moulin is run in production mode, and caches slides. | true | Yes |
 | version | string | Current version of the presentation (used to open a cache in production version and for display in the dashboard).  The cache name is prefixed with `moulin-`, so any attempt to open Moulin's cache must keep that in mind | "0.0.1" "two" | Yes if in production mode |
-| permalinks | boolean | If set to `true`, enables permalinks for each individual slide (e.g. `site.tld/#{slide}`) would open to the specified slide | `true` | No |
+| permalinks | string ("name", "index") | If set, enables permalinks for each individual slide (e.g. `site.tld/#{slide}` would open to the specified slide).  The, "name," value will set permalinks to the name of the slide (the `data-next` attribute), while the, "index," value will set it to the index of the slide | `name` | No |
 
 ### Hooks
 
