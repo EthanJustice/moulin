@@ -4,7 +4,9 @@ lightweight presentation generator
 
 ## Roadmap
 
-+ High-level docs as Moulin demos/examples
++ High-level docs as Moulin demos/examples {in-progress}
++ Dashboard enable/disable config key
++ Make clicking on slide indicator open slide preview
 
 + ~~Index or slide name permalink config key~~
 + ~~Number keybinds~~
@@ -17,6 +19,19 @@ lightweight presentation generator
 + ~~Main functionality~~
 + ~~Dashboard/main/preview opened/closed hook~~
 + ~~Dedicated show slides keybind~~
+
+Example presentation
+
+```plaintext
+index.html - presentation skeleton
+/src - moulin src
+moulin.json - moulin config
+/slides - slide directory
+    main.html - first slide
+    second.html - second and final slide
+/other
+    global.css - global moulin styling
+```
 
 ## Docs
 
@@ -37,7 +52,7 @@ A slide looks something like this:
 Slides are an individual `div` element in its own file. If there is a following slide, link to it by setting the `data-next` of the `div` to the name of the next slide (the file name, excluding the
 `.html`).  It's important to note that slides **must** proceed in a linear fashion; that is, once one slide is linked from another, that slide **cannot** be linked again.
 
-Any `style` elements within a slide will be scoped to that slide, so that each rule will only work on items in that slide.  If you want to customise global behaviour, set a [`global`](#keys) key value in the config file.
+Any `style` elements within a slide will be scoped to that slide, so that each rule will only work on items in that slide.  If you want to customise global behaviour, set a [`global`](#keys) key value in the config file.  Note that pseudo-classes still work, but may create conflict if added to more than one slide.
 
 Additionally, any `script` elements will be loaded as well; there's even a hook for them!  Listen for the `script-loaded` `window` event to detect when they're loaded.  To make sure it's the right script, add a filter parameter to your callback, like the example below.
 
@@ -47,6 +62,8 @@ window.addEventListener('script-loaded', (event) => {
     if (event.detail.type == 'slide' && event.detail.link == scriptToLoad) // proper slide script has loaded
 });
 ```
+
+#### Scoped CSS Implementation Notes
 
 #### Supported Custom Attributes
 
@@ -59,7 +76,7 @@ These are used by Moulin for custom behaviour.
 
 ### Config File
 
-The config file is a JSON file located in the directory of the presentation's index file.
+The config file is a JSON file located in the directory of the presentation's index file.  It **must** be named `moulin.json` and be located in the presentation root.
 
 #### Keys
 
@@ -93,3 +110,5 @@ To-Do: event values
 + `preview-opened` (`window`), for when the preview menu is opened
 + `dashboard-opened` (`window`), for when the dashboard is opened
 + `slides-opened` (`window`), for when the slides are opened
+
+### Slide Scripts

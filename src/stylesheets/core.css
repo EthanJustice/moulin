@@ -6,6 +6,7 @@
 
 .slide-preview {
 	margin: 1% auto;
+	cursor: pointer;
 }
 
 .slide-preview-status {

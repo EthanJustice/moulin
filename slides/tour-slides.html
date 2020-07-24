@@ -1,0 +1,31 @@
+<div data-title="Tour - Slides">
+    <style>
+        b {
+            color: red;
+        }
+    </style>
+    <h1>Tour - Slides</h1>
+    <p>Here's some useful knowledge about slides (if you're looking for examples of slides, this slide's code can be
+        found <a href="https://github.com/EthanJustice/moulin/blob/master/slides/tour-slides.html">here</a>).</p>
+    <ul>
+        <li>Slides have scoped styles (<a
+                href="https://github.com/EthanJustice/moulin#scoped-css-implementation-notes">implementation notes</a>)
+            - that is, any <code>style</code> element within a slide
+            will be scoped to that
+            slide only (for example, <b>this is a <code>b</code> element that has styles unique to this slide</b> -
+            check the next slide to see that it works)</li>
+        <li>Any element works - even <code>iframes</code></li>
+        <li>Slides can have their own scripts, but special scaffolding is needed (see <a
+                href="https://github.com/EthanJustice/moulin#slide-scripts">slide scripts</a>) - check the console!</li>
+    </ul>
+    <p>A guide to what happens before a slide is added:</p>
+    <ol>
+        <li>Slide content is fetched based on the <code>data-next</code> attribute of each slide (or loaded from the
+            cache)</li>
+        <li>The content is run through the scoped CSS parser</li>
+        <li>Any <code>script</code> elements are loaded, and the <code>script-loaded</code> event is bound to their
+            <code>load</code> event</li>
+        <li>If there's a permalink, the proper slide is navigated to</li>
+    </ol>
+    <script src="slides/tour-slides.js"></script>
+</div>

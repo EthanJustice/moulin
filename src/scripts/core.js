@@ -63,6 +63,7 @@ const load = async (name) => {
 		const parser = new DOMParser();
 		let content = parser.parseFromString(element, 'text/html');
 
+		content.querySelector('div').dataset.slideName = name.split('/')[1];
 		return renderJS(scopeCSS(content.querySelector('div')));
 	}
 
@@ -109,7 +110,7 @@ let slides = [];
 let slideContent = [];
 
 async function getConfig() {
-	return await fetch('./config.json').then(resp => { return resp.json() });
+	return await fetch('./moulin.json').then(resp => { return resp.json() });
 }
 
 let config;
@@ -233,7 +234,6 @@ const start = (config) => {
 			return load(slide.replace('.html', '')).then(item => {
 				const register = (element) => {
 					if (element != null && element != false) {
-						element.dataset.slideName = name;
 						slideContent.push(element);
 
 						loadTimes[name].timer.stop();
