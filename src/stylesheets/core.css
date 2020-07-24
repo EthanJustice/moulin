@@ -1,4 +1,4 @@
-@media (prefers-color-scheme:dark) {
+@media (prefers-color-scheme: dark) {
 	body {
 		--highlight: #16c581;
 
@@ -15,10 +15,11 @@ body {
 	padding: 10px;
 	background: var(--primary);
 	color: var(--secondary);
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.dashboard, .slide-preview-container {
+.dashboard,
+.slide-preview-container {
 	margin: auto;
 	max-width: 600px;
 }
@@ -90,4 +91,6 @@ body {
 	cursor: pointer;
 }
 
-.hidden { display: none }
+.hidden {
+	display: none;
+}
