@@ -6,7 +6,7 @@
 	],
 	"name": "Moulin",
 	"index": "slides/index",
-	"permalinks": true,
+	"permalinks": "name",
 	"global": "global.css",
 	"version": "0.0.1"
 }

@@ -339,7 +339,7 @@ const start = (config) => {
 			if (document.querySelector('.main')) {
 				document.querySelector('.main').insertBefore(slideContent[0], document.querySelector('.main').firstChild);
 				if (!config.default || config.default == 'slides') {
-					if (!window.location.hash && config.permalinks == true) history.pushState(``, document.title, `#${1}`);
+					if (!window.location.hash && config.permalinks) history.pushState(``, document.title, `#${config.permalinks == "name" ? slides[0] : 1}`);
 					document.querySelector('.main').classList.remove('hidden');
 				}
 			}
@@ -369,7 +369,10 @@ window.addEventListener('script-loading-finished', (event) => {
 
 window.addEventListener('slide-loading-finished', (event) => {
 	if (window.location.hash) {
-		goToSlide(window.location.hash.replace('#', '') - 1);
+		let s;
+		if (config.permalinks == 'name') s = slides.indexOf(window.location.hash.replace('#', ''))
+		if (config.permalinks == 'index') s = window.location.hash.replace('#', '') - 1
+		goToSlide(s);
 	}
 
 	document.title = main.firstChild.dataset.title || document.title;

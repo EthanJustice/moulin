@@ -5,8 +5,8 @@ lightweight presentation generator
 ## Roadmap
 
 + High-level docs as Moulin demos/examples
-+ Index or slide name permalink config key
 
++ ~~Index or slide name permalink config key~~
 + ~~Number keybinds~~
 + ~~Permalink config key~~
 + ~~Custom title support~~

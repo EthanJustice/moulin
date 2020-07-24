@@ -48,7 +48,7 @@ const nextSlide = () => {
         main.insertBefore(slideContent[current], main.firstChild);
 
         updateIndicator();
-        if (config.permalinks) history.pushState(``, main.firstChild.dataset.title || originalTitle || document.title, `#${current + 1}`);
+        if (config.permalinks) history.pushState(``, main.firstChild.dataset.title || originalTitle || document.title, `#${config.permalinks == "name" ? slides[current] : current + 1}`);
         document.title = main.firstChild.dataset.title || originalTitle || document.title;
         dispatch('slide-change', { detail: current }, window);
     }
@@ -66,7 +66,7 @@ const previousSlide = () => {
         main.insertBefore(slideContent[current - 1], main.firstChild);
 
         updateIndicator();
-        if (config.permalinks) history.pushState(``, main.firstChild.dataset.title || originalTitle || document.title, `#${current}`);
+        if (config.permalinks) history.pushState(``, main.firstChild.dataset.title || originalTitle || document.title, `#${config.permalinks == "name" ? slides[current - 1] : current}`);
         document.title = main.firstChild.dataset.title || originalTitle || document.title;
         dispatch('slide-change', { detail: current - 1 }, window);
     }
@@ -74,7 +74,7 @@ const previousSlide = () => {
 
 const goToSlide = (slide) => {
     let currentSlide = main.firstChild;
-    let current = typeof slide == 'string' ? slides.indexOf(currentSlide.dataset.slideName) : slide;
+    let current = typeof slide == 'string' ? slides.indexOf(slide) : slide;
 
     if (slides.indexOf(currentSlide.dataset.slideName) == 0 && current <= 0 || slides.indexOf(currentSlide.dataset.slideName) == slides.length - 1 && current >= slides.length - 1) return
 
@@ -85,7 +85,7 @@ const goToSlide = (slide) => {
         main.insertBefore(slideContent[current], main.firstChild);
 
         updateIndicator();
-        if (config.permalinks) history.pushState(``, main.firstChild.dataset.title || originalTitle || document.title, `#${current + 1}`);
+        if (config.permalinks) history.pushState(``, main.firstChild.dataset.title || originalTitle || document.title, `#${config.permalinks == "name" ? slides[current] : current + 1}`);
         document.title = main.firstChild.dataset.title || originalTitle || document.title;
         dispatch('slide-change', { detail: current }, window);
     }
@@ -101,7 +101,7 @@ const goToSlide = (slide) => {
 
             let k = event.which;
             if (!event.ctrlKey && k == 39 || k == 32) nextSlide() // right arrow key/space bar
-            if (event.ctrlKey && k == 39) goToSlide(slides.length - 1) // ctrl + right arrow
+            if (event.ctrlKey && k == 39 || k == 57) goToSlide(slides.length - 1) // ctrl + right arrow
             if (!event.ctrlKey && k == 37) previousSlide() // left arrow key
             if (event.ctrlKey && k == 37) goToSlide(0) // ctrl + left arrow key
             if (k == 84) cycleTheme() // t key
@@ -121,7 +121,6 @@ const goToSlide = (slide) => {
             }
             if (k == 72) showMain() // h key
             if (k >= 49 && k < 57) goToSlide(Math.abs(k - 49))
-            if (k == 57) goToSlide(slides.length - 1)
         });
         updateIndicator();
     }
