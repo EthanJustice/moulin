@@ -154,5 +154,6 @@ const goToSlide = (slide) => {
         }, window)
     }
 
-    cycleTheme('init')
+    cycleTheme('init');
+    document.querySelector(`#slide-indicator`).addEventListener('click', showPreview);
 }());

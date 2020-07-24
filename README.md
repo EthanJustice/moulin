@@ -6,8 +6,8 @@ lightweight presentation generator
 
 + High-level docs as Moulin demos/examples {in-progress}
 + Dashboard enable/disable config key
-+ Make clicking on slide indicator open slide preview
 
++ ~~Make clicking on slide indicator open slide preview~~
 + ~~Index or slide name permalink config key~~
 + ~~Number keybinds~~
 + ~~Permalink config key~~
