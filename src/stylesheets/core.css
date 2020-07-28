@@ -1,77 +1,77 @@
 .dashboard,
 .slide-preview-container {
-	margin: auto;
-	max-width: 600px;
+    margin: auto;
+    max-width: 600px;
 }
 
 .slide-preview {
-	margin: 1% auto;
-	cursor: pointer;
+    margin: 1% auto;
+    cursor: pointer;
 }
 
 .slide-preview-status {
-	margin: 0 10px;
-	display: inline-block;
-	color: #fafafa;
-	cursor: pointer;
-	height: 10px;
-	width: 10px;
-	border-radius: 50%;
+    margin: 0 10px;
+    display: inline-block;
+    color: #fafafa;
+    cursor: pointer;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
 }
 
 .loading {
-	background: gray;
+    background: gray;
 }
 
 .loaded {
-	background: #16c581;
+    background: #16c581;
 }
 
 * > .loading-failed {
-	cursor: auto;
+    cursor: auto;
 }
 
 .loading-failed {
-	background: crimson;
+    background: crimson;
 }
 
 .loading-indicator {
-	min-width: 50%;
-	padding: 10px 20px;
-	overflow-y: scroll;
+    min-width: 50%;
+    padding: 10px 20px;
+    overflow-y: scroll;
 }
 
 .loading-indicator > * {
-	margin: 1% auto;
+    margin: 1% auto;
 }
 
 .loading-indicator-version {
-	text-decoration: underline;
-	margin: 2% auto;
-	font-size: 14pt;
+    text-decoration: underline;
+    margin: 2% auto;
+    font-size: 14pt;
 }
 
 .loading-indicator-success {
-	color: #16c581;
+    color: #16c581;
 }
 
 .loading-indicator-failure {
-	color: crimson;
+    color: crimson;
 }
 
 #slide-indicator {
-	animation: none;
-	position: fixed;
-	bottom: 2%;
-	left: 2%;
-	opacity: 0.7;
+    animation: none;
+    position: fixed;
+    bottom: 2%;
+    left: 2%;
+    opacity: 0.7;
 }
 
 #slide-indicator:hover {
-	opacity: 1;
-	cursor: pointer;
+    opacity: 1;
+    cursor: pointer;
 }
 
 .hidden {
-	display: none;
+    display: none;
 }
