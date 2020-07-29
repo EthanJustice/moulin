@@ -167,9 +167,9 @@ getConfig().then(data => {
 
     main.appendChild(indicator);
 
-    moulin.appendChild(dashboard);
+    if (config.disabled && !config.disabled.includes('dashboard') || !config.disabled) moulin.appendChild(dashboard);
 
-    if (config.disabled && !config.disabled.includes("preview")) moulin.appendChild(preview);
+    if (config.disabled && !config.disabled.includes("preview") || !config.disabled) moulin.appendChild(preview);
 
     dashboard.insertBefore(loadingTimeElement, dashboard.firstChild);
 

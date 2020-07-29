@@ -151,10 +151,12 @@ const goToSlide = slide => {
             if (k == 84) cycleTheme(); // t key
             if (k == 68) {
                 // d key
-                if (dashboard.classList.contains("hidden") == true) {
-                    showDashboard();
-                } else {
+                if (config.disabled && config.disabled.includes('dashboard')) return
+
+                if (!dashboard.classList.contains('hidden')) {
                     showMain();
+                } else if (dashboard.classList.contains("hidden")) {
+                    showDashboard();
                 }
             }
             if (k == 83) {

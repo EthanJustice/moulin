@@ -5,9 +5,9 @@ lightweight presentation generator
 ## Roadmap
 
 + High-level docs as Moulin demos/examples {in-progress}
-+ Dashboard/~~preview~~ enable/disable config key
 + Slides table of contents
 
++ ~~Dashboard/preview enable/disable config key~~
 + ~~Make clicking on slide indicator open slide preview~~
 + ~~Index or slide name permalink config key~~
 + ~~Number keybinds~~
