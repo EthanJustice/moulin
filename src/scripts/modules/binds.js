@@ -56,10 +56,10 @@ const nextSlide = () => {
             history.pushState(
                 ``,
                 main.firstChild.dataset.title ||
-                    originalTitle ||
-                    document.title,
+                originalTitle ||
+                document.title,
                 `#${
-                    config.permalinks == "name" ? slides[current] : current + 1
+                config.permalinks == "name" ? slides[current] : current + 1
                 }`
             );
         document.title =
@@ -84,10 +84,10 @@ const previousSlide = () => {
             history.pushState(
                 ``,
                 main.firstChild.dataset.title ||
-                    originalTitle ||
-                    document.title,
+                originalTitle ||
+                document.title,
                 `#${
-                    config.permalinks == "name" ? slides[current - 1] : current
+                config.permalinks == "name" ? slides[current - 1] : current
                 }`
             );
         document.title =
@@ -118,10 +118,10 @@ const goToSlide = slide => {
             history.pushState(
                 ``,
                 main.firstChild.dataset.title ||
-                    originalTitle ||
-                    document.title,
+                originalTitle ||
+                document.title,
                 `#${
-                    config.permalinks == "name" ? slides[current] : current + 1
+                config.permalinks == "name" ? slides[current] : current + 1
                 }`
             );
         document.title =
@@ -159,11 +159,7 @@ const goToSlide = slide => {
             }
             if (k == 83) {
                 // s key
-                if (
-                    document
-                        .querySelector(".slide-preview-container")
-                        .classList.contains("hidden") == true
-                ) {
+                if (document.querySelector(".slide-preview-container") && document.querySelector(".slide-preview-container").classList.contains("hidden") == true) {
                     showPreview();
                 } else {
                     showMain();

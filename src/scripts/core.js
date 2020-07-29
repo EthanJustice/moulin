@@ -48,19 +48,9 @@ const indicator = buildElement("span", {
     id: "slide-indicator",
 });
 
-main.appendChild(indicator);
-
-moulin.appendChild(dashboard);
-moulin.appendChild(preview);
-moulin.appendChild(main);
-
 const loadingTimeElement = buildElement("div", {
     className: "loading-indicator",
 });
-
-dashboard.insertBefore(loadingTimeElement, dashboard.firstChild);
-
-document.body.appendChild(moulin);
 
 // timing
 
@@ -175,9 +165,21 @@ getConfig().then(data => {
 
     config = data;
 
+    main.appendChild(indicator);
+
+    moulin.appendChild(dashboard);
+
+    if (config.disabled && !config.disabled.includes("preview")) moulin.appendChild(preview);
+
+    dashboard.insertBefore(loadingTimeElement, dashboard.firstChild);
+
+    moulin.appendChild(main);
+
+    document.body.appendChild(moulin);
+
     addLoadIndicator(
         `${config.name} ${config.prod ? "Production" : "Development"} ${
-            config.version.includes("v") ? config.version : `v${config.version}`
+        config.version.includes("v") ? config.version : `v${config.version}`
         }`,
         0
     );
@@ -309,7 +311,7 @@ const start = config => {
 
             let name = slide
                 .split("/")
-                [slide.split("/").length - 1].replace(".html", "");
+            [slide.split("/").length - 1].replace(".html", "");
 
             slides.push(name);
 
@@ -334,9 +336,9 @@ const start = config => {
                                     data_slide_index: name,
                                 },
                                 `Loaded slide "${
-                                    slides[slides.length - 1]
+                                slides[slides.length - 1]
                                 }," in ${
-                                    loadTimes[name].timer.elapsedMilliseconds
+                                loadTimes[name].timer.elapsedMilliseconds
                                 }ms (${loadTimes[name].timer.elapsedSeconds}s)`
                             );
 
@@ -374,46 +376,31 @@ const start = config => {
                                 );
                             });
 
-                            document
-                                .querySelector(".slide-preview-container")
-                                .appendChild(newPreview);
+                            if (document.querySelector(".slide-preview-container")) document.querySelector(".slide-preview-container").appendChild(newPreview);
 
-                            dispatch(
-                                `slide-loaded`,
-                                {
-                                    detail: name,
-                                },
-                                window
-                            );
+                            dispatch(`slide-loaded`, {
+                                detail: name,
+                            }, window);
 
                             if (element.dataset.next) {
-                                if (
-                                    slides.indexOf(element.dataset.next) == -1
-                                ) {
+                                if (slides.indexOf(element.dataset.next) == -1) {
                                     fetchSlide(element.dataset.next);
                                 }
                             } else {
                                 let t = 0;
-                                Object.values(loadTimes).forEach(
-                                    item =>
-                                        (t += item.timer.elapsedMilliseconds)
-                                );
+                                Object.values(loadTimes).forEach(item => t += item.timer.elapsedMilliseconds);
                                 status.slides = {
                                     loaded: true,
                                     percentage: 100,
                                     duration: t,
                                 };
 
-                                dispatch(
-                                    "slide-loading-finished",
-                                    {
-                                        detail: {
-                                            data: status.slides,
-                                            slides: slides.length,
-                                        },
+                                dispatch("slide-loading-finished", {
+                                    detail: {
+                                        data: status.slides,
+                                        slides: slides.length,
                                     },
-                                    window
-                                );
+                                }, window);
                             }
                         } else {
                             slides.pop();
@@ -456,7 +443,7 @@ const start = config => {
                                         data_slide_index: name,
                                     },
                                     `Failed to load slide ${
-                                        slideContent.length + 1
+                                    slideContent.length + 1
                                     }`
                                 );
 
@@ -524,7 +511,7 @@ const addLoadIndicator = (type, duration) => {
                 {
                     className: `${
                         type == "Everything" ? "loading-indicator-success" : ""
-                    }`,
+                        }`,
                 },
                 `${type} loaded in ${duration}ms (${Timer.toSeconds(
                     duration

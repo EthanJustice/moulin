@@ -1,12 +1,12 @@
 {
-	"themes": [
-		"light",
-		"dark",
-		"solarized"
-	],
-	"name": "Moulin",
-	"index": "slides/index",
-	"permalinks": "name",
-	"global": "global.css",
-	"version": "0.0.1"
+    "themes": [
+        "light",
+        "dark",
+        "solarized"
+    ],
+    "name": "Moulin",
+    "index": "slides/index",
+    "permalinks": "name",
+    "global": "global.css",
+    "version": "0.0.1"
 }
