@@ -91,6 +91,7 @@ The config file is a JSON file located in the directory of the presentation's in
 | prod | Boolean | If set to `true`, Moulin is run in production mode, and caches slides. | true | Yes |
 | version | string | Current version of the presentation (used to open a cache in production version and for display in the dashboard).  The cache name is prefixed with `moulin-`, so any attempt to open Moulin's cache must keep that in mind | "0.0.1" "two" | Yes if in production mode |
 | permalinks | string ("name", "index") | If set, enables permalinks for each individual slide (e.g. `site.tld/#{slide}` would open to the specified slide).  The, "name," value will set permalinks to the name of the slide (the `data-next` attribute), while the, "index," value will set it to the index of the slide | `name` | No |
+| disabled | array ("dashboard", "preview") | If set, disables the specified item(s), so that they can't be activated by the user | ["dashboard"] | No |
 
 ### Hooks
 
