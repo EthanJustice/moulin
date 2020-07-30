@@ -334,9 +334,7 @@ const start = config => {
                                     className: "slide-preview",
                                     data_slide_index: name,
                                 },
-                                `Loaded slide "${
-                                slides[slides.length - 1]
-                                }," in ${
+                                `Loaded slide "${slideContent[slides.length - 1].dataset.title || slides[slides.length - 1]}," in ${
                                 loadTimes[name].timer.elapsedMilliseconds
                                 }ms (${loadTimes[name].timer.elapsedSeconds}s)`
                             );
