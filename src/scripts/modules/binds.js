@@ -38,7 +38,7 @@ const updateIndicator = () => {
     }
 
     let indicator = document.querySelector(`#slide-indicator`);
-    indicator.innerText = `${current + 1}/${slides.length}`;
+    if (indicator) indicator.innerText = `${current + 1}/${slides.length}`;
 };
 
 const nextSlide = () => {
