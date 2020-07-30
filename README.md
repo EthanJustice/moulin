@@ -2,6 +2,14 @@
 
 lightweight presentation generator
 
+[Moulin (Wikipedia)](https://en.wikipedia.org/wiki/Moulin_(geomorphology))
+![A moulin](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Moulin_on_Snowbird_Glacier%2C_below_the_Snowbird_Glacier_Hut._Talkeetna_Mountains%2C_Alaska.JPG/1200px-Moulin_on_Snowbird_Glacier%2C_below_the_Snowbird_Glacier_Hut._Talkeetna_Mountains%2C_Alaska.JPG)
+
+## Table of Contents
+
++ [Roadmap](#roadmap)
++ [Docs](#docs)
+
 ## Roadmap
 
 + High-level docs as Moulin demos/examples {in-progress}
@@ -21,6 +29,10 @@ lightweight presentation generator
 + ~~Dashboard/main/preview opened/closed hook~~
 + ~~Dedicated show slides keybind~~
 
+## Docs
+
+As a general note, any user-facing indexes (permalinks, current slide number, etc.) will **not** be zero-based; that is, the first slide will have an internal index of `0`, but would be `1` on any permalink.
+
 Example presentation
 
 ```plaintext
@@ -33,10 +45,6 @@ moulin.json - moulin config
 /other
     global.css - global moulin styling
 ```
-
-## Docs
-
-As a general note, any user-facing indexes (permalinks, current slide number, etc.) will **not** be zero-based; that is, the first slide will have an internal index of `0`, but would be `1` on any permalink.
 
 ### Slides
 
