@@ -165,14 +165,13 @@ getConfig().then(data => {
 
     config = data;
 
-    main.appendChild(indicator);
-
     if (config.disabled && !config.disabled.includes('dashboard') || !config.disabled) moulin.appendChild(dashboard);
 
     if (config.disabled && !config.disabled.includes("preview") || !config.disabled) moulin.appendChild(preview);
 
     dashboard.insertBefore(loadingTimeElement, dashboard.firstChild);
 
+    main.appendChild(indicator);
     moulin.appendChild(main);
 
     document.body.appendChild(moulin);
@@ -414,27 +413,9 @@ const start = config => {
 
                             addLoadIndicator(`slides`);
 
-                            if (
-                                document.querySelector(
-                                    `p[data-slide-index="${slides.indexOf(
-                                        name
-                                    )}"]`
-                                )
-                            ) {
-                                document
-                                    .querySelector(
-                                        `p[data-slide-index="${slides.indexOf(
-                                            name
-                                        )}"]`
-                                    )
-                                    .classList.remove("loading");
-                                document
-                                    .querySelector(
-                                        `p[data-slide-index="${slides.indexOf(
-                                            name
-                                        )}"]`
-                                    )
-                                    .classList.add("loading-failed");
+                            if (document.querySelector(`p[data-slide-index="${slides.indexOf(name)}"]`)) {
+                                document.querySelector(`p[data-slide-index="${slides.indexOf(name)}"]`).classList.remove("loading");
+                                document.querySelector(`p[data-slide-index="${slides.indexOf(name)}"]`).classList.add("loading-failed");
                             } else {
                                 let newPreviewMessage = buildElement(
                                     `p`,

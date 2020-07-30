@@ -99,13 +99,13 @@ const previousSlide = () => {
 const goToSlide = slide => {
     let currentSlide = main.firstChild;
     let current = typeof slide == "string" ? slides.indexOf(slide) : slide;
-
-    if (
-        (slides.indexOf(currentSlide.dataset.slideName) == 0 && current <= 0) ||
-        (slides.indexOf(currentSlide.dataset.slideName) == slides.length - 1 &&
-            current >= slides.length - 1)
-    )
+    if (currentSlide.id == 'slide-indicator') {
+        main.insertBefore(slideContent[current], main.firstChild);
         return;
+    }
+
+
+    if ((slides.indexOf(currentSlide.dataset.slideName) == 0 && current <= 0) || (slides.indexOf(currentSlide.dataset.slideName) == slides.length - 1 && current >= slides.length - 1)) return;
 
     showMain();
 
