@@ -19,10 +19,6 @@ const buildElement = (type, attributes, text) => {
     return element;
 };
 
-const error = (msg, err) => {
-    console.error(msg);
-};
-
 // layout shell
 const main =
     document.body.querySelector(".main") ||
@@ -165,9 +161,17 @@ getConfig().then(data => {
 
     config = data;
 
-    if (config.disabled && !config.disabled.includes('dashboard') || !config.disabled) moulin.appendChild(dashboard);
+    if (
+        (config.disabled && !config.disabled.includes("dashboard")) ||
+        !config.disabled
+    )
+        moulin.appendChild(dashboard);
 
-    if (config.disabled && !config.disabled.includes("preview") || !config.disabled) moulin.appendChild(preview);
+    if (
+        (config.disabled && !config.disabled.includes("preview")) ||
+        !config.disabled
+    )
+        moulin.appendChild(preview);
 
     dashboard.insertBefore(loadingTimeElement, dashboard.firstChild);
 
@@ -178,7 +182,7 @@ getConfig().then(data => {
 
     addLoadIndicator(
         `${config.name} ${config.prod ? "Production" : "Development"} ${
-        config.version.includes("v") ? config.version : `v${config.version}`
+            config.version.includes("v") ? config.version : `v${config.version}`
         }`,
         0
     );
@@ -211,7 +215,6 @@ getConfig().then(data => {
 });
 
 const dispatch = (event, data, location) => {
-    console.error(`dispatching ${event}`); // debug
     let customEvent = new CustomEvent(event, data);
     location.dispatchEvent(customEvent);
 };
@@ -310,7 +313,7 @@ const start = config => {
 
             let name = slide
                 .split("/")
-            [slide.split("/").length - 1].replace(".html", "");
+                [slide.split("/").length - 1].replace(".html", "");
 
             slides.push(name);
 
@@ -334,8 +337,11 @@ const start = config => {
                                     className: "slide-preview",
                                     data_slide_index: name,
                                 },
-                                `Loaded slide "${slideContent[slides.length - 1].dataset.title || slides[slides.length - 1]}," in ${
-                                loadTimes[name].timer.elapsedMilliseconds
+                                `Loaded slide "${
+                                    slideContent[slides.length - 1].dataset
+                                        .title || slides[slides.length - 1]
+                                }," in ${
+                                    loadTimes[name].timer.elapsedMilliseconds
                                 }ms (${loadTimes[name].timer.elapsedSeconds}s)`
                             );
 
@@ -373,31 +379,51 @@ const start = config => {
                                 );
                             });
 
-                            if (document.querySelector(".slide-preview-container")) document.querySelector(".slide-preview-container").appendChild(newPreview);
+                            if (
+                                document.querySelector(
+                                    ".slide-preview-container"
+                                )
+                            )
+                                document
+                                    .querySelector(".slide-preview-container")
+                                    .appendChild(newPreview);
 
-                            dispatch(`slide-loaded`, {
-                                detail: name,
-                            }, window);
+                            dispatch(
+                                `slide-loaded`,
+                                {
+                                    detail: name,
+                                },
+                                window
+                            );
 
                             if (element.dataset.next) {
-                                if (slides.indexOf(element.dataset.next) == -1) {
+                                if (
+                                    slides.indexOf(element.dataset.next) == -1
+                                ) {
                                     fetchSlide(element.dataset.next);
                                 }
                             } else {
                                 let t = 0;
-                                Object.values(loadTimes).forEach(item => t += item.timer.elapsedMilliseconds);
+                                Object.values(loadTimes).forEach(
+                                    item =>
+                                        (t += item.timer.elapsedMilliseconds)
+                                );
                                 status.slides = {
                                     loaded: true,
                                     percentage: 100,
                                     duration: t,
                                 };
 
-                                dispatch("slide-loading-finished", {
-                                    detail: {
-                                        data: status.slides,
-                                        slides: slides.length,
+                                dispatch(
+                                    "slide-loading-finished",
+                                    {
+                                        detail: {
+                                            data: status.slides,
+                                            slides: slides.length,
+                                        },
                                     },
-                                }, window);
+                                    window
+                                );
                             }
                         } else {
                             slides.pop();
@@ -411,9 +437,27 @@ const start = config => {
 
                             addLoadIndicator(`slides`);
 
-                            if (document.querySelector(`p[data-slide-index="${slides.indexOf(name)}"]`)) {
-                                document.querySelector(`p[data-slide-index="${slides.indexOf(name)}"]`).classList.remove("loading");
-                                document.querySelector(`p[data-slide-index="${slides.indexOf(name)}"]`).classList.add("loading-failed");
+                            if (
+                                document.querySelector(
+                                    `p[data-slide-index="${slides.indexOf(
+                                        name
+                                    )}"]`
+                                )
+                            ) {
+                                document
+                                    .querySelector(
+                                        `p[data-slide-index="${slides.indexOf(
+                                            name
+                                        )}"]`
+                                    )
+                                    .classList.remove("loading");
+                                document
+                                    .querySelector(
+                                        `p[data-slide-index="${slides.indexOf(
+                                            name
+                                        )}"]`
+                                    )
+                                    .classList.add("loading-failed");
                             } else {
                                 let newPreviewMessage = buildElement(
                                     `p`,
@@ -422,7 +466,7 @@ const start = config => {
                                         data_slide_index: name,
                                     },
                                     `Failed to load slide ${
-                                    slideContent.length + 1
+                                        slideContent.length + 1
                                     }`
                                 );
 
@@ -456,15 +500,25 @@ const start = config => {
                         },
                         window
                     );
-                    error(err);
                 });
         };
 
         fetchSlide(data.index).then(() => {
             if (document.querySelector(".main")) {
                 if (!config.default || config.default == "slides") {
-                    if (!window.location.hash && config.permalinks) history.pushState(``, document.title, `#${config.permalinks == "name" ? slides[0] : 1}`);
-                    if (!config.permalinks) document.querySelector(".main").insertBefore(slideContent[0], document.querySelector(".main").firstChild);
+                    if (!window.location.hash && config.permalinks)
+                        history.pushState(
+                            ``,
+                            document.title,
+                            `#${config.permalinks == "name" ? slides[0] : 1}`
+                        );
+                    if (!config.permalinks)
+                        document
+                            .querySelector(".main")
+                            .insertBefore(
+                                slideContent[0],
+                                document.querySelector(".main").firstChild
+                            );
                     document.querySelector(".main").classList.remove("hidden");
                 }
             }
@@ -480,7 +534,7 @@ const addLoadIndicator = (type, duration) => {
                 {
                     className: `${
                         type == "Everything" ? "loading-indicator-success" : ""
-                        }`,
+                    }`,
                 },
                 `${type} loaded in ${duration}ms (${Timer.toSeconds(
                     duration
@@ -526,8 +580,10 @@ window.addEventListener(
     event => {
         if (window.location.hash) {
             let s;
-            if (config.permalinks == "name") s = slides.indexOf(window.location.hash.replace("#", ""));
-            if (config.permalinks == "index") s = window.location.hash.replace("#", "") - 1;
+            if (config.permalinks == "name")
+                s = slides.indexOf(window.location.hash.replace("#", ""));
+            if (config.permalinks == "index")
+                s = window.location.hash.replace("#", "") - 1;
             goToSlide(s);
         }
 

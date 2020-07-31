@@ -15,20 +15,6 @@ lightweight presentation generator
 + High-level docs as Moulin demos/examples {in-progress}
 + Slides table of contents
 
-+ ~~Dashboard/preview enable/disable config key~~
-+ ~~Make clicking on slide indicator open slide preview~~
-+ ~~Index or slide name permalink config key~~
-+ ~~Number keybinds~~
-+ ~~Permalink config key~~
-+ ~~Custom title support~~
-+ ~~Implicit slide directory inference~~
-+ ~~Open preview config key~~
-+ ~~Permalinks~~
-+ ~~Theme change hook~~
-+ ~~Main functionality~~
-+ ~~Dashboard/main/preview opened/closed hook~~
-+ ~~Dedicated show slides keybind~~
-
 ## Docs
 
 As a general note, any user-facing indexes (permalinks, current slide number, etc.) will **not** be zero-based; that is, the first slide will have an internal index of `0`, but would be `1` on any permalink.
@@ -122,3 +108,5 @@ To-Do: event values
 + `slides-opened` (`window`), for when the slides are opened
 
 ### Slide Scripts
+
+It is possible to add scripts within slides, but they won't execute once they're loaded, which is why Moulin provides the `script-loaded` hook.
