@@ -12,6 +12,7 @@ lightweight presentation generator
 
 ## Roadmap
 
++ Switch to ES5 import/export
 + High-level docs as Moulin demos/examples {in-progress}
 + Slides table of contents
 

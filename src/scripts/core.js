@@ -1,23 +1,7 @@
 // main
 
-// utils
-const buildElement = (type, attributes, text) => {
-    let element = document.createElement(type);
-    element.innerText = text || "";
-    if (attributes) {
-        Object.keys(attributes).forEach(item => {
-            if (item.includes("data_")) {
-                element.setAttribute(
-                    item.replace(new RegExp("_", "g"), "-"),
-                    attributes[item]
-                );
-            } else {
-                element[item] = attributes[item];
-            }
-        });
-    }
-    return element;
-};
+import { buildElement, renderJS, scopeCSS } from "./modules/parse.js";
+import { showMain, showDashboard, showPreview } from "./modules/binds.js";
 
 // layout shell
 const main =
@@ -47,6 +31,118 @@ const indicator = buildElement("span", {
 const loadingTimeElement = buildElement("div", {
     className: "loading-indicator",
 });
+
+// binds
+const updateIndicator = () => {
+    let slideName = document.querySelector("div[data-slide-name]");
+    let current = 0;
+
+    if (slideName && slideName.dataset.slideName) {
+        current = slides.indexOf(slideName.dataset.slideName);
+    } else {
+        current = 0;
+    }
+
+    if (current + 1 < 1) {
+        current = 0;
+    }
+
+    let indicator = document.querySelector(`#slide-indicator`);
+    if (indicator) indicator.innerText = `${current + 1}/${slides.length}`;
+};
+
+const nextSlide = () => {
+    let currentSlide = main.firstChild;
+    let current = slides.indexOf(currentSlide.dataset.slideName);
+
+    if (slideContent.length !== 0 && current != slides.length - 1) {
+        if (dashboard.classList.contains("hidden")) current += 1;
+
+        currentSlide.remove();
+        main.insertBefore(slideContent[current], main.firstChild);
+
+        updateIndicator();
+        if (config.permalinks)
+            history.pushState(
+                ``,
+                main.firstChild.dataset.title ||
+                    originalTitle ||
+                    document.title,
+                `#${
+                    config.permalinks == "name" ? slides[current] : current + 1
+                }`
+            );
+        document.title =
+            main.firstChild.dataset.title || originalTitle || document.title;
+        dispatch("slide-change", { detail: current }, window);
+    }
+    showMain();
+};
+
+const previousSlide = () => {
+    showMain();
+
+    let currentSlide = main.firstChild;
+    let current = slides.indexOf(currentSlide.dataset.slideName);
+
+    if (current != 0) {
+        currentSlide.remove();
+        main.insertBefore(slideContent[current - 1], main.firstChild);
+
+        updateIndicator();
+        if (config.permalinks)
+            history.pushState(
+                ``,
+                main.firstChild.dataset.title ||
+                    originalTitle ||
+                    document.title,
+                `#${
+                    config.permalinks == "name" ? slides[current - 1] : current
+                }`
+            );
+        document.title =
+            main.firstChild.dataset.title || originalTitle || document.title;
+        dispatch("slide-change", { detail: current - 1 }, window);
+    }
+};
+
+const goToSlide = slide => {
+    let currentSlide = main.firstChild;
+    let current = typeof slide == "string" ? slides.indexOf(slide) : slide;
+    if (currentSlide.id == "slide-indicator") {
+        main.insertBefore(slideContent[current], main.firstChild);
+        return;
+    }
+
+    if (
+        (slides.indexOf(currentSlide.dataset.slideName) == 0 && current <= 0) ||
+        (slides.indexOf(currentSlide.dataset.slideName) == slides.length - 1 &&
+            current >= slides.length - 1)
+    )
+        return;
+
+    showMain();
+
+    if (current != slides.length) {
+        currentSlide.remove();
+        main.insertBefore(slideContent[current], main.firstChild);
+
+        updateIndicator();
+        if (config.permalinks)
+            history.pushState(
+                ``,
+                main.firstChild.dataset.title ||
+                    originalTitle ||
+                    document.title,
+                `#${
+                    config.permalinks == "name" ? slides[current] : current + 1
+                }`
+            );
+        document.title =
+            main.firstChild.dataset.title || originalTitle || document.title;
+        dispatch("slide-change", { detail: current }, window);
+    }
+};
 
 // timing
 
@@ -131,10 +227,6 @@ const load = async name => {
 
 // core
 let status = {
-    modules: {
-        loaded: false,
-        percentage: 0,
-    },
     slides: {
         loaded: false,
         percentage: 0,
@@ -193,7 +285,7 @@ getConfig().then(data => {
     };
     addLoadIndicator(`Config`, configTimer.elapsedMilliseconds);
 
-    start(config);
+    loadSlides(config);
 
     if (config.global) {
         document.head.appendChild(
@@ -212,6 +304,103 @@ getConfig().then(data => {
             .querySelector(".slide-preview-container")
             .classList.remove("hidden");
     }
+
+    (function () {
+        window.addEventListener(
+            "slide-loading-finished",
+            () => {
+                init();
+            },
+            {
+                once: true,
+            }
+        );
+
+        const init = () => {
+            document.body.addEventListener("keydown", event => {
+                if (!main.firstChild) return;
+
+                let k = event.which;
+                if ((!event.ctrlKey && k == 39) || k == 32) nextSlide(); // right arrow key/space bar
+                if ((event.ctrlKey && k == 39) || k == 57)
+                    goToSlide(slides.length - 1); // ctrl + right arrow
+                if (!event.ctrlKey && k == 37) previousSlide(); // left arrow key
+                if (event.ctrlKey && k == 37) goToSlide(0); // ctrl + left arrow key
+                if (k == 84) cycleTheme(); // t key
+                if (k == 68) {
+                    // d key
+                    if (
+                        config.disabled &&
+                        config.disabled.includes("dashboard")
+                    )
+                        return;
+
+                    if (!dashboard.classList.contains("hidden")) {
+                        showMain();
+                    } else if (dashboard.classList.contains("hidden")) {
+                        showDashboard();
+                    }
+                }
+                if (k == 83) {
+                    // s key
+                    if (
+                        document.querySelector(".slide-preview-container") &&
+                        document
+                            .querySelector(".slide-preview-container")
+                            .classList.contains("hidden") == true
+                    ) {
+                        showPreview();
+                    } else {
+                        showMain();
+                    }
+                }
+                if (k == 72) showMain(); // h key
+                if (!event.ctrlKey && k >= 49 && k < 57)
+                    goToSlide(Math.abs(k - 49));
+            });
+            updateIndicator();
+        };
+
+        const cycleTheme = ref => {
+            if (ref) {
+                if (
+                    window.matchMedia("(prefers-color-scheme:dark)").matches ==
+                    true
+                ) {
+                    document.body.classList.add("dark");
+                    return;
+                }
+            }
+
+            let i = 0;
+
+            config.themes.forEach(item => {
+                if (document.body.classList.contains(item)) {
+                    i = config.themes.indexOf(item);
+                }
+            });
+
+            document.body.classList.remove(config.themes[i]);
+
+            i += 1;
+
+            if (i >= config.themes.length) i = 0;
+
+            document.body.classList.add(config.themes[i]);
+
+            dispatch(
+                `theme-change`,
+                {
+                    detail: config.themes[i],
+                },
+                window
+            );
+        };
+
+        cycleTheme("init");
+
+        indicator.addEventListener("click", showPreview);
+    })();
 });
 
 const dispatch = (event, data, location) => {
@@ -219,311 +408,212 @@ const dispatch = (event, data, location) => {
     location.dispatchEvent(customEvent);
 };
 
-const modList = ["parse", "binds"];
-
-const start = config => {
-    const modContainer = buildElement("div", {
-        id: "scripts",
-    });
-
+const loadSlides = data => {
+    let inferredDir;
     let loadTimes = {};
+    const fetchSlide = slide => {
+        if (slide == config.index && !config.slideDir)
+            inferredDir = `${slide.split("/")[0]}/`;
+        if (!slide.includes("/"))
+            slide = `${config.slideDir || inferredDir}${slide}`;
 
-    modList.forEach((item, index) => {
-        loadTimes[item] = {
-            timer: new Timer(item),
-            name: item,
+        let name = slide
+            .split("/")
+            [slide.split("/").length - 1].replace(".html", "");
+
+        slides.push(name);
+
+        loadTimes[name] = {
+            timer: new Timer(name),
+            name: name,
         };
 
-        let script = buildElement("script", {
-            src: `src/scripts/modules/${item}.js`,
-        });
+        loadTimes[name].timer.start();
+        return load(slide.replace(".html", ""))
+            .then(item => {
+                const register = element => {
+                    if (element != null && element != false) {
+                        slideContent.push(element);
 
-        modContainer.appendChild(script);
-        loadTimes[item].timer.start();
+                        loadTimes[name].timer.stop();
 
-        script.addEventListener(
-            "load",
-            () => {
-                loadTimes[item].timer.stop();
-
-                status.modules.percentage = parseInt(
-                    ((index + 1) / modList.length) * 100
-                );
-
-                if (
-                    script.src
-                        .replace(
-                            window.location.href.replace(
-                                window.location.hash,
-                                ""
-                            ),
-                            ""
-                        )
-                        .replace("src/scripts/modules/", "")
-                        .replace(".js", "") == modList[modList.length - 1]
-                ) {
-                    loadSlides(config);
-
-                    let t = 0;
-                    Object.values(loadTimes).forEach(
-                        item => (t += item.timer.elapsedMilliseconds)
-                    );
-                    status.modules = {
-                        loaded: true,
-                        percentage: 100,
-                        duration: t,
-                    };
-
-                    dispatch(
-                        "script-loading-finished",
-                        {
-                            detail: {
-                                data: status.modules,
+                        let newPreview = buildElement(
+                            `p`,
+                            {
+                                className: "slide-preview",
+                                data_slide_index: name,
                             },
-                        },
-                        window
-                    );
-                }
+                            `Loaded slide "${
+                                slideContent[slides.length - 1].dataset.title ||
+                                slides[slides.length - 1]
+                            }," in ${
+                                loadTimes[name].timer.elapsedMilliseconds
+                            }ms (${loadTimes[name].timer.elapsedSeconds}s)`
+                        );
 
-                dispatch(
-                    "script-loaded",
-                    {
-                        detail: {
-                            name: item,
-                            slides: slides.length,
-                        },
-                    },
-                    window
-                );
-            },
-            { once: true }
-        );
-    });
+                        let newPreviewStatus = buildElement(`span`, {
+                            className: "slide-preview-status loading",
+                        });
 
-    document.body.appendChild(modContainer);
+                        newPreview.prepend(newPreviewStatus);
 
-    const loadSlides = data => {
-        let inferredDir;
-        let loadTimes = {};
-        const fetchSlide = slide => {
-            if (slide == config.index && !config.slideDir)
-                inferredDir = `${slide.split("/")[0]}/`;
-            if (!slide.includes("/"))
-                slide = `${config.slideDir || inferredDir}${slide}`;
+                        window.addEventListener("slide-loaded", event => {
+                            if (event.detail != name) return;
+                            newPreviewStatus.classList.remove("loading");
+                            newPreviewStatus.classList.add("loaded");
+                        });
 
-            let name = slide
-                .split("/")
-                [slide.split("/").length - 1].replace(".html", "");
+                        window.addEventListener(
+                            "slide-loading-failed",
+                            event => {
+                                if (event.detail != slides.indexOf(name))
+                                    return;
+                                newPreviewStatus.classList.remove("loading");
+                                newPreviewStatus.classList.add(
+                                    "loading-failed"
+                                );
+                            }
+                        );
 
-            slides.push(name);
+                        newPreview.addEventListener("click", () => {
+                            goToSlide(
+                                slides.indexOf(newPreview.dataset.slideIndex)
+                            );
+                        });
 
-            loadTimes[name] = {
-                timer: new Timer(name),
-                name: name,
-            };
+                        if (document.querySelector(".slide-preview-container"))
+                            document
+                                .querySelector(".slide-preview-container")
+                                .appendChild(newPreview);
 
-            loadTimes[name].timer.start();
-            return load(slide.replace(".html", ""))
-                .then(item => {
-                    const register = element => {
-                        if (element != null && element != false) {
-                            slideContent.push(element);
+                        dispatch(
+                            `slide-loaded`,
+                            {
+                                detail: name,
+                            },
+                            window
+                        );
 
-                            loadTimes[name].timer.stop();
+                        if (element.dataset.next) {
+                            if (slides.indexOf(element.dataset.next) == -1) {
+                                fetchSlide(element.dataset.next);
+                            }
+                        } else {
+                            let t = 0;
+                            Object.values(loadTimes).forEach(
+                                item => (t += item.timer.elapsedMilliseconds)
+                            );
+                            status.slides = {
+                                loaded: true,
+                                percentage: 100,
+                                duration: t,
+                            };
 
-                            let newPreview = buildElement(
+                            dispatch(
+                                "slide-loading-finished",
+                                {
+                                    detail: {
+                                        data: status.slides,
+                                        slides: slides.length,
+                                    },
+                                },
+                                window
+                            );
+                        }
+                    } else {
+                        slides.pop();
+                        dispatch(
+                            `slide-loading-failed`,
+                            {
+                                detail: slides.indexOf(name),
+                            },
+                            window
+                        );
+
+                        addLoadIndicator(`slides`);
+
+                        if (
+                            document.querySelector(
+                                `p[data-slide-index="${slides.indexOf(name)}"]`
+                            )
+                        ) {
+                            document
+                                .querySelector(
+                                    `p[data-slide-index="${slides.indexOf(
+                                        name
+                                    )}"]`
+                                )
+                                .classList.remove("loading");
+                            document
+                                .querySelector(
+                                    `p[data-slide-index="${slides.indexOf(
+                                        name
+                                    )}"]`
+                                )
+                                .classList.add("loading-failed");
+                        } else {
+                            let newPreviewMessage = buildElement(
                                 `p`,
                                 {
                                     className: "slide-preview",
                                     data_slide_index: name,
                                 },
-                                `Loaded slide "${
-                                    slideContent[slides.length - 1].dataset
-                                        .title || slides[slides.length - 1]
-                                }," in ${
-                                    loadTimes[name].timer.elapsedMilliseconds
-                                }ms (${loadTimes[name].timer.elapsedSeconds}s)`
+                                `Failed to load slide ${
+                                    slideContent.length + 1
+                                }`
                             );
 
                             let newPreviewStatus = buildElement(`span`, {
-                                className: "slide-preview-status loading",
+                                className:
+                                    "slide-preview-status loading-failed",
                             });
 
-                            newPreview.prepend(newPreviewStatus);
+                            newPreviewMessage.prepend(newPreviewStatus);
 
-                            window.addEventListener("slide-loaded", event => {
-                                if (event.detail != name) return;
-                                newPreviewStatus.classList.remove("loading");
-                                newPreviewStatus.classList.add("loaded");
-                            });
-
-                            window.addEventListener(
-                                "slide-loading-failed",
-                                event => {
-                                    if (event.detail != slides.indexOf(name))
-                                        return;
-                                    newPreviewStatus.classList.remove(
-                                        "loading"
-                                    );
-                                    newPreviewStatus.classList.add(
-                                        "loading-failed"
-                                    );
-                                }
-                            );
-
-                            newPreview.addEventListener("click", () => {
-                                goToSlide(
-                                    slides.indexOf(
-                                        newPreview.dataset.slideIndex
-                                    )
-                                );
-                            });
-
-                            if (
-                                document.querySelector(
-                                    ".slide-preview-container"
-                                )
-                            )
-                                document
-                                    .querySelector(".slide-preview-container")
-                                    .appendChild(newPreview);
-
-                            dispatch(
-                                `slide-loaded`,
-                                {
-                                    detail: name,
-                                },
-                                window
-                            );
-
-                            if (element.dataset.next) {
-                                if (
-                                    slides.indexOf(element.dataset.next) == -1
-                                ) {
-                                    fetchSlide(element.dataset.next);
-                                }
-                            } else {
-                                let t = 0;
-                                Object.values(loadTimes).forEach(
-                                    item =>
-                                        (t += item.timer.elapsedMilliseconds)
-                                );
-                                status.slides = {
-                                    loaded: true,
-                                    percentage: 100,
-                                    duration: t,
-                                };
-
-                                dispatch(
-                                    "slide-loading-finished",
-                                    {
-                                        detail: {
-                                            data: status.slides,
-                                            slides: slides.length,
-                                        },
-                                    },
-                                    window
-                                );
-                            }
-                        } else {
-                            slides.pop();
-                            dispatch(
-                                `slide-loading-failed`,
-                                {
-                                    detail: slides.indexOf(name),
-                                },
-                                window
-                            );
-
-                            addLoadIndicator(`slides`);
-
-                            if (
-                                document.querySelector(
-                                    `p[data-slide-index="${slides.indexOf(
-                                        name
-                                    )}"]`
-                                )
-                            ) {
-                                document
-                                    .querySelector(
-                                        `p[data-slide-index="${slides.indexOf(
-                                            name
-                                        )}"]`
-                                    )
-                                    .classList.remove("loading");
-                                document
-                                    .querySelector(
-                                        `p[data-slide-index="${slides.indexOf(
-                                            name
-                                        )}"]`
-                                    )
-                                    .classList.add("loading-failed");
-                            } else {
-                                let newPreviewMessage = buildElement(
-                                    `p`,
-                                    {
-                                        className: "slide-preview",
-                                        data_slide_index: name,
-                                    },
-                                    `Failed to load slide ${
-                                        slideContent.length + 1
-                                    }`
-                                );
-
-                                let newPreviewStatus = buildElement(`span`, {
-                                    className:
-                                        "slide-preview-status loading-failed",
-                                });
-
-                                newPreviewMessage.prepend(newPreviewStatus);
-
-                                document
-                                    .querySelector(".slide-preview-container")
-                                    .appendChild(newPreviewMessage);
-                            }
+                            document
+                                .querySelector(".slide-preview-container")
+                                .appendChild(newPreviewMessage);
                         }
-                    };
-
-                    if (Array.isArray(item)) {
-                        return item[0].then(element => {
-                            register(element);
-                        });
-                    } else {
-                        register(item);
                     }
-                })
-                .catch(err => {
-                    dispatch(
-                        `slide-loading-failed`,
-                        {
-                            detail: slides.indexOf(name),
-                        },
-                        window
-                    );
-                });
-        };
+                };
 
-        fetchSlide(data.index).then(() => {
-            if (document.querySelector(".main")) {
-                if (!config.default || config.default == "slides") {
-                    if (!window.location.hash && config.permalinks)
-                        history.pushState(
-                            ``,
-                            document.title,
-                            `#${config.permalinks == "name" ? slides[0] : 1}`
-                        );
-                    if (!config.permalinks)
-                        document
-                            .querySelector(".main")
-                            .insertBefore(
-                                slideContent[0],
-                                document.querySelector(".main").firstChild
-                            );
-                    document.querySelector(".main").classList.remove("hidden");
+                if (Array.isArray(item)) {
+                    return item[0].then(element => {
+                        register(element);
+                    });
+                } else {
+                    register(item);
                 }
-            }
-        });
+            })
+            .catch(err => {
+                dispatch(
+                    `slide-loading-failed`,
+                    {
+                        detail: slides.indexOf(name),
+                    },
+                    window
+                );
+            });
     };
+
+    fetchSlide(data.index).then(() => {
+        if (!config.default || config.default == "slides") {
+            if (!window.location.hash && config.permalinks)
+                history.pushState(
+                    ``,
+                    document.title,
+                    `#${config.permalinks == "name" ? slides[0] : 1}`
+                );
+            if (!config.permalinks)
+                document
+                    .querySelector(".main")
+                    .insertBefore(
+                        slideContent[0],
+                        document.querySelector(".main").firstChild
+                    );
+            document.querySelector(".main").classList.remove("hidden");
+        }
+    });
 };
 
 const addLoadIndicator = (type, duration) => {
@@ -563,17 +653,6 @@ const addLoadIndicator = (type, duration) => {
         );
     }
 };
-
-window.addEventListener(
-    "script-loading-finished",
-    event => {
-        addLoadIndicator(
-            `${modList.length} modules`,
-            event.detail.data.duration
-        );
-    },
-    { once: true }
-);
 
 window.addEventListener(
     "slide-loading-finished",
@@ -627,3 +706,5 @@ window.addEventListener(
     },
     { once: true }
 );
+
+export { dispatch, main, preview, dashboard };

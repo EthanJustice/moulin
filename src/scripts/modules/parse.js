@@ -1,3 +1,22 @@
+// utils
+const buildElement = (type, attributes, text) => {
+    let element = document.createElement(type);
+    element.innerText = text || "";
+    if (attributes) {
+        Object.keys(attributes).forEach(item => {
+            if (item.includes("data_")) {
+                element.setAttribute(
+                    item.replace(new RegExp("_", "g"), "-"),
+                    attributes[item]
+                );
+            } else {
+                element[item] = attributes[item];
+            }
+        });
+    }
+    return element;
+};
+
 // scopes css
 const scopeCSS = element => {
     if (!element) return false;
@@ -53,8 +72,10 @@ const renderJS = element => {
         { once: true }
     );
 
-    element.remove(element.querySelector("script"));
+    element.querySelectorAll(`script`).forEach(element => element.remove());
     element.appendChild(script);
 
     return element;
 };
+
+export { buildElement, scopeCSS, renderJS };
