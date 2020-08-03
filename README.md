@@ -12,7 +12,6 @@ lightweight presentation generator
 
 ## Roadmap
 
-+ Switch to ES5 import/export
 + High-level docs as Moulin demos/examples {in-progress}
 + Slides table of contents
 
@@ -95,7 +94,7 @@ Moulin currently supports 7 hooks:
 
 To-Do: event values
 
-+ `script-loaded` (`window`), for when a module or slide script has finished loading
++ `script-loaded` (`window`), for when a slide script has finished loading
 + `script-loading-finished` (`window`), for when all modules have finished loading
 + `slide-loaded` (`window`), for when a slide has finished loading
 + `slide-loading-finished` (`window`), for when all slides have finished loading

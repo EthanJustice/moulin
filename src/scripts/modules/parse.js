@@ -1,3 +1,5 @@
+import { dispatch } from '../core.js';
+
 // utils
 const buildElement = (type, attributes, text) => {
     let element = document.createElement(type);
@@ -72,7 +74,7 @@ const renderJS = element => {
         { once: true }
     );
 
-    element.querySelectorAll(`script`).forEach(element => element.remove());
+    element.remove(element.querySelectorAll("script"));
     element.appendChild(script);
 
     return element;
