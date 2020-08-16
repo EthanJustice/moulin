@@ -13,7 +13,8 @@ lightweight presentation generator
 
 ## Roadmap
 
-+ [Fix] Weird behaviour when using arrow keys from alternative menu
++ `dist` version
++ Internal unification of items
 + Code commenting, better docs
 
 ## Usage

@@ -305,11 +305,10 @@ getConfig().then(data => {
     }
 
     if (config.default == "dashboard") {
-        document.querySelector(".dashboard").classList.remove("hidden");
-    } else if (config.default == "preview") {
-        document
-            .querySelector(".slide-preview-container")
-            .classList.remove("hidden");
+        showDashboard();
+        history.pushState('', document.title, `${window.location.href.split('#')[0]}`)
+    } else if (config.default == "toc") {
+        showIndex();
     }
 
     (function () {
@@ -328,19 +327,20 @@ getConfig().then(data => {
                 if (!main.firstChild) return;
 
                 let k = event.which;
-                if ((!event.ctrlKey && k == 39) || k == 32) nextSlide(); // right arrow key/space bar
-                if ((event.ctrlKey && k == 39) || k == 57)
-                    goToSlide(slides.length - 1); // ctrl + right arrow
-                if (!event.ctrlKey && k == 37) previousSlide(); // left arrow key
-                if (event.ctrlKey && k == 37) goToSlide(0); // ctrl + left arrow key
+                if (!main.classList.contains('hidden')) {
+                    if ((!event.ctrlKey && k == 39) || k == 32) nextSlide(); // right arrow key/space bar
+                    if (!event.ctrlKey && k == 37) previousSlide(); // left arrow key
+                    if ((event.ctrlKey && k == 39) || k == 57)
+                        goToSlide(slides.length - 1); // ctrl + right arrow || 9
+                    if (event.ctrlKey && k == 37) goToSlide(0); // ctrl + left arrow key
+                    if (!event.ctrlKey && k >= 49 && k < 57) // 0...8
+                        goToSlide(Math.abs(k - 49));
+                }
+
                 if (k == 84) cycleTheme(); // t key
                 if (k == 68) {
                     // d key
-                    if (
-                        config.disabled &&
-                        config.disabled.includes("dashboard")
-                    )
-                        return;
+                    if (config.disabled && config.disabled.includes("dashboard")) return;
 
                     if (!dashboard.classList.contains("hidden")) {
                         showMain();
@@ -371,8 +371,6 @@ getConfig().then(data => {
                     }
                 }
                 if (k == 72) showMain(); // h key
-                if (!event.ctrlKey && k >= 49 && k < 57)
-                    goToSlide(Math.abs(k - 49));
             });
             updateIndicator();
         };
