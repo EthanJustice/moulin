@@ -6,7 +6,6 @@ const showMain = () => {
     dispatch(`slides-opened`, {}, window);
     main.classList.remove("hidden");
     dashboard.classList.add("hidden");
-    preview.classList.add("hidden");
 };
 
 const showDashboard = () => {
@@ -14,15 +13,6 @@ const showDashboard = () => {
     dispatch(`dashboard-opened`, {}, window);
     main.classList.add("hidden");
     dashboard.classList.remove("hidden");
-    preview.classList.add("hidden");
 };
 
-const showPreview = () => {
-    if (!preview.classList.contains("hidden")) return;
-    dispatch(`preview-opened`, {}, window);
-    main.classList.add("hidden");
-    dashboard.classList.add("hidden");
-    preview.classList.remove("hidden");
-};
-
-export { showMain, showDashboard, showPreview };
+export { showMain, showDashboard };

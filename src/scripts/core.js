@@ -1,7 +1,7 @@
 // main
 
 import { buildElement, renderJS, scopeCSS } from "./modules/parse.js";
-import { showMain, showDashboard, showPreview } from "./modules/binds.js";
+import { showMain, showDashboard } from "./modules/binds.js";
 
 // layout shell
 const main =
@@ -17,7 +17,7 @@ const dashboard =
 const preview =
     document.body.querySelector(".slide-preview-container") ||
     buildElement("div", {
-        className: "slide-preview-container hidden",
+        className: "slide-preview-container",
     });
 
 const moulin = buildElement("div", {
@@ -66,10 +66,10 @@ const nextSlide = () => {
             history.pushState(
                 ``,
                 main.firstChild.dataset.title ||
-                    originalTitle ||
-                    document.title,
+                originalTitle ||
+                document.title,
                 `#${
-                    config.permalinks == "name" ? slides[current] : current + 1
+                config.permalinks == "name" ? slides[current] : current + 1
                 }`
             );
         document.title =
@@ -94,10 +94,10 @@ const previousSlide = () => {
             history.pushState(
                 ``,
                 main.firstChild.dataset.title ||
-                    originalTitle ||
-                    document.title,
+                originalTitle ||
+                document.title,
                 `#${
-                    config.permalinks == "name" ? slides[current - 1] : current
+                config.permalinks == "name" ? slides[current - 1] : current
                 }`
             );
         document.title =
@@ -132,10 +132,10 @@ const goToSlide = slide => {
             history.pushState(
                 ``,
                 main.firstChild.dataset.title ||
-                    originalTitle ||
-                    document.title,
+                originalTitle ||
+                document.title,
                 `#${
-                    config.permalinks == "name" ? slides[current] : current + 1
+                config.permalinks == "name" ? slides[current] : current + 1
                 }`
             );
         document.title =
@@ -259,11 +259,9 @@ getConfig().then(data => {
     )
         moulin.appendChild(dashboard);
 
-    if (
-        (config.disabled && !config.disabled.includes("preview")) ||
-        !config.disabled
-    )
-        moulin.appendChild(preview);
+    if ((config.disabled && !config.disabled.includes("preview")) ||
+        !config.disabled)
+        dashboard.appendChild(preview);
 
     dashboard.insertBefore(loadingTimeElement, dashboard.firstChild);
 
@@ -274,7 +272,7 @@ getConfig().then(data => {
 
     addLoadIndicator(
         `${config.name} ${config.prod ? "Production" : "Development"} ${
-            config.version.includes("v") ? config.version : `v${config.version}`
+        config.version.includes("v") ? config.version : `v${config.version}`
         }`,
         0
     );
@@ -341,19 +339,6 @@ getConfig().then(data => {
                         showDashboard();
                     }
                 }
-                if (k == 83) {
-                    // s key
-                    if (
-                        document.querySelector(".slide-preview-container") &&
-                        document
-                            .querySelector(".slide-preview-container")
-                            .classList.contains("hidden") == true
-                    ) {
-                        showPreview();
-                    } else {
-                        showMain();
-                    }
-                }
                 if (k == 72) showMain(); // h key
                 if (!event.ctrlKey && k >= 49 && k < 57)
                     goToSlide(Math.abs(k - 49));
@@ -399,7 +384,7 @@ getConfig().then(data => {
 
         cycleTheme("init");
 
-        indicator.addEventListener("click", showPreview);
+        indicator.addEventListener("click", showDashboard);
     })();
 });
 
@@ -419,7 +404,7 @@ const loadSlides = data => {
 
         let name = slide
             .split("/")
-            [slide.split("/").length - 1].replace(".html", "");
+        [slide.split("/").length - 1].replace(".html", "");
 
         slides.push(name);
 
@@ -444,10 +429,10 @@ const loadSlides = data => {
                                 data_slide_index: name,
                             },
                             `Loaded slide "${
-                                slideContent[slides.length - 1].dataset.title ||
-                                slides[slides.length - 1]
+                            slideContent[slides.length - 1].dataset.title ||
+                            slides[slides.length - 1]
                             }," in ${
-                                loadTimes[name].timer.elapsedMilliseconds
+                            loadTimes[name].timer.elapsedMilliseconds
                             }ms (${loadTimes[name].timer.elapsedSeconds}s)`
                         );
 
@@ -559,7 +544,7 @@ const loadSlides = data => {
                                     data_slide_index: name,
                                 },
                                 `Failed to load slide ${
-                                    slideContent.length + 1
+                                slideContent.length + 1
                                 }`
                             );
 
@@ -624,7 +609,7 @@ const addLoadIndicator = (type, duration) => {
                 {
                     className: `${
                         type == "Everything" ? "loading-indicator-success" : ""
-                    }`,
+                        }`,
                 },
                 `${type} loaded in ${duration}ms (${Timer.toSeconds(
                     duration
