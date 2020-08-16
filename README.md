@@ -19,6 +19,11 @@ lightweight presentation generator
 
 As a general note, any user-facing indexes (permalinks, current slide number, etc.) will **not** be zero-based; that is, the first slide will have an internal index of `0`, but would be `1` on any permalink.
 
++ [Slides](#slides)
++ [Config File](#config-file)
++ [Hooks](#hooks)
++ [Examples](#examples)
+
 Example presentation
 
 ```plaintext
@@ -70,6 +75,7 @@ These are used by Moulin for custom behaviour.
 | --- | ------ | ----------- | -------- | -------- |
 | `data-next` | string | A link to the next slide (by referencing its file name; e.g, if you're linking to slide `docs`, then the file would be `{path}/docs.html`) | `data-next="last"` | Yes (unless it's the last slide) |
 | `data-title` | string | Sets the tab's title when the slide is navigated to | `data-title="The view is lovely up here!"` | No (will revert to the document's original title) |
+| `data-toc` | string | the custom index for the current slide to be used in the table of contents (all items have a `.` added, e.g. `{custom}. {slideName}`) | `data-toc="1.1"` | No |
 
 ### Config File
 
