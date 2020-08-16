@@ -12,6 +12,8 @@ lightweight presentation generator
 
 ## Roadmap
 
++ [Fix] Weird behaviour when using arrow keys from alternative menu
++ Usage section
 + Code commenting, better docs
 + Special TOC numbers (`data-index`)
 
@@ -22,6 +24,7 @@ As a general note, any user-facing indexes (permalinks, current slide number, et
 + [Slides](#slides)
 + [Config File](#config-file)
 + [Hooks](#hooks)
++ [Layout](#layout)
 + [Examples](#examples)
 
 Example presentation
@@ -114,6 +117,14 @@ Moulin currently supports 7 hooks:
 + `preview-opened` (`window`), for when the preview menu is opened
 + `dashboard-opened` (`window`), for when the dashboard is opened
 + `slides-opened` (`window`), for when the slides are opened
+
+### Layout
+
+Moulin is divided into three menus:
+
++ The slides/main menu, where slides are viewed [`h` key]
++ The table of contents [`s` key]
++ The dashboard (loading times and status) [`d` key]
 
 ### Examples
 
