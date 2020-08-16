@@ -13,6 +13,7 @@ lightweight presentation generator
 ## Roadmap
 
 + High-level docs as Moulin demos/examples {in-progress}
++ Switch to alder for scoped-CSS
 + Code commenting, better docs
 + Special TOC numbers (`data-index`)
 
@@ -23,14 +24,11 @@ As a general note, any user-facing indexes (permalinks, current slide number, et
 Example presentation
 
 ```plaintext
-index.html - presentation skeleton
+/slides - slides
 /src - moulin src
-moulin.json - moulin config
-/slides - slide directory
-    main.html - first slide
-    second.html - second and final slide
-/other
-    global.css - global moulin styling
+global.css - global moulin styling
+index.html - presentation skeleton
+moulin.json - moulin config for demo
 ```
 
 ### Slides
@@ -48,16 +46,19 @@ A slide looks something like this:
 Slides are an individual `div` element in its own file. If there is a following slide, link to it by setting the `data-next` of the `div` to the name of the next slide (the file name, excluding the
 `.html`).  It's important to note that slides **must** proceed in a linear fashion; that is, once one slide is linked from another, that slide **cannot** be linked again.
 
-Any `style` elements within a slide will be scoped to that slide, so that each rule will only work on items in that slide.  If you want to customise global behaviour, set a [`global`](#keys) key value in the config file.  Note that pseudo-classes still work, but may create conflict if added to more than one slide.
+Any `style` elements within a slide will be scoped to that slide, so that each rule will only work on items in that slide.  If you want to customise global behaviour, set a [`global`](#keys) key value in the config file.  Note that pseudo-classes still work, but may create conflict if added to more than one slide [this is a known issue, and is being worked on].
 
-Additionally, any `script` elements will be loaded as well; there's even a hook for them!  Listen for the `script-loaded` `window` event to detect when they're loaded.  To make sure it's the right script, add a filter parameter to your callback, like the example below.
+Additionally, any `script` elements will be loaded as well; there's even a hook for them!  You can utilise the `script-loaded` `window` event to detect when they're loaded.
 
 ```javascript
 let scriptToLoad = '/example/path.js';
 window.addEventListener('script-loaded', (event) => {
     if (event.detail.type == 'slide' && event.detail.link == scriptToLoad) // proper slide script has loaded
+    // ...
 });
 ```
+
+**Note**: it's not necessary to listen for the proper hook to execute JavaScript anymore.  Any JavaScript from the file will be executed as if it was hard-linked.
 
 #### Scoped CSS Implementation Notes
 
@@ -78,10 +79,10 @@ The config file is a JSON file located in the directory of the presentation's in
 
 | Key | Values | Description | Examples | Required |
 | --- | ------ | ----------- | -------- | -------- |
-| themes | [...classNames] | An array of class names, these are cycled through when the user changes the theme through the `T` keybind. | ["dark", "light"] | No |
+| themes | [...classNames] | An array of class names, these are cycled through when the user changes the theme through the `T` shortcut. | ["dark", "light"] | No |
 | index | string |A path to the starting slide (note that URLs must be relative to the presentation location) | "slides/index"  "content/slides/main" | Yes |
 | slideDir | string | Path to the directory that contains the slides | "slides/"  "/content/slides" | Only if the directory of slides isn't the same as the index slide |
-| global | string | Path to a custom stylesheet | "global.css"  "src/custom.css" | No |
+| global | string | Path to a custom stylesheet (it's recommended to link to this in the HTML file controlling the presentation, rather than in the config, as it can cause unstyled content flashes) | "global.css"  "src/custom.css" | No |
 | default | string ("slides", "dashboard", "preview") | The specified value will be opened automatically. | "dashboard" | No (defaults to, "slides.") |
 | prod | Boolean | If set to `true`, Moulin is run in production mode, and caches slides. | true | No |
 | version | string | Current version of the presentation (used to open a cache in production version and for display in the dashboard).  The cache name is prefixed with `moulin-`, so any attempt to open Moulin's cache must keep that in mind | "0.0.1" "two" | Yes if in production mode |
@@ -93,7 +94,7 @@ The config file is a JSON file located in the directory of the presentation's in
 Moulin also has a built-in hooks system, for when you want flashy, over-the-top animations.
 Moulin currently supports 7 hooks:
 
-To-Do: event values
+[To-Do: event values]
 
 + `script-loaded` (`window`), for when a slide script has finished loading
 + `script-loading-finished` (`window`), for when all modules have finished loading
@@ -108,6 +109,8 @@ To-Do: event values
 + `dashboard-opened` (`window`), for when the dashboard is opened
 + `slides-opened` (`window`), for when the slides are opened
 
-### Slide Scripts
+### Examples
 
-It is possible to add scripts within slides, but they won't execute once they're loaded, which is why Moulin provides the `script-loaded` hook.
+#### Themes
+
+#### Custom Slide Animations

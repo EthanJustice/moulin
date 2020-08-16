@@ -3,6 +3,6 @@
     "name": "Moulin",
     "index": "slides/index",
     "permalinks": "name",
-    "global": "global.css",
+    "prod": true,
     "version": "0.0.1"
 }
