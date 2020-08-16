@@ -8,14 +8,31 @@ lightweight presentation generator
 ## Table of Contents
 
 + [Roadmap](#roadmap)
++ [Usage](#usage)
 + [Docs](#docs)
 
 ## Roadmap
 
 + [Fix] Weird behaviour when using arrow keys from alternative menu
-+ Usage section
 + Code commenting, better docs
-+ Special TOC numbers (`data-index`)
+
+## Usage
+
+**Note**: any usage of `ctrl` correlates to the `cmd` key
+
+### Slide Controls
+
++ `left arrow key` - moves back a slide
++ `right arrow key OR spacebar` - moves forward a slide
++ `ctrl + left arrow key` - moves to the first slide
++ `ctrl + right arrow key OR 9` - moves to the last slide
++ `1...8` - moves to the specified slide
+
+### General
+
++ `t` - cycles themes defined in [config file](#keys)
++ `d` - toggles the [dashboard](#dashboard-menu)
++ `s` - toggles the [table of contents](#table-of-contents-menu)
 
 ## Docs
 
@@ -36,6 +53,12 @@ global.css - global moulin styling
 index.html - presentation skeleton
 moulin.json - moulin config for demo
 ```
+
+### Notes
+
+See [alder.js](https://github.com/EthanJustice/alder.js) for information on scoped-CSS.
+
+The `data-toc` attribute is not checked for its order; that is, if the listed number is smaller than the previous or larger than the next, Moulin will not throw any errors.  This makes it possible to have a malformed index.
 
 ### Slides
 
@@ -65,10 +88,6 @@ window.addEventListener('script-loaded', (event) => {
 ```
 
 **Note**: it's not necessary to listen for the proper hook to execute JavaScript anymore.  Any JavaScript from the file will be executed as if it was hard-linked.
-
-#### Scoped CSS Implementation Notes
-
-See [alder.js](https://github.com/EthanJustice/alder.js).
 
 #### Supported Custom Attributes
 
@@ -122,9 +141,28 @@ Moulin currently supports 7 hooks:
 
 Moulin is divided into three menus:
 
-+ The slides/main menu, where slides are viewed [`h` key]
-+ The table of contents [`s` key]
-+ The dashboard (loading times and status) [`d` key]
++ The [slides/main menu](#slides-menu), where slides are viewed [`h` key]
++ The [table of contents](#table-of-contents-menu) [`s` key]
++ The [dashboard](#dashboard-menu) (loading times and status) [`d` key]
+
+#### Dashboard Menu
+
+The dashboard contains meta-information about the loading times of various parts of Moulin, and the current mode Moulin is operating in.  It can be accessed by pressing the `d` key.
+
+The dashboard takes the following shape:
+
++ `Presentation Name` `Mode` `Cache Version`
++ Loading times of config and slides
++ Total loading time
++ Loading times and status of individual slides
+
+#### Table of Contents Menu
+
+The table of contents is an automatically generated list of slides in order.  It can be accessed by pressing the `s` key.  In a slide, the [`data-toc` attribute](#supported-custom-attributes) can be set to provide a custom value.  There are some [implementation notes](#notes) for using the `data-toc` attribute.
+
+#### Slides Menu
+
+The slides menu is the primary method to view and navigate to slides.  It can be accessed by pressing `h` key.
 
 ### Examples
 
