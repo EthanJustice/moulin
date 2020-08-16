@@ -12,7 +12,6 @@ lightweight presentation generator
 
 ## Roadmap
 
-+ High-level docs as Moulin demos/examples {in-progress}
 + Code commenting, better docs
 + Special TOC numbers (`data-index`)
 

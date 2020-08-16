@@ -239,6 +239,7 @@ let status = {
     },
 };
 
+let toc = [];
 let slides = [];
 let slideContent = [];
 
@@ -448,6 +449,7 @@ const loadSlides = data => {
             .then(item => {
                 const register = element => {
                     if (element != null && element != false) {
+                        toc.push(element.dataset.toc || '');
                         slideContent.push(element);
 
                         loadTimes[name].timer.stop();
@@ -691,7 +693,7 @@ window.addEventListener(
         }, 'Table of Contents'));
 
         slides.forEach((item, i) => {
-            let newItem = buildElement('p', { data_slide_index: item }, `${i + 1}. ${slideContent[i].dataset.title ||
+            let newItem = buildElement('p', { data_slide_index: item }, `${toc[i] || i + 1}. ${slideContent[i].dataset.title ||
                 item}`);
 
             newItem.addEventListener('click', () => {
