@@ -1,7 +1,17 @@
+.index,
 .dashboard,
 .slide-preview-container {
     margin: auto;
     max-width: 600px;
+}
+
+.index p:not(.title) {
+    cursor: pointer;
+}
+
+.index p:not(.title):hover {
+    color: var(--highlight);
+    text-decoration: underline;
 }
 
 .slide-preview {
@@ -10,7 +20,7 @@
 }
 
 .slide-preview-status {
-    margin: 0 10px;
+    margin: 0 10px 0 0;
     display: inline-block;
     color: #fafafa;
     cursor: pointer;
@@ -45,6 +55,7 @@
     margin: 1% auto;
 }
 
+.title,
 .loading-indicator-version {
     text-decoration: underline;
     margin: 2% auto;

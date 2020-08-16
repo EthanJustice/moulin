@@ -1,7 +1,7 @@
 // main
 
 import { buildElement, renderJS, scopeCSS } from "./modules/parse.js";
-import { showMain, showDashboard } from "./modules/binds.js";
+import { showMain, showDashboard, showIndex } from "./modules/binds.js";
 
 // layout shell
 const main =
@@ -14,6 +14,9 @@ const dashboard =
     buildElement("div", {
         className: "dashboard hidden",
     });
+const index = document.body.querySelector('.index') || buildElement("div", {
+    className: "index hidden"
+});
 const preview =
     document.body.querySelector(".slide-preview-container") ||
     buildElement("div", {
@@ -253,6 +256,8 @@ getConfig().then(data => {
 
     config = data;
 
+    moulin.appendChild(index);
+
     if (
         (config.disabled && !config.disabled.includes("dashboard")) ||
         !config.disabled
@@ -339,6 +344,19 @@ getConfig().then(data => {
                         showDashboard();
                     }
                 }
+                if (k == 83) {
+                    // s key
+                    if (
+                        document.querySelector(".index") &&
+                        document
+                            .querySelector(".index")
+                            .classList.contains("hidden") == true
+                    ) {
+                        showIndex();
+                    } else {
+                        showMain();
+                    }
+                }
                 if (k == 72) showMain(); // h key
                 if (!event.ctrlKey && k >= 49 && k < 57)
                     goToSlide(Math.abs(k - 49));
@@ -384,7 +402,7 @@ getConfig().then(data => {
 
         cycleTheme("init");
 
-        indicator.addEventListener("click", showDashboard);
+        indicator.addEventListener("click", showIndex);
     })();
 });
 
@@ -653,6 +671,22 @@ window.addEventListener(
 
         document.title = main.firstChild.dataset.title || document.title;
 
+        index.appendChild(buildElement('p', {
+            className: 'title'
+        }, 'Table of Contents'));
+
+        slides.forEach((item, i) => {
+            let newItem = buildElement('p', { data_slide_index: i }, `${i + 1}. ${slideContent[i].dataset.title ||
+                item}`);
+            newItem.addEventListener('click', () => {
+                goToSlide(
+                    slides[i]
+                );
+            });
+
+            if (index) index.appendChild(newItem);
+        });
+
         if (config.prod) {
             caches.open(`moulin-${config.version}`).then(cache => {
                 cache
@@ -692,4 +726,4 @@ window.addEventListener(
     { once: true }
 );
 
-export { dispatch, main, preview, dashboard };
+export { dispatch, main, preview, dashboard, index };

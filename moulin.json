@@ -1,9 +1,5 @@
 {
-    "themes": [
-        "light",
-        "dark",
-        "solarized"
-    ],
+    "themes": ["light", "dark", "solarized"],
     "name": "Moulin",
     "index": "slides/index",
     "permalinks": "name",
