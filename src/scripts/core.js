@@ -355,6 +355,15 @@ getConfig().then(data => {
                         showIndex();
                     } else {
                         showMain();
+                        history.pushState(
+                            ``,
+                            main.firstChild.dataset.title ||
+                            originalTitle ||
+                            document.title,
+                            `#${
+                            config.permalinks == "name" ? main.firstChild.dataset.slideName : slides.indexOf(main.firstChild.dataset.slideName) + 1
+                            }`
+                        );
                     }
                 }
                 if (k == 72) showMain(); // h key
@@ -660,7 +669,10 @@ const addLoadIndicator = (type, duration) => {
 window.addEventListener(
     "slide-loading-finished",
     event => {
-        if (window.location.hash) {
+        if (window.location.hash && window.location.hash.replace('#', '') == 'toc') {
+            showIndex();
+            goToSlide(0);
+        } else if (window.location.hash) {
             let s;
             if (config.permalinks == "name")
                 s = slides.indexOf(window.location.hash.replace("#", ""));
@@ -676,11 +688,12 @@ window.addEventListener(
         }, 'Table of Contents'));
 
         slides.forEach((item, i) => {
-            let newItem = buildElement('p', { data_slide_index: i }, `${i + 1}. ${slideContent[i].dataset.title ||
+            let newItem = buildElement('p', { data_slide_index: item }, `${i + 1}. ${slideContent[i].dataset.title ||
                 item}`);
+
             newItem.addEventListener('click', () => {
                 goToSlide(
-                    slides[i]
+                    slides.indexOf(newItem.dataset.slideIndex)
                 );
             });
 

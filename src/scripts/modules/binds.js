@@ -23,6 +23,8 @@ const showIndex = () => {
     main.classList.add("hidden");
     dashboard.classList.add("hidden");
     index.classList.remove("hidden");
+
+    history.pushState('', `Table of Contents`, '#toc');
 };
 
 export { showMain, showDashboard, showIndex };

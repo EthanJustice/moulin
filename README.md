@@ -13,9 +13,8 @@ lightweight presentation generator
 ## Roadmap
 
 + High-level docs as Moulin demos/examples {in-progress}
-+ ~~Slides table of contents~~
-+ Special permalinks (#toc for table of contents, etc.)
 + Code commenting, better docs
++ Special TOC numbers (`data-index`)
 
 ## Docs
 
