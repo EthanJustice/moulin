@@ -19,6 +19,45 @@ const buildElement = (type, attributes, text) => {
     return element;
 };
 
+// scoped css
+// see https://github.com/EthanJustice/alder/
+class Alder {
+    constructor() {
+        this.ids = [];
+    }
+
+    parse(element) {
+        if (!element || !element.querySelector('style')) { return element };
+        let sheet = element.querySelector("style");
+
+        let rules = /:|@/;
+        Object.values(sheet.sheet.rules).forEach(item => {
+            if (item.selectorText.match(rules) == null) {
+                element.querySelectorAll(`${item.selectorText}`).forEach(child => {
+                    Object.values(item.style).forEach(prop => {
+                        child.style[prop] = item.style[prop];
+                    });
+                });
+            } else if (item.selectorText.includes(":")) {
+                if (!element.id) element.dataset.alder = this._generate();
+                document.styleSheets[0].insertRule(`${element.id || element.nodeName.toLowerCase()}[data-alder="${element.dataset.alder}"] > ${item.cssText}`, 0);
+            }
+        });
+
+        sheet.remove();
+
+        return element;
+    }
+
+    _generate() {
+        let i = Math.ceil(Math.random() * 99999);
+        if (this.ids.length == 99999) { return false }
+        else if (this.ids.includes(i)) { i = this._generate() }
+
+        return i;
+    }
+}
+
 // scopes css
 const scopeCSS = element => {
     if (!element) return false;
@@ -48,7 +87,7 @@ const scopeCSS = element => {
 };
 
 const renderJS = element => {
-    if (!element) return false;
+    if (!element) return element;
 
     if (!element.querySelector("script")) return element;
     let link = element.querySelector("script").src;
@@ -57,27 +96,19 @@ const renderJS = element => {
         src: link,
     });
 
-    script.addEventListener(
-        "load",
-        () => {
-            dispatch(
-                "script-loaded",
-                {
-                    detail: {
-                        type: "slide",
-                        link: link,
-                    },
-                },
-                window
-            );
-        },
-        { once: true }
-    );
+    script.addEventListener("load", () => {
+        dispatch("script-loaded", {
+            detail: {
+                type: "slide",
+                link: link,
+            },
+        }, window);
+    }, { once: true });
 
-    element.remove(element.querySelectorAll("script"));
+    element.querySelectorAll("script").forEach(s => s.remove());
     element.appendChild(script);
 
     return element;
 };
 
-export { buildElement, scopeCSS, renderJS };
+export { buildElement, Alder, renderJS };

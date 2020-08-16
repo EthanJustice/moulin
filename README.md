@@ -13,7 +13,6 @@ lightweight presentation generator
 ## Roadmap
 
 + High-level docs as Moulin demos/examples {in-progress}
-+ Switch to alder for scoped-CSS
 + Code commenting, better docs
 + Special TOC numbers (`data-index`)
 
@@ -61,6 +60,8 @@ window.addEventListener('script-loaded', (event) => {
 **Note**: it's not necessary to listen for the proper hook to execute JavaScript anymore.  Any JavaScript from the file will be executed as if it was hard-linked.
 
 #### Scoped CSS Implementation Notes
+
+See [alder.js](https://github.com/EthanJustice/alder.js).
 
 #### Supported Custom Attributes
 

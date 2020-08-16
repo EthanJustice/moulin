@@ -1,6 +1,6 @@
 // main
 
-import { buildElement, renderJS, scopeCSS } from "./modules/parse.js";
+import { buildElement, renderJS, Alder } from "./modules/parse.js";
 import { showMain, showDashboard, showIndex } from "./modules/binds.js";
 
 // layout shell
@@ -34,6 +34,9 @@ const indicator = buildElement("span", {
 const loadingTimeElement = buildElement("div", {
     className: "loading-indicator",
 });
+
+// globals
+const alder = new Alder();
 
 // binds
 const updateIndicator = () => {
@@ -191,7 +194,7 @@ const load = async name => {
         let content = parser.parseFromString(element, "text/html");
 
         content.querySelector("div").dataset.slideName = name.split("/")[1];
-        return renderJS(scopeCSS(content.querySelector("div")));
+        return alder.parse(renderJS(content.querySelector("div")));
     };
 
     if (config.prod == true) {
