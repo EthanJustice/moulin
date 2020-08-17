@@ -1,8 +1,13 @@
 // timing
 
-import { loadingTimeElement } from '../core.js';
-import { buildElement } from './parse.js';
+import {
+    loadingTimeElement
+} from '../core.js';
+import {
+    buildElement
+} from './parse.js';
 
+// timing for load times
 class Timer {
     constructor(name) {
         this.name = name;
@@ -38,17 +43,16 @@ class Timer {
     }
 }
 
-
+// adds an item to the overall loading times in the dashboard menu
 const addLoadIndicator = (type, duration) => {
     if (duration) {
         loadingTimeElement.appendChild(
             buildElement(
-                `p`,
-                {
-                    className: `${
-                        type == "Everything" ? "loading-indicator-success" : ""
-                        }`,
-                },
+                `p`, {
+                className: `${
+                    type == "Everything" ? "loading-indicator-success" : ""
+                    }`,
+            },
                 `${type} loaded in ${duration}ms (${Timer.toSeconds(
                     duration
                 )}s)`
@@ -57,24 +61,25 @@ const addLoadIndicator = (type, duration) => {
     } else if (duration == 0) {
         loadingTimeElement.appendChild(
             buildElement(
-                `p`,
-                {
-                    className: "loading-indicator-version",
-                },
+                `p`, {
+                className: "loading-indicator-version",
+            },
                 `${type}`
             )
         );
     } else {
         loadingTimeElement.appendChild(
             buildElement(
-                `p`,
-                {
-                    className: "loading-indicator-failure",
-                },
+                `p`, {
+                className: "loading-indicator-failure",
+            },
                 `Failed to load ${type}.`
             )
         );
     }
 };
 
-export { Timer, addLoadIndicator };
+export {
+    Timer,
+    addLoadIndicator
+};

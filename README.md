@@ -17,6 +17,8 @@ lightweight presentation generator
 + `dist` version
 + Internal unification of items
 + Code commenting, better docs
++ Module export docs
++ `ready` hook
 
 ## Usage
 
@@ -45,6 +47,7 @@ As a general note, any user-facing indexes (permalinks, current slide number, et
 + [Slides](#slides)
 + [Config File](#config-file)
 + [Hooks](#hooks)
++ [Using the Core](#using-the-core)
 + [Layout](#layout)
 + [Examples](#examples)
 
@@ -65,6 +68,8 @@ See [alder.js](https://github.com/EthanJustice/alder.js) for information on scop
 The `data-toc` attribute is not checked for its order; that is, if the listed number is smaller than the previous or larger than the next, Moulin will not throw any errors.  This makes it possible to have a malformed index.
 
 ### Setup
+
+For now, the easiest way to use Moulin is to clone the repo (`git clone https://github.com/EthanJustice/moulin.git`) and then proceed from there.
 
 ### Slides
 
@@ -142,6 +147,10 @@ Moulin currently supports 7 hooks:
 + `preview-opened` (`window`), for when the preview menu is opened
 + `dashboard-opened` (`window`), for when the dashboard is opened
 + `slides-opened` (`window`), for when the slides are opened
+
+### Using the Core
+
+As Moulin uses imports/exports, core functions and variables can be easily used within an external script.  For example, if you wanted to import controls for slides, you could place `import * as binds from './path/to/binds.js';` in your script.  TODO: exports
 
 ### Layout
 

@@ -109,6 +109,7 @@ let toc = [];
 let slides = [];
 let slideContent = [];
 
+// fetches config
 async function getConfig() {
     return await fetch("./moulin.json").then(resp => {
         return resp.json();
@@ -128,11 +129,7 @@ getConfig().then(data => {
 
     moulin.appendChild(index);
 
-    if (
-        (config.disabled && !config.disabled.includes("dashboard")) ||
-        !config.disabled
-    )
-        moulin.appendChild(dashboard);
+    if ((config.disabled && !config.disabled.includes("dashboard")) || !config.disabled) moulin.appendChild(dashboard);
 
     if ((config.disabled && !config.disabled.includes("preview")) ||
         !config.disabled)
@@ -187,6 +184,7 @@ getConfig().then(data => {
         }
         );
 
+        // generates keybinds
         const init = () => {
             document.body.addEventListener("keydown", event => {
                 if (!main.firstChild) return;
@@ -282,11 +280,13 @@ getConfig().then(data => {
     })();
 });
 
+// dispatches a hook
 const dispatch = (event, data, location) => {
     let customEvent = new CustomEvent(event, data);
     location.dispatchEvent(customEvent);
 };
 
+// loads all slides
 const loadSlides = data => {
     let inferredDir;
     let loadTimes = {};
@@ -468,6 +468,7 @@ const loadSlides = data => {
             });
     };
 
+    // starts the slide loading process
     fetchSlide(data.index).then(() => {
         if (!config.default || config.default == "slides") {
             if (!window.location.hash && config.permalinks)
@@ -488,6 +489,7 @@ const loadSlides = data => {
     });
 };
 
+// other things, requires all slide loading to be finished
 window.addEventListener(
     "slide-loading-finished",
     event => {

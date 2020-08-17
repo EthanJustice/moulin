@@ -86,6 +86,7 @@ const scopeCSS = element => {
     return element;
 };
 
+// loads scripts from slide
 const renderJS = element => {
     if (!element) return element;
 

@@ -1,6 +1,7 @@
 // controls
 import { config, dispatch, main, index, dashboard, slideContent, slides } from "../core.js";
 
+// shows the slides
 const showMain = () => {
     if (!main.classList.contains("hidden")) return;
     dispatch(`slides-opened`, {}, window);
@@ -9,6 +10,7 @@ const showMain = () => {
     dashboard.classList.add("hidden");
 };
 
+// shows the dashboard
 const showDashboard = () => {
     if (!dashboard.classList.contains("hidden")) return;
     dispatch(`dashboard-opened`, {}, window);
@@ -17,6 +19,7 @@ const showDashboard = () => {
     dashboard.classList.remove("hidden");
 };
 
+// shows the index menu
 const showIndex = () => {
     if (!index.classList.contains("hidden")) return;
     dispatch(`index-opened`, {}, window);
@@ -27,7 +30,7 @@ const showIndex = () => {
     history.pushState('', `Table of Contents`, '#toc');
 };
 
-// binds
+// updates the slide indicator in the bottom left corner
 const updateIndicator = () => {
     let slideName = document.querySelector("div[data-slide-name]");
     let current = 0;
@@ -46,6 +49,7 @@ const updateIndicator = () => {
     if (indicator) indicator.innerText = `${current + 1}/${slides.length}`;
 };
 
+// goes to the next slide
 const nextSlide = () => {
     let currentSlide = main.firstChild;
     let current = slides.indexOf(currentSlide.dataset.slideName);
@@ -74,6 +78,7 @@ const nextSlide = () => {
     showMain();
 };
 
+// goes to the previous slide
 const previousSlide = () => {
     showMain();
 
@@ -101,6 +106,9 @@ const previousSlide = () => {
     }
 };
 
+// goes to the specified slide
+// this can either be a number corresponding to a slide (starting at 0),
+// or the name of a slide which is matched against the global `slides` variable
 const goToSlide = slide => {
     let currentSlide = main.firstChild;
     let current = typeof slide == "string" ? slides.indexOf(slide) : slide;
