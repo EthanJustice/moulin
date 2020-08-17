@@ -136,7 +136,6 @@ Moulin currently supports 7 hooks:
 [To-Do: event values]
 
 + `script-loaded` (`window`), for when a slide script has finished loading
-+ `script-loading-finished` (`window`), for when all modules have finished loading
 + `slide-loaded` (`window`), for when a slide has finished loading
 + `slide-loading-finished` (`window`), for when all slides have finished loading
 + `slide-change` (`window`), for when the active slide has changed
@@ -144,13 +143,48 @@ Moulin currently supports 7 hooks:
     affected slide will be removed - that is, the presentation can be used without it)
 + `theme-change` (`window`), for when the theme is toggled by pressing the `t`
     key
-+ `preview-opened` (`window`), for when the preview menu is opened
++ `index-opened` (`window`), for when the table of contents menu is opened
 + `dashboard-opened` (`window`), for when the dashboard is opened
 + `slides-opened` (`window`), for when the slides are opened
 
 ### Using the Core
 
-As Moulin uses imports/exports, core functions and variables can be easily used within an external script.  For example, if you wanted to import controls for slides, you could place `import * as binds from './path/to/binds.js';` in your script.  TODO: exports
+As Moulin uses imports/exports, core functions and variables can be easily used within an external script.  For example, if you wanted to import controls for slides, you could place `import * as binds from './path/to/binds.js';` in your script.
+
+#### Exports
+
+Note: items are not guaranteed to have a value immediately.  If you want to make sure they do, listen for the `moulin-ready` hook.
+
+```plaintext
+/modules/binds.js
+    showMain - shows the main menu
+    showDashboard - shows the dashboard menu
+    showIndex - shows the table of contents menu
+    updateIndicator - updates the element that displays the current slide
+    nextSlide - goes to the next slide
+    previousSlide - goes to the previous slide
+    goToSlide - goes to the specified slide
+
+/modules/parse.js
+    buildElement - convenience function for generating an html element
+    Alder - alder class, for scoping CSS
+    renderJS - loads JavaScript
+
+/modules/timing.js
+    Timer - timer class, measures timing of things (used by dashboard)
+    addLoadIndicator - adds an item to the primary (overall loading time) submenu of the dashboard
+
+core.js
+    config - config from moulin.json, as a JavaScript object
+    dispatch - function to dispatch a hook
+    main - reference to the main element, which is the container of the slides
+    preview - reference to the container of slide loading times in the dashboard (submenu of dashboard)
+    dashboard - reference to the dashboard menu element
+    index - reference to the index (table of contents) element
+    slides - array of slide names, corresponds to the slideContent variable
+    slideContent - array of html elements corresponding to the slides variable, made of the parsed slides
+    loadingTimeElement - container for primary stat loading times in the dashboard (submenu of dashboard)
+```
 
 ### Layout
 
