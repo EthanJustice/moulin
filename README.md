@@ -13,6 +13,7 @@ lightweight presentation generator
 
 ## Roadmap
 
++ `popstate` mapping
 + `dist` version
 + Internal unification of items
 + Code commenting, better docs

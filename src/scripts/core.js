@@ -120,14 +120,9 @@ const goToSlide = slide => {
         return;
     }
 
-    if (
-        (slides.indexOf(currentSlide.dataset.slideName) == 0 && current <= 0) ||
-        (slides.indexOf(currentSlide.dataset.slideName) == slides.length - 1 &&
-            current >= slides.length - 1)
-    )
-        return;
-
     showMain();
+
+    if ((slides.indexOf(currentSlide.dataset.slideName) == 0 && current <= 0) || (slides.indexOf(currentSlide.dataset.slideName) == slides.length - 1 && current >= slides.length - 1)) return;
 
     if (current != slides.length) {
         currentSlide.remove();
