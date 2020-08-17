@@ -88,18 +88,6 @@ Slides are an individual `div` element in its own file. If there is a following 
 
 Any `style` elements within a slide will be scoped to that slide, so that each rule will only work on items in that slide.  If you want to customise global behaviour, set a [`global`](#keys) key value in the config file.  Note that pseudo-classes still work, but may create conflict if added to more than one slide [this is a known issue, and is being worked on].
 
-Additionally, any `script` elements will be loaded as well; there's even a hook for them!  You can utilise the `script-loaded` `window` event to detect when they're loaded.
-
-```javascript
-let scriptToLoad = '/example/path.js';
-window.addEventListener('script-loaded', (event) => {
-    if (event.detail.type == 'slide' && event.detail.link == scriptToLoad) // proper slide script has loaded
-    // ...
-});
-```
-
-**Note**: it's not necessary to listen for the proper hook to execute JavaScript anymore.  Any JavaScript from the file will be executed as if it was hard-linked.
-
 #### Supported Custom Attributes
 
 These are used by Moulin for custom behaviour.
@@ -135,7 +123,6 @@ Moulin currently supports 7 hooks:
 
 [To-Do: event values]
 
-+ `script-loaded` (`window`), for when a slide script has finished loading
 + `slide-loaded` (`window`), for when a slide has finished loading
 + `slide-loading-finished` (`window`), for when all slides have finished loading
 + `slide-change` (`window`), for when the active slide has changed
@@ -168,7 +155,6 @@ Note: items are not guaranteed to have a value immediately.  If you want to make
 /modules/parse.js
     buildElement - convenience function for generating an html element
     Alder - alder class, for scoping CSS
-    renderJS - loads JavaScript
 
 /modules/timing.js
     Timer - timer class, measures timing of things (used by dashboard)

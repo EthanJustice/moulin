@@ -1,7 +1,6 @@
 // main
 import {
     buildElement,
-    renderJS,
     Alder
 } from "./modules/parse.js";
 import {
@@ -60,7 +59,7 @@ const load = async name => {
         let content = parser.parseFromString(element, "text/html");
 
         content.querySelector("div").dataset.slideName = name.split("/")[1];
-        return alder.parse(renderJS(content.querySelector("div")));
+        return alder.parse(content.querySelector("div"));
     };
 
     if (config.prod == true) {

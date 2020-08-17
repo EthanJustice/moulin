@@ -86,30 +86,4 @@ const scopeCSS = element => {
     return element;
 };
 
-// loads scripts from slide
-const renderJS = element => {
-    if (!element) return element;
-
-    if (!element.querySelector("script")) return element;
-    let link = element.querySelector("script").src;
-
-    let script = buildElement("script", {
-        src: link,
-    });
-
-    script.addEventListener("load", () => {
-        dispatch("script-loaded", {
-            detail: {
-                type: "slide",
-                link: link,
-            },
-        }, window);
-    }, { once: true });
-
-    element.querySelectorAll("script").forEach(s => s.remove());
-    element.appendChild(script);
-
-    return element;
-};
-
-export { buildElement, Alder, renderJS };
+export { buildElement, Alder };
