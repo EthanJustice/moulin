@@ -13,6 +13,7 @@ lightweight presentation generator
 
 ## Roadmap
 
++ Possible config caching
 + Lifecycle diagrams
 + `popstate` mapping
 + `dist` version
@@ -120,19 +121,25 @@ The config file is a JSON file located in the directory of the presentation's in
 Moulin also has a built-in hooks system, for when you want flashy, over-the-top animations.
 Moulin currently supports 7 hooks:
 
-[To-Do: event values]
+| Hook | Element to Watch | Values | Description |
+| ---- | ---------------- | ------ | ----------- |
+| `slide-loaded` | `window` | "{slideName}" | a slide has finished loading |
+| `slide-loading-finished` | `window` | {<br>data: {<br>&nbsp;duration: number (represents the total time it took to load all slides, in milliseconds)<br>&nbsp;loaded: Boolean (represents whether the slides loaded successfully or not)<br>},<br>slides: number (total number of slides)<br>} | all slides have finished loading |
+| `slide-change` | `window` | "{slideIndex}" | the active slide has changed |
+| `slide-loading-failed` | `window` | "{indexOfSlideThatFailed}" | any slide isn't loaded (note that only the affected slide will be removed - that is, the presentation can be used without it) |
+| `theme-change` | `window` | "{themeName}" | the theme is toggled by pressing the `t` key |
+| `index-opened` | `window` | none | the table of contents menu is opened |
+| `dashboard-opened` | `window` | none | the dashboard is opened |
+| `slides-opened` | `window` | none | the slide menu is opened |
+| `moulin-ready` | `window` | none | Moulin has *completely* finished setup (loading slides, going to the proper slide, etc.) |
 
-+ `slide-loaded` (`window`), for when a slide has finished loading
-+ `slide-loading-finished` (`window`), for when all slides have finished loading
-+ `slide-change` (`window`), for when the active slide has changed
-+ `slide-loading-failed` (`window`), for when any slide isn't loaded (note that only the
-    affected slide will be removed - that is, the presentation can be used without it)
-+ `theme-change` (`window`), for when the theme is toggled by pressing the `t`
-    key
-+ `index-opened` (`window`), for when the table of contents menu is opened
-+ `dashboard-opened` (`window`), for when the dashboard is opened
-+ `slides-opened` (`window`), for when the slides are opened
-+ `moulin-ready` (`window`), for when Moulin has *completely* finished setup (loading slides, going to the proper slide, etc.)
+**Note**: the values specified in the square brackets (`[]`) above are accessed by using the `detail` property of an event object.  If there is a single value, that means that `event.detail` *is* the value, rather than another object.
+
+```javascript
+window.addEventListener(`slide-loading-failed`, (event) => {
+    console.log(`Failed to load slide ${event.detail}!`); // will log a message with the index of the slide that failed should a slide fail to load for any reason
+});
+```
 
 ### Using the Core
 

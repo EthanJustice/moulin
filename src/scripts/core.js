@@ -381,7 +381,6 @@ const loadSlides = data => {
                             );
                             status.slides = {
                                 loaded: true,
-                                percentage: 100,
                                 duration: t,
                             };
 
