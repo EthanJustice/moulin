@@ -1,7 +1,22 @@
 // main
-
-import { buildElement, renderJS, Alder } from "./modules/parse.js";
-import { showMain, showDashboard, showIndex } from "./modules/binds.js";
+import {
+    buildElement,
+    renderJS,
+    Alder
+} from "./modules/parse.js";
+import {
+    showMain,
+    showDashboard,
+    showIndex,
+    updateIndicator,
+    nextSlide,
+    previousSlide,
+    goToSlide
+} from "./modules/binds.js";
+import {
+    Timer,
+    addLoadIndicator
+} from './modules/timing.js';
 
 // layout shell
 const main =
@@ -37,150 +52,6 @@ const loadingTimeElement = buildElement("div", {
 
 // globals
 const alder = new Alder();
-
-// binds
-const updateIndicator = () => {
-    let slideName = document.querySelector("div[data-slide-name]");
-    let current = 0;
-
-    if (slideName && slideName.dataset.slideName) {
-        current = slides.indexOf(slideName.dataset.slideName);
-    } else {
-        current = 0;
-    }
-
-    if (current + 1 < 1) {
-        current = 0;
-    }
-
-    let indicator = document.querySelector(`#slide-indicator`);
-    if (indicator) indicator.innerText = `${current + 1}/${slides.length}`;
-};
-
-const nextSlide = () => {
-    let currentSlide = main.firstChild;
-    let current = slides.indexOf(currentSlide.dataset.slideName);
-
-    if (slideContent.length !== 0 && current != slides.length - 1) {
-        if (dashboard.classList.contains("hidden")) current += 1;
-
-        currentSlide.remove();
-        main.insertBefore(slideContent[current], main.firstChild);
-
-        updateIndicator();
-        if (config.permalinks)
-            history.pushState(
-                ``,
-                main.firstChild.dataset.title ||
-                originalTitle ||
-                document.title,
-                `#${
-                config.permalinks == "name" ? slides[current] : current + 1
-                }`
-            );
-        document.title =
-            main.firstChild.dataset.title || originalTitle || document.title;
-        dispatch("slide-change", { detail: current }, window);
-    }
-    showMain();
-};
-
-const previousSlide = () => {
-    showMain();
-
-    let currentSlide = main.firstChild;
-    let current = slides.indexOf(currentSlide.dataset.slideName);
-
-    if (current != 0) {
-        currentSlide.remove();
-        main.insertBefore(slideContent[current - 1], main.firstChild);
-
-        updateIndicator();
-        if (config.permalinks)
-            history.pushState(
-                ``,
-                main.firstChild.dataset.title ||
-                originalTitle ||
-                document.title,
-                `#${
-                config.permalinks == "name" ? slides[current - 1] : current
-                }`
-            );
-        document.title =
-            main.firstChild.dataset.title || originalTitle || document.title;
-        dispatch("slide-change", { detail: current - 1 }, window);
-    }
-};
-
-const goToSlide = slide => {
-    let currentSlide = main.firstChild;
-    let current = typeof slide == "string" ? slides.indexOf(slide) : slide;
-    if (currentSlide.id == "slide-indicator") {
-        main.insertBefore(slideContent[current], main.firstChild);
-        return;
-    }
-
-    showMain();
-
-    if ((slides.indexOf(currentSlide.dataset.slideName) == 0 && current <= 0) || (slides.indexOf(currentSlide.dataset.slideName) == slides.length - 1 && current >= slides.length - 1)) return;
-
-    if (current != slides.length) {
-        currentSlide.remove();
-        main.insertBefore(slideContent[current], main.firstChild);
-
-        updateIndicator();
-        if (config.permalinks)
-            history.pushState(
-                ``,
-                main.firstChild.dataset.title ||
-                originalTitle ||
-                document.title,
-                `#${
-                config.permalinks == "name" ? slides[current] : current + 1
-                }`
-            );
-        document.title =
-            main.firstChild.dataset.title || originalTitle || document.title;
-        dispatch("slide-change", { detail: current }, window);
-    }
-};
-
-// timing
-
-class Timer {
-    constructor(name) {
-        this.name = name;
-
-        this.elapsed = 0;
-        this.started;
-        this.ended;
-    }
-
-    start() {
-        this.started = Date.now();
-    }
-
-    stop() {
-        this.ended = Date.now();
-        this.elapsed = this.ended - this.started;
-    }
-
-    get elapsedMilliseconds() {
-        return this.elapsed;
-    }
-
-    get elapsedSeconds() {
-        return this.elapsed / 1000;
-    }
-
-    static toMilliseconds(seconds) {
-        return seconds * 1000;
-    }
-
-    static toSeconds(milliseconds) {
-        return milliseconds / 1000;
-    }
-}
 
 // slide loading
 const load = async name => {
@@ -311,10 +182,9 @@ getConfig().then(data => {
             "slide-loading-finished",
             () => {
                 init();
-            },
-            {
-                once: true,
-            }
+            }, {
+            once: true,
+        }
         );
 
         const init = () => {
@@ -323,7 +193,8 @@ getConfig().then(data => {
 
                 let k = event.which;
                 if (!main.classList.contains('hidden')) {
-                    if ((!event.ctrlKey && k == 39) || k == 32) nextSlide(); // right arrow key/space bar
+                    if ((!event.ctrlKey && k == 39) || k == 32)
+                        nextSlide(); // right arrow key/space bar
                     if (!event.ctrlKey && k == 37) previousSlide(); // left arrow key
                     if ((event.ctrlKey && k == 39) || k == 57)
                         goToSlide(slides.length - 1); // ctrl + right arrow || 9
@@ -398,10 +269,9 @@ getConfig().then(data => {
             document.body.classList.add(config.themes[i]);
 
             dispatch(
-                `theme-change`,
-                {
-                    detail: config.themes[i],
-                },
+                `theme-change`, {
+                detail: config.themes[i],
+            },
                 window
             );
         };
@@ -427,8 +297,7 @@ const loadSlides = data => {
             slide = `${config.slideDir || inferredDir}${slide}`;
 
         let name = slide
-            .split("/")
-        [slide.split("/").length - 1].replace(".html", "");
+            .split("/")[slide.split("/").length - 1].replace(".html", "");
 
         slides.push(name);
 
@@ -448,11 +317,10 @@ const loadSlides = data => {
                         loadTimes[name].timer.stop();
 
                         let newPreview = buildElement(
-                            `p`,
-                            {
-                                className: "slide-preview",
-                                data_slide_index: name,
-                            },
+                            `p`, {
+                            className: "slide-preview",
+                            data_slide_index: name,
+                        },
                             `Loaded slide "${
                             slideContent[slides.length - 1].dataset.title ||
                             slides[slides.length - 1]
@@ -497,10 +365,9 @@ const loadSlides = data => {
                                 .appendChild(newPreview);
 
                         dispatch(
-                            `slide-loaded`,
-                            {
-                                detail: name,
-                            },
+                            `slide-loaded`, {
+                            detail: name,
+                        },
                             window
                         );
 
@@ -520,23 +387,21 @@ const loadSlides = data => {
                             };
 
                             dispatch(
-                                "slide-loading-finished",
-                                {
-                                    detail: {
-                                        data: status.slides,
-                                        slides: slides.length,
-                                    },
+                                "slide-loading-finished", {
+                                detail: {
+                                    data: status.slides,
+                                    slides: slides.length,
                                 },
+                            },
                                 window
                             );
                         }
                     } else {
                         slides.pop();
                         dispatch(
-                            `slide-loading-failed`,
-                            {
-                                detail: slides.indexOf(name),
-                            },
+                            `slide-loading-failed`, {
+                            detail: slides.indexOf(name),
+                        },
                             window
                         );
 
@@ -563,19 +428,17 @@ const loadSlides = data => {
                                 .classList.add("loading-failed");
                         } else {
                             let newPreviewMessage = buildElement(
-                                `p`,
-                                {
-                                    className: "slide-preview",
-                                    data_slide_index: name,
-                                },
+                                `p`, {
+                                className: "slide-preview",
+                                data_slide_index: name,
+                            },
                                 `Failed to load slide ${
                                 slideContent.length + 1
                                 }`
                             );
 
                             let newPreviewStatus = buildElement(`span`, {
-                                className:
-                                    "slide-preview-status loading-failed",
+                                className: "slide-preview-status loading-failed",
                             });
 
                             newPreviewMessage.prepend(newPreviewStatus);
@@ -597,10 +460,9 @@ const loadSlides = data => {
             })
             .catch(err => {
                 dispatch(
-                    `slide-loading-failed`,
-                    {
-                        detail: slides.indexOf(name),
-                    },
+                    `slide-loading-failed`, {
+                    detail: slides.indexOf(name),
+                },
                     window
                 );
             });
@@ -626,44 +488,6 @@ const loadSlides = data => {
     });
 };
 
-const addLoadIndicator = (type, duration) => {
-    if (duration) {
-        loadingTimeElement.appendChild(
-            buildElement(
-                `p`,
-                {
-                    className: `${
-                        type == "Everything" ? "loading-indicator-success" : ""
-                        }`,
-                },
-                `${type} loaded in ${duration}ms (${Timer.toSeconds(
-                    duration
-                )}s)`
-            )
-        );
-    } else if (duration == 0) {
-        loadingTimeElement.appendChild(
-            buildElement(
-                `p`,
-                {
-                    className: "loading-indicator-version",
-                },
-                `${type}`
-            )
-        );
-    } else {
-        loadingTimeElement.appendChild(
-            buildElement(
-                `p`,
-                {
-                    className: "loading-indicator-failure",
-                },
-                `Failed to load ${type}.`
-            )
-        );
-    }
-};
-
 window.addEventListener(
     "slide-loading-finished",
     event => {
@@ -686,8 +510,10 @@ window.addEventListener(
         }, 'Table of Contents'));
 
         slides.forEach((item, i) => {
-            let newItem = buildElement('p', { data_slide_index: item }, `${toc[i] || i + 1}. ${slideContent[i].dataset.title ||
-                item}`);
+            let newItem = buildElement('p', {
+                data_slide_index: item
+            }, `${toc[i] || i + 1}. ${slideContent[i].dataset.title ||
+            item}`);
 
             newItem.addEventListener('click', () => {
                 goToSlide(
@@ -733,8 +559,19 @@ window.addEventListener(
             Object.values(status).forEach(item => (t += item.duration));
             addLoadIndicator(`Everything`, t);
         }
-    },
-    { once: true }
+    }, {
+    once: true
+}
 );
 
-export { dispatch, main, preview, dashboard, index };
+export {
+    config,
+    dispatch,
+    main,
+    preview,
+    dashboard,
+    index,
+    slides,
+    slideContent,
+    loadingTimeElement
+};

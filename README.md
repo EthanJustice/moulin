@@ -40,6 +40,8 @@ lightweight presentation generator
 
 As a general note, any user-facing indexes (permalinks, current slide number, etc.) will **not** be zero-based; that is, the first slide will have an internal index of `0`, but would be `1` on any permalink.
 
++ [Notes](#notes)
++ [Setup](#setup)
 + [Slides](#slides)
 + [Config File](#config-file)
 + [Hooks](#hooks)
@@ -61,6 +63,8 @@ moulin.json - moulin config for demo
 See [alder.js](https://github.com/EthanJustice/alder.js) for information on scoped-CSS.
 
 The `data-toc` attribute is not checked for its order; that is, if the listed number is smaller than the previous or larger than the next, Moulin will not throw any errors.  This makes it possible to have a malformed index.
+
+### Setup
 
 ### Slides
 
