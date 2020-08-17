@@ -13,12 +13,11 @@ lightweight presentation generator
 
 ## Roadmap
 
++ Lifecycle diagrams
 + `popstate` mapping
 + `dist` version
 + Internal unification of items
-+ Code commenting, better docs
-+ Module export docs
-+ `ready` hook
++ Better docs
 
 ## Usage
 
@@ -133,6 +132,7 @@ Moulin currently supports 7 hooks:
 + `index-opened` (`window`), for when the table of contents menu is opened
 + `dashboard-opened` (`window`), for when the dashboard is opened
 + `slides-opened` (`window`), for when the slides are opened
++ `moulin-ready` (`window`), for when Moulin has *completely* finished setup (loading slides, going to the proper slide, etc.)
 
 ### Using the Core
 

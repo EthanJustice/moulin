@@ -560,6 +560,8 @@ window.addEventListener(
             Object.values(status).forEach(item => (t += item.duration));
             addLoadIndicator(`Everything`, t);
         }
+
+        dispatch('moulin-ready', {}, window);
     }, {
     once: true
 }
