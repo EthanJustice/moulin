@@ -159,6 +159,7 @@ configTimer.start();
 
 let originalTitle;
 getConfig().then((data) => {
+    dispatch(`moulin-started`, {}, window);
     originalTitle = document.title;
 
     config = data;
