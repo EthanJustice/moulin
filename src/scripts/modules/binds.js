@@ -4,10 +4,11 @@ import { config, dispatch, main, index, dashboard, slideContent, slides } from '
 // shows the slides
 const showMain = () => {
     if (!main.classList.contains('hidden')) return;
-    dispatch(`slides-opened`, {}, window);
+    dispatch(`before-slides-opened`, {}, window);
     main.classList.remove('hidden');
     index.classList.add('hidden');
     dashboard.classList.add('hidden');
+    dispatch(`after-slides-opened`, {}, window);
 };
 
 // shows the dashboard
