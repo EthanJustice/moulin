@@ -136,7 +136,8 @@ Moulin currently supports 7 hooks:
 | `after-slide-change` | `window` | { new: newSlideIndex, old: oldSlideIndex } | the active slide has been changed |
 | `slide-loading-failed` | `window` | "{indexOfSlideThatFailed}" | any slide isn't loaded (note that only the affected slide will be removed - that is, the presentation can be used without it) |
 | `theme-change` | `window` | "{themeName}" | the theme is toggled by pressing the `t` key |
-| `index-opened` | `window` | none | the table of contents menu is opened |
+| `before-index-opened` | `window` | none | the table of contents menu is about to be opened |
+| `after-index-opened` | `window` | none | the table of contents menu has been opened |
 | `dashboard-opened` | `window` | none | the dashboard is opened |
 | `slides-opened` | `window` | none | the slide menu is opened |
 | `moulin-ready` | `window` | none | Moulin has *completely* finished setup (loading slides, going to the proper slide, etc.) |
