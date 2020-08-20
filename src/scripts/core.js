@@ -165,11 +165,14 @@ getConfig().then((data) => {
         history.pushState('', document.title, `${window.location.href.split('#')[0]}`);
     } else if (config.default == 'toc' && window.location.hash == '#toc') {
         showIndex();
-    } else {
+    } else if (window.location.hash) {
         showMain();
         window.addEventListener('slide-loading-finished', () => goToSlide(window.location.hash.replace('#', '')), {
             once: true,
         });
+    } else {
+        showMain();
+        window.addEventListener('slide-loading-finished', () => goToSlide(0), { once: true });
     }
 
     (function () {
