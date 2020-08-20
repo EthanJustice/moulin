@@ -104,6 +104,47 @@ let toc = [];
 let slides = [];
 let slideContent = [];
 
+const goToHash = (ref) => {
+    let hash = window.location.hash.replace('#', '');
+    if (ref == 'hashchange') {
+        console.warn(hash);
+        if (hash == 'toc') showIndex();
+        else goToSlide(hash, true);
+        return;
+    } else {
+        if (!config.default || config.default == 'slides') {
+            showMain();
+            if (!window.location.hash && config.permalinks) {
+                history.pushState(``, document.title, `#${config.permalinks == 'name' ? slides[0] : 1}`);
+                window.addEventListener('slide-loading-finished', () => goToSlide(hash), {
+                    once: true,
+                });
+            } else if (window.location.hash) {
+                window.addEventListener('slide-loading-finished', () => goToSlide(hash), {
+                    once: true,
+                });
+            } else {
+                window.addEventListener('slide-loading-finished', () => goToSlide(0), { once: true });
+            }
+        } else if (config.default == 'dashboard') {
+            showDashboard();
+            history.pushState('', document.title, `${window.location.href.split('#')[0]}`);
+        } else if (config.default == 'toc' && (window.location.hash == '#toc' || !window.location.hash)) {
+            showIndex();
+            window.addEventListener('slide-loading-finished', () => goToSlide(0), { once: true });
+        } else if (window.location.hash) {
+            showMain();
+
+            window.addEventListener('slide-loading-finished', () => goToSlide(hash), {
+                once: true,
+            });
+        } else {
+            showMain();
+            window.addEventListener('slide-loading-finished', () => goToSlide(0), { once: true });
+        }
+    }
+};
+
 // fetches config
 async function getConfig() {
     return await fetch('./moulin.json').then((resp) => {
@@ -160,20 +201,7 @@ getConfig().then((data) => {
         );
     }
 
-    if (config.default == 'dashboard') {
-        showDashboard();
-        history.pushState('', document.title, `${window.location.href.split('#')[0]}`);
-    } else if (config.default == 'toc' && window.location.hash == '#toc') {
-        showIndex();
-    } else if (window.location.hash) {
-        showMain();
-        window.addEventListener('slide-loading-finished', () => goToSlide(window.location.hash.replace('#', '')), {
-            once: true,
-        });
-    } else {
-        showMain();
-        window.addEventListener('slide-loading-finished', () => goToSlide(0), { once: true });
-    }
+    goToHash();
 
     (function () {
         window.addEventListener(
@@ -342,7 +370,7 @@ const loadSlides = (data) => {
                         });
 
                         newPreview.addEventListener('click', () => {
-                            goToSlide(slides.indexOf(newPreview.dataset.slideIndex));
+                            goToSlide(newPreview.dataset.slideIndex);
                         });
 
                         if (document.querySelector('.slide-preview-container'))
@@ -439,33 +467,13 @@ const loadSlides = (data) => {
     };
 
     // starts the slide loading process
-    fetchSlide(data.index).then(() => {
-        if (!config.default || config.default == 'slides') {
-            if (!window.location.hash && config.permalinks)
-                history.pushState(``, document.title, `#${config.permalinks == 'name' ? slides[0] : 1}`);
-            if (!config.permalinks)
-                document
-                    .querySelector('.main')
-                    .insertBefore(slideContent[0], document.querySelector('.main').firstChild);
-            document.querySelector('.main').classList.remove('hidden');
-        }
-    });
+    fetchSlide(data.index).then(() => goToHash());
 };
 
 // other things, requires all slide loading to be finished
 window.addEventListener(
     'slide-loading-finished',
     (event) => {
-        if (window.location.hash && window.location.hash != '#toc') {
-            let s;
-            if (config.permalinks == 'name') s = slides.indexOf(window.location.hash.replace('#', ''));
-            if (config.permalinks == 'index') s = window.location.hash.replace('#', '') - 1;
-            goToSlide(s);
-        } else if (window.location.hash && window.location.hash == '#toc') {
-            showIndex();
-            goToSlide(0);
-        }
-
         document.title = main.firstChild.dataset.title || document.title;
 
         index.appendChild(
@@ -488,7 +496,7 @@ window.addEventListener(
             );
 
             newItem.addEventListener('click', () => {
-                goToSlide(slides.indexOf(newItem.dataset.slideIndex));
+                goToSlide(newItem.dataset.slideIndex, true);
             });
 
             if (index) index.appendChild(newItem);
@@ -525,5 +533,9 @@ window.addEventListener(
         once: true,
     }
 );
+
+window.addEventListener('hashchange', () => {
+    goToHash('hashchange');
+});
 
 export { config, dispatch, main, preview, dashboard, index, slides, slideContent, loadingTimeElement };

@@ -15,7 +15,6 @@ lightweight presentation generator
 
 + Possible config caching
 + Lifecycle diagrams
-+ `popstate` mapping
 + `dist` version
 + Internal unification of items
 + Better docs
@@ -110,7 +109,7 @@ The config file is a JSON file located in the directory of the presentation's in
 | index | string |A path to the starting slide (note that URLs must be relative to the presentation location) | "slides/index"  "content/slides/main" | Yes |
 | slideDir | string | Path to the directory that contains the slides | "slides/"  "/content/slides" | Only if the directory of slides isn't the same as the index slide |
 | global | string | Path to a custom stylesheet (it's recommended to link to this in the HTML file controlling the presentation, rather than in the config, as it can cause unstyled content flashes) | "global.css"  "src/custom.css" | No |
-| default | string ("slides", "dashboard", "preview") | The specified value will be opened automatically. | "dashboard" | No (defaults to, "slides.") |
+| default | string ("slides", "dashboard", "toc") | The specified value will be opened automatically. | "dashboard" | No (defaults to, "slides.") |
 | prod | Boolean | If set to `true`, Moulin is run in production mode, and caches slides. | true | No |
 | version | string | Current version of the presentation (used to open a cache in production version and for display in the dashboard).  The cache name is prefixed with `moulin-`, so any attempt to open Moulin's cache must keep that in mind | "0.0.1" "two" | Yes if in production mode |
 | permalinks | string ("name", "index") | If set, enables permalinks for each individual slide (e.g. `site.tld/#{slide}` would open to the specified slide).  The, "name," value will set permalinks to the name of the slide (the `data-next` attribute), while the, "index," value will set it to the index of the slide | `name` | No |

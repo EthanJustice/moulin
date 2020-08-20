@@ -3,7 +3,7 @@
     "name": "Moulin",
     "index": "slides/index",
     "permalinks": "name",
-    "prod": true,
+    "prod": false,
     "version": "0.0.1",
     "default": "toc"
 }

@@ -99,15 +99,14 @@ const previousSlide = () => {
 // goes to the specified slide
 // this can either be a number corresponding to a slide (starting at 0),
 // or the name of a slide which is matched against the global `slides` variable
-const goToSlide = (slide) => {
+const goToSlide = (slide, force) => {
+    if (force == true) showMain();
     let currentSlide = main.firstChild;
     let current = typeof slide == 'string' ? slides.indexOf(slide) : slide;
     if (currentSlide.id == 'slide-indicator') {
         main.insertBefore(slideContent[current], main.firstChild);
         return;
     }
-
-    showMain();
 
     if (
         (slides.indexOf(currentSlide.dataset.slideName) == 0 && current <= 0) ||
