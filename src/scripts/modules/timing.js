@@ -1,11 +1,7 @@
 // timing
 
-import {
-    loadingTimeElement
-} from '../core.js';
-import {
-    buildElement
-} from './parse.js';
+import { loadingTimeElement } from '../core.js';
+import { buildElement } from './parse.js';
 
 // timing for load times
 class Timer {
@@ -48,38 +44,34 @@ const addLoadIndicator = (type, duration) => {
     if (duration) {
         loadingTimeElement.appendChild(
             buildElement(
-                `p`, {
-                className: `${
-                    type == "Everything" ? "loading-indicator-success" : ""
-                    }`,
-            },
-                `${type} loaded in ${duration}ms (${Timer.toSeconds(
-                    duration
-                )}s)`
+                `p`,
+                {
+                    className: `${type == 'Everything' ? 'loading-indicator-success' : ''}`,
+                },
+                `${type} loaded in ${duration}ms (${Timer.toSeconds(duration)}s)`
             )
         );
     } else if (duration == 0) {
         loadingTimeElement.appendChild(
             buildElement(
-                `p`, {
-                className: "loading-indicator-version",
-            },
+                `p`,
+                {
+                    className: 'loading-indicator-version',
+                },
                 `${type}`
             )
         );
     } else {
         loadingTimeElement.appendChild(
             buildElement(
-                `p`, {
-                className: "loading-indicator-failure",
-            },
+                `p`,
+                {
+                    className: 'loading-indicator-failure',
+                },
                 `Failed to load ${type}.`
             )
         );
     }
 };
 
-export {
-    Timer,
-    addLoadIndicator
-};
+export { Timer, addLoadIndicator };

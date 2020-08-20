@@ -63,9 +63,9 @@ moulin.json - moulin config for demo
 
 ### Notes
 
-See [alder.js](https://github.com/EthanJustice/alder.js) for information on scoped-CSS.
++ See [alder.js](https://github.com/EthanJustice/alder.js) for information on scoped-CSS.
 
-The `data-toc` attribute is not checked for its order; that is, if the listed number is smaller than the previous or larger than the next, Moulin will not throw any errors.  This makes it possible to have a malformed index.
++ The `data-toc` attribute is not checked for its order; that is, if the listed number is smaller than the previous or larger than the next, Moulin will not throw any errors.  This makes it possible to have a malformed index.
 
 ### Setup
 

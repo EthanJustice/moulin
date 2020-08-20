@@ -3,14 +3,11 @@ import { dispatch } from '../core.js';
 // utils
 const buildElement = (type, attributes, text) => {
     let element = document.createElement(type);
-    element.innerText = text || "";
+    element.innerText = text || '';
     if (attributes) {
-        Object.keys(attributes).forEach(item => {
-            if (item.includes("data_")) {
-                element.setAttribute(
-                    item.replace(new RegExp("_", "g"), "-"),
-                    attributes[item]
-                );
+        Object.keys(attributes).forEach((item) => {
+            if (item.includes('data_')) {
+                element.setAttribute(item.replace(new RegExp('_', 'g'), '-'), attributes[item]);
             } else {
                 element[item] = attributes[item];
             }
@@ -27,20 +24,27 @@ class Alder {
     }
 
     parse(element) {
-        if (!element || !element.querySelector('style')) { return element };
-        let sheet = element.querySelector("style");
+        if (!element || !element.querySelector('style')) {
+            return element;
+        }
+        let sheet = element.querySelector('style');
 
         let rules = /:|@/;
-        Object.values(sheet.sheet.rules).forEach(item => {
+        Object.values(sheet.sheet.rules).forEach((item) => {
             if (item.selectorText.match(rules) == null) {
-                element.querySelectorAll(`${item.selectorText}`).forEach(child => {
-                    Object.values(item.style).forEach(prop => {
+                element.querySelectorAll(`${item.selectorText}`).forEach((child) => {
+                    Object.values(item.style).forEach((prop) => {
                         child.style[prop] = item.style[prop];
                     });
                 });
-            } else if (item.selectorText.includes(":")) {
+            } else if (item.selectorText.includes(':')) {
                 if (!element.id) element.dataset.alder = this._generate();
-                document.styleSheets[0].insertRule(`${element.id || element.nodeName.toLowerCase()}[data-alder="${element.dataset.alder}"] > ${item.cssText}`, 0);
+                document.styleSheets[0].insertRule(
+                    `${element.id || element.nodeName.toLowerCase()}[data-alder="${element.dataset.alder}"] > ${
+                        item.cssText
+                    }`,
+                    0
+                );
             }
         });
 
@@ -51,32 +55,32 @@ class Alder {
 
     _generate() {
         let i = Math.ceil(Math.random() * 99999);
-        if (this.ids.length == 99999) { return false }
-        else if (this.ids.includes(i)) { i = this._generate() }
+        if (this.ids.length == 99999) {
+            return false;
+        } else if (this.ids.includes(i)) {
+            i = this._generate();
+        }
 
         return i;
     }
 }
 
 // scopes css
-const scopeCSS = element => {
+const scopeCSS = (element) => {
     if (!element) return false;
 
-    if (!element.querySelector("style")) {
+    if (!element.querySelector('style')) {
         return element;
     }
-    let sheet = element.querySelector("style");
-    Object.values(sheet.sheet.rules).forEach(item => {
-        if (
-            !item.selectorText.includes("@") &&
-            !item.selectorText.includes(":")
-        ) {
-            element.querySelectorAll(`${item.selectorText}`).forEach(child => {
-                Object.values(item.style).forEach(prop => {
+    let sheet = element.querySelector('style');
+    Object.values(sheet.sheet.rules).forEach((item) => {
+        if (!item.selectorText.includes('@') && !item.selectorText.includes(':')) {
+            element.querySelectorAll(`${item.selectorText}`).forEach((child) => {
+                Object.values(item.style).forEach((prop) => {
                     child.style[prop] = item.style[prop];
                 });
             });
-        } else if (item.selectorText.includes(":")) {
+        } else if (item.selectorText.includes(':')) {
             document.styleSheets[0].insertRule(item.cssText, 0);
         }
     });
