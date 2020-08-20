@@ -66,6 +66,10 @@ moulin.json - moulin config for demo
 
 + The `data-toc` attribute is not checked for its order; that is, if the listed number is smaller than the previous or larger than the next, Moulin will not throw any errors.  This makes it possible to have a malformed index.
 
++ `toc` is a reserved keyword for hashes
+
++ When adding themes it's important to note that `.dark` and `.light` are special classes, as they will be automatically added depending on if `(prefers-color-scheme:dark)` is `true` or `false`.  If you don't add a media query in CSS that's immediately loaded, this may cause a flash of default colours.
+
 ### Setup
 
 For now, the easiest way to use Moulin is to clone the repo (`git clone https://github.com/EthanJustice/moulin.git`) and then proceed from there.
@@ -208,5 +212,30 @@ The slides menu is the primary method to view and navigate to slides.  It can be
 ### Examples
 
 #### Themes
+
+Custom themes are easily to make; they only require registering a `theme` value in the [Config](#config-file) and adding a `{themeName}` class somewhere in your CSS.
+
+For example, if I wanted to add a theme `dark`, I would create a `.dark` class containing [CSS variables](https://developer.mozilla.org/en-US/docs/Web/CSS/--*).
+
+`x.css`
+
+```css
+.dark {
+    --primary-colour: #212121; /* background */
+    --secondary-colour: #fafafa; /* text colour */
+    --tertiary-colour: #404040; /* lighter background colour */
+}
+```
+
+`moulin.json`
+
+```json
+{
+    themes: ["dark", "light"]
+    // ...
+}
+```
+
+Pressing `t` will toggle themes, in the order of the array in the `moulin.json`.  There are also some caveats to themes; see the [notes](#notes).
 
 #### Custom Slide Animations

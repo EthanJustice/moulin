@@ -271,6 +271,9 @@ getConfig().then((data) => {
                 if (window.matchMedia('(prefers-color-scheme:dark)').matches == true) {
                     document.body.classList.add('dark');
                     return;
+                } else if (window.matchMedia('(prefers-color-scheme:dark)').matches == false) {
+                    document.body.classList.add('light');
+                    return;
                 }
             }
 
