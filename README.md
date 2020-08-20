@@ -21,6 +21,7 @@ lightweight presentation generator
 + Internal unification of items
 + `before` and `after` hooks
 + Better docs
++ Replace `nextSlide` and `previousSlide` with `goToSlide`
 
 ## Usage
 
