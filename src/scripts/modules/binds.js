@@ -22,12 +22,13 @@ const showDashboard = () => {
 // shows the index menu
 const showIndex = () => {
     if (!index.classList.contains('hidden')) return;
-    dispatch(`index-opened`, {}, window);
+    dispatch(`before-index-opened`, {}, window);
     main.classList.add('hidden');
     dashboard.classList.add('hidden');
     index.classList.remove('hidden');
 
     history.pushState('', `Table of Contents`, '#toc');
+    dispatch(`after-index-opened`, {}, window);
 };
 
 // updates the slide indicator in the bottom left corner
