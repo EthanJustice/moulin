@@ -140,6 +140,7 @@ Moulin currently supports 7 hooks:
 | `after-index-opened` | `window` | none | the table of contents menu has been opened |
 | `dashboard-opened` | `window` | none | the dashboard is opened |
 | `slides-opened` | `window` | none | the slide menu is opened |
+| `moulin-started` | `window` | none | Moulin has started loading |
 | `moulin-ready` | `window` | none | Moulin has *completely* finished setup (loading slides, going to the proper slide, etc.) |
 
 **Note**: the values specified in the square brackets (`[]`) above are accessed by using the `detail` property of an event object.  If there is a single value, that means that `event.detail` *is* the value, rather than another object.
