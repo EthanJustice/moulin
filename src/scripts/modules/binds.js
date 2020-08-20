@@ -13,10 +13,11 @@ const showMain = () => {
 // shows the dashboard
 const showDashboard = () => {
     if (!dashboard.classList.contains('hidden')) return;
-    dispatch(`dashboard-opened`, {}, window);
+    dispatch(`before-dashboard-opened`, {}, window);
     main.classList.add('hidden');
     index.classList.add('hidden');
     dashboard.classList.remove('hidden');
+    dispatch(`after-dashboard-opened`, {}, window);
 };
 
 // shows the index menu
