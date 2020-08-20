@@ -2,6 +2,8 @@
 
 lightweight presentation generator
 
+[Demo](https://ethanjustice.github.io/moulin/) | [Repository](https://github.com/EthanJustice/moulin)
+
 [Moulin (Wikipedia)](https://en.wikipedia.org/wiki/Moulin_(geomorphology))
 ![A moulin](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Moulin_on_Snowbird_Glacier%2C_below_the_Snowbird_Glacier_Hut._Talkeetna_Mountains%2C_Alaska.JPG/1200px-Moulin_on_Snowbird_Glacier%2C_below_the_Snowbird_Glacier_Hut._Talkeetna_Mountains%2C_Alaska.JPG)
 
@@ -17,6 +19,7 @@ lightweight presentation generator
 + Lifecycle diagrams
 + `dist` version
 + Internal unification of items
++ `before` and `after` hooks
 + Better docs
 
 ## Usage
@@ -150,7 +153,9 @@ As Moulin uses imports/exports, core functions and variables can be easily used 
 
 #### Exports
 
-Note: items are not guaranteed to have a value immediately.  If you want to make sure they do, listen for the `moulin-ready` hook.
+If you're having trouble adding imports in FireFox, make sure you've set the `type` attribute of the script that imports/exports to `module`.
+
+**Note**: items are not guaranteed to have a value immediately.  If you want to make sure they do, listen for the `moulin-ready` hook.
 
 ```plaintext
 /modules/binds.js
