@@ -132,7 +132,8 @@ Moulin currently supports 7 hooks:
 | ---- | ---------------- | ------ | ----------- |
 | `slide-loaded` | `window` | "{slideName}" | a slide has finished loading |
 | `slide-loading-finished` | `window` | {<br>data: {<br>&nbsp;duration: number (represents the total time it took to load all slides, in milliseconds)<br>&nbsp;loaded: Boolean (represents whether the slides loaded successfully or not)<br>},<br>slides: number (total number of slides)<br>} | all slides have finished loading |
-| `slide-change` | `window` | "{slideIndex}" | the active slide has changed |
+| `before-slide-change` | `window` | { new: newSlideIndex, old: oldSlideIndex } | the active slide is about to be changed |
+| `after-slide-change` | `window` | { new: newSlideIndex, old: oldSlideIndex } | the active slide has been changed |
 | `slide-loading-failed` | `window` | "{indexOfSlideThatFailed}" | any slide isn't loaded (note that only the affected slide will be removed - that is, the presentation can be used without it) |
 | `theme-change` | `window` | "{themeName}" | the theme is toggled by pressing the `t` key |
 | `index-opened` | `window` | none | the table of contents menu is opened |
