@@ -138,7 +138,8 @@ Moulin currently supports 7 hooks:
 | `theme-change` | `window` | "{themeName}" | the theme is toggled by pressing the `t` key |
 | `before-index-opened` | `window` | none | the table of contents menu is about to be opened |
 | `after-index-opened` | `window` | none | the table of contents menu has been opened |
-| `dashboard-opened` | `window` | none | the dashboard is opened |
+| `before-dashboard-opened` | `window` | none | the dashboard is about to be opened |
+| `after-dashboard-opened` | `window` | none | the dashboard has been opened |
 | `slides-opened` | `window` | none | the slide menu is opened |
 | `moulin-started` | `window` | none | Moulin has started loading |
 | `moulin-ready` | `window` | none | Moulin has *completely* finished setup (loading slides, going to the proper slide, etc.) |
