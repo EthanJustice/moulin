@@ -59,7 +59,7 @@ const goToSlide = (slide, force) => {
     if (force == true) showMain();
 
     let currentSlide = main.firstChild;
-    let previous = slides.indexOf(main.dataset.slideName);
+    let previous = slides.indexOf(currentSlide.dataset.slideName);
     let current = typeof slide == 'string' ? slides.indexOf(slide) : slide;
 
     if (currentSlide.id == 'slide-indicator') {

@@ -246,6 +246,25 @@ Pressing `t` will toggle themes, in the order of the array in the `moulin.json`.
 
 #### Custom Slide Animations
 
+Slide animations, in their simplest forms, can be a simple CSS rule.
+
+```css
+div[data-slide-name] {
+    animation: 300ms fadeIn linear;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+```
+
+You can also listen to one of the `x-slide-change` (see [Hooks](#hooks)) and apply more complex animations that way.
+
 #### Getting the Name of the Current Slide
 
 It's fairly simple to get the name of the currently active slide.  There are, in fact, several ways to do so.  All of these methods rely on Moulin having finished loading.  There should always be an active slide, even if the presentation doesn't load the `slides` part right away.
