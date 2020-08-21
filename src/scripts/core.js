@@ -1,14 +1,6 @@
 // main
 import { buildElement, Alder } from './modules/parse.js';
-import {
-    showMain,
-    showDashboard,
-    showIndex,
-    updateIndicator,
-    nextSlide,
-    previousSlide,
-    goToSlide,
-} from './modules/binds.js';
+import { showMain, showDashboard, showIndex, updateIndicator, goToSlide } from './modules/binds.js';
 import { Timer, addLoadIndicator } from './modules/timing.js';
 
 // layout shell
@@ -222,8 +214,9 @@ getConfig().then((data) => {
 
                 let k = event.which;
                 if (!main.classList.contains('hidden')) {
-                    if ((!event.ctrlKey && k == 39) || k == 32) nextSlide(); // right arrow key/space bar
-                    if (!event.ctrlKey && k == 37) previousSlide(); // left arrow key
+                    if ((!event.ctrlKey && k == 39) || k == 32)
+                        goToSlide(slides.indexOf(main.firstChild.dataset.slideName) + 1); // right arrow key/space bar
+                    if (!event.ctrlKey && k == 37) goToSlide(slides.indexOf(main.firstChild.dataset.slideName) - 1); // left arrow key
                     if ((event.ctrlKey && k == 39) || k == 57) goToSlide(slides.length - 1); // ctrl + right arrow || 9
                     if (event.ctrlKey && k == 37) goToSlide(0); // ctrl + left arrow key
                     if (!event.ctrlKey && k >= 49 && k < 57)

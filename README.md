@@ -15,13 +15,10 @@ lightweight presentation generator
 
 ## Roadmap
 
-+ Possible config caching
 + Lifecycle diagrams
 + `dist` version
 + Internal unification of items
-+ `before` and `after` hooks
 + Better docs
-+ Replace `nextSlide` and `previousSlide` with `goToSlide`
 
 ## Usage
 
@@ -169,8 +166,6 @@ If you're having trouble adding imports in FireFox, make sure you've set the `ty
     showDashboard - shows the dashboard menu
     showIndex - shows the table of contents menu
     updateIndicator - updates the element that displays the current slide
-    nextSlide - goes to the next slide
-    previousSlide - goes to the previous slide
     goToSlide - goes to the specified slide
 
 /modules/parse.js

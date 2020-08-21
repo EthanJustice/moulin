@@ -52,63 +52,16 @@ const updateIndicator = () => {
     if (indicator) indicator.innerText = `${current + 1}/${slides.length}`;
 };
 
-// goes to the next slide
-const nextSlide = () => {
-    let currentSlide = main.firstChild;
-    let current = slides.indexOf(currentSlide.dataset.slideName);
-
-    if (slideContent.length !== 0 && current != slides.length - 1) {
-        if (dashboard.classList.contains('hidden')) current += 1;
-
-        dispatch('before-slide-change', { detail: { old: current, new: current + 1 } }, window);
-        currentSlide.remove();
-        main.insertBefore(slideContent[current], main.firstChild);
-
-        updateIndicator();
-        if (config.permalinks)
-            history.pushState(
-                ``,
-                main.firstChild.dataset.title || originalTitle || document.title,
-                `#${config.permalinks == 'name' ? slides[current] : current + 1}`
-            );
-        document.title = main.firstChild.dataset.title || originalTitle || document.title;
-        dispatch('after-slide-change', { detail: { old: current, new: current + 1 } }, window);
-    }
-    showMain();
-};
-
-// goes to the previous slide
-const previousSlide = () => {
-    showMain();
-
-    let currentSlide = main.firstChild;
-    let current = slides.indexOf(currentSlide.dataset.slideName);
-
-    if (current != 0) {
-        dispatch('before-slide-change', { detail: { new: current - 1, previous: current } }, window);
-        currentSlide.remove();
-        main.insertBefore(slideContent[current - 1], main.firstChild);
-
-        updateIndicator();
-        if (config.permalinks)
-            history.pushState(
-                ``,
-                main.firstChild.dataset.title || originalTitle || document.title,
-                `#${config.permalinks == 'name' ? slides[current - 1] : current}`
-            );
-        document.title = main.firstChild.dataset.title || originalTitle || document.title;
-        dispatch('after-slide-change', { detail: { new: current - 1, previous: current } }, window);
-    }
-};
-
 // goes to the specified slide
 // this can either be a number corresponding to a slide (starting at 0),
 // or the name of a slide which is matched against the global `slides` variable
 const goToSlide = (slide, force) => {
     if (force == true) showMain();
+
     let currentSlide = main.firstChild;
     let previous = slides.indexOf(main.dataset.slideName);
     let current = typeof slide == 'string' ? slides.indexOf(slide) : slide;
+
     if (currentSlide.id == 'slide-indicator') {
         main.insertBefore(slideContent[current], main.firstChild);
         return;
@@ -137,4 +90,4 @@ const goToSlide = (slide, force) => {
     }
 };
 
-export { showMain, showDashboard, showIndex, updateIndicator, nextSlide, previousSlide, goToSlide };
+export { showMain, showDashboard, showIndex, updateIndicator, goToSlide };
