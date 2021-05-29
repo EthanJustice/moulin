@@ -1,0 +1,10 @@
+{
+  "name": "moulin",
+  "version": "0.0.1",
+  "description": "lightweight presentation generator",
+  "main": "src/index.ts",
+  "repository": "https://github.com/hvlck/moulin.git",
+  "author": "hvlck <just.ethan@protonmail.com>",
+  "license": "MIT",
+  "private": true
+}

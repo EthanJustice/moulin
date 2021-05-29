@@ -2,7 +2,7 @@
 
 lightweight presentation generator
 
-[Demo](https://ethanjustice.github.io/moulin/) | [Repository](https://github.com/EthanJustice/moulin)
+[Demo](https://ethanjustice.github.io/moulin/) | [Repository](https://github.com/hvlck/moulin)
 
 [Moulin (Wikipedia)](https://en.wikipedia.org/wiki/Moulin_(geomorphology))
 ![A moulin](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Moulin_on_Snowbird_Glacier%2C_below_the_Snowbird_Glacier_Hut._Talkeetna_Mountains%2C_Alaska.JPG/1200px-Moulin_on_Snowbird_Glacier%2C_below_the_Snowbird_Glacier_Hut._Talkeetna_Mountains%2C_Alaska.JPG)
@@ -15,10 +15,14 @@ lightweight presentation generator
 
 ## Roadmap
 
++ Rewrite in typescript
 + Lifecycle diagrams
 + `dist` version
 + Internal unification of items
 + Better docs
++ Typescript rewrite
++ Tests
++ Real-time audience viewing (WebRTC?)
 
 ## Usage
 
@@ -63,7 +67,7 @@ moulin.json - moulin config for demo
 
 ### Notes
 
-+ See [alder.js](https://github.com/EthanJustice/alder.js) for information on scoped-CSS.
++ See [alder.js](https://github.com/hvlck/alder.js) for information on scoped-CSS.
 
 + The `data-toc` attribute is not checked for its order; that is, if the listed number is smaller than the previous or larger than the next, Moulin will not throw any errors.  This makes it possible to have a malformed index.
 
@@ -73,7 +77,7 @@ moulin.json - moulin config for demo
 
 ### Setup
 
-For now, the easiest way to use Moulin is to clone the repo (`git clone https://github.com/EthanJustice/moulin.git`) and then proceed from there.
+For now, the easiest way to use Moulin is to clone the repo (`git clone https://github.com/hvlck/moulin.git`) and then proceed from there.
 
 ### Slides
 
